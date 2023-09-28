@@ -39,16 +39,15 @@ def remove_pp(change_amount, player_id, sql_connection):
 
 
 def format_database_for_new_game(sql_connection):
-    # get the current working directory
+    # current working dir
     cwd = os.getcwd()
-    # Read SQL from file
+    # Itellä on tuo with open-syntaksi vähän ymmärryksen tavoittamattomissa
     with open(cwd + "/create_game_db.sql", "r") as sql_file:
-        sql_queries = sql_file.read().split(";")
+        sql_queries = sql_file.read().split(";")  # Lukee filen, splittaa ;-merkistä listaksi
     cursor = sql_connection.cursor()
-    # Execute each non-empty SQL query
     for sql_query in sql_queries:
-        sql_query = sql_query.strip()  # Remove leading/trailing whitespace
-        if sql_query:  # Check if the query is not empty
+        sql_query = sql_query.strip()  # Vedetään tyhjät pois
+        if sql_query:  # onko query tyhjä? -> FALSE
             cursor.execute(sql_query)
     sql_connection.commit()
     # Tämä alla oleva on vain testi toimiiko DB
