@@ -22,12 +22,12 @@ create table player
     id             int auto_increment
         primary key,
     screen_name    varchar(25)          null,
-    current_pp     int                  null,
-    lockstate      int                  null,
+    current_pp     int        default 2000 null,
+    lockstate      int        default 0 null,
     prizeholder    tinyint(1) default 0 not null,
     real_prize     tinyint(1) default 0 not null,
     event_eligible tinyint(1) default 0 null,
-    location       int                  not null,
+    location       int        default 16 not null,
     constraint player_city__fk
         foreign key (location) references city (id)
 );
@@ -36,9 +36,9 @@ create table random_events
 (
     id             int auto_increment
         primary key,
-    fuff           varchar(255) null,
+    fluff           varchar(255) null,
     roll_treshold  int          null,
-    out_comehigher varchar(255) null,
+    outcome_higher varchar(255) null,
     outcome_lower  varchar(255) null,
     location       int          null
 );
@@ -52,6 +52,11 @@ create table location_tied
         foreign key (city_id) references city (id),
     constraint location_tied_random_events__fk
         foreign key (random_event_id) references random_events (id)
+);
+
+create table round_counter
+(
+    counter int default 1 not null
 );
 
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (1, 'Tirana', 'Albania', 41.4147, 19.7206, 0, 0, 0);
