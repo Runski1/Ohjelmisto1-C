@@ -1,5 +1,5 @@
 import mysql.connector
-
+import geopy
 
 connection = mysql.connector.connect(
          host='127.0.0.1',
@@ -12,5 +12,6 @@ connection = mysql.connector.connect(
 
 def get_flight_route(player_id)
     cursor = connection.cursor()
-    cursor.execute(f"select player.current_pp, latitude_deg, longitude_deg from city inner join player on city.id = player.location where player.id = '{player_id}'")
+    query1 = f"select player.current_pp, latitude_deg, longitude_deg from city inner join player on city.id = player.location where player.id = '{player_id}'"
+    quert2 =     kaikki kaupungit
     result = cursor.fetchall()
