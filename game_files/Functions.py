@@ -28,3 +28,10 @@ def remove_pp(change_amount, player_id):
 #    result = cursor.fetchone()
 #    print(result)
     return
+
+def update_city_status(city_id):
+    query = f"UPDATE city SET visited='1' WHERE id='{city_id}'"
+    cursor = connection.cursor()
+    cursor.execute(query)
+    return
+
