@@ -14,19 +14,21 @@ cursor = connection.cursor()
 
 
 def event_randomizer():
-    sql = "SELECT COUNT(*) FROM random_events GROUP BY fluff;"
+    sql = "SELECT COUNT(*)"
+    sql += " FROM random_events GROUP BY fluff;"
     cursor.execute(sql)
     result = cursor.fetchall()
     if cursor.rowcount > 0:
-        len_events = result[0]
+        for row in result:
+            len_events = row[0]
     rand_test = random.randint(1, 6)
 
     if rand_test % 2 == 1:
         print("Nothing happened!")
     elif rand_test % 2 == 0:
-        print(len_events(0))
-        randomized_num = random.randint(1, int(len_events(0)))
-        sql = "SELECT fluff FROM random_events WHERE id = '" + randomized_num + "';"
+        randomized_num = random.randint(1, len_events)
+        sql = "SELECT fluff FROM random_events"
+        sql += " WHERE id = '" + str(randomized_num) + "';"
         cursor.execute(sql)
         result = cursor.fetchall()
         if cursor.rowcount > 0:
@@ -34,4 +36,5 @@ def event_randomizer():
 
 
 lol = event_randomizer()
-print(lol)
+for i in lol:
+    print(i, sep=' ')
