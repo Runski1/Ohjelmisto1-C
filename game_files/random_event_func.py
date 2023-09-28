@@ -37,4 +37,4 @@ def event_randomizer():
 
 lol = event_randomizer()
 for i in lol:
-    print(i, sep=' ')
+    print(i)
