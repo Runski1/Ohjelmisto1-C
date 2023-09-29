@@ -36,7 +36,7 @@ def get_route(travel_mode,player_id,multiply):
     #pelaajan sijainti
     player_location = (player_data[0][1],player_data[0][2])
 
-    city_in_range=[]
+    city_in_range={}
 
 
     #Käy läpi kaupungit ja tarkistaa voiko pelaaja matukstaa sinne
@@ -49,9 +49,9 @@ def get_route(travel_mode,player_id,multiply):
 
         # testaa onko kaupunki saavutettavan matkan päässä, jos on niin se lisätään listaan
         if travel_mode == 'boat' or  'hike' and distance <=1000 and available_range:
-            city_in_range.append(city_name)
+            city_in_range[city_name] = distance
         elif distance <= available_range:
-            city_in_range.append(city_name)
+            city_in_range[city_name] = distance
     result = city_in_range
 
     return result
