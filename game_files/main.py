@@ -1,5 +1,5 @@
 import functions
-import user_input_processor
+from user_input_processor import manual
 import os
 import mysql.connector
 import time
