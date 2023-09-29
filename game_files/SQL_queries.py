@@ -48,9 +48,9 @@ def get_route(travel_mode,player_id,multiply):
         distance = geodesic(player_location, city_location).kilometers
 
         # testaa onko kaupunki saavutettavan matkan päässä, jos on niin se lisätään listaan
-        if distance <= available_range:
-            if travel_mode == 'boat' and distance <=1000:
-                city_in_range.append(city_name)
+        if travel_mode == 'boat' and distance <=1000 and distance <= available_range:
+            city_in_range.append(city_name)
+        elif distance <= available_range:
             city_in_range.append(city_name)
     result = city_in_range
 
