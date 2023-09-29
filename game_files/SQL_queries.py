@@ -15,8 +15,10 @@ def get_route(travel_mode,player_id,multiply):
     query1 = (f"select player.current_pp,latitude_deg,longitude_deg from city inner join player on "
               f"city.id = player.location where player.id = '{player_id}'")
     query2 = f"select name,latitude_deg , longitude_deg from city group by name"
+    query3 = f"select name,latitude_deg , longitude_deg from city where port_city = '1' group by name"
 
-
+    if travel_mode == 'boat':
+        query2 = query3
 
 
     cursor.execute(query1)
@@ -47,7 +49,7 @@ def get_route(travel_mode,player_id,multiply):
 
         # testaa onko kaupunki saavutettavan matkan päässä, jos on niin se lisätään listaan
         if distance <= available_range:
-            if travel_mode == 'boat' and distance <=1000
+            if travel_mode == 'boat' and distance <=1000:
                 city_in_range.append(city_name)
             city_in_range.append(city_name)
     result = city_in_range
@@ -57,11 +59,11 @@ def get_route(travel_mode,player_id,multiply):
 player_id= 1
 #multiplieri configista
 flight_range_multiply = 1
+travel_mode = 'boat'
+
+print(get_route(travel_mode, player_id,flight_range_multiply))
 
 
-print(get_flight_route(travel_mode, player_id,flight_range_multiply))
 
 
-        
-    
-        
+
