@@ -2,6 +2,7 @@ import functions
 import user_input_processor
 import os
 import mysql.connector
+import time
 
 connection = mysql.connector.connect(
     host='127.0.0.1',
@@ -20,12 +21,14 @@ if new_game_selection == "y":
 
     player1 = input("Nickname player 1: ")
     print(f"Player 1 is now known as {player1}.")
+    time.sleep(2)
     sql = "INSERT INTO player SET screen_name = '" + player1 + "';"
     cursor.execute(sql)
     player2 = input("Nickname player 2: ")
     sql = "INSERT INTO player SET screen_name = '" + player2 + "';"
     cursor.execute(sql)
     print(f"Player 2 is now known as {player2}")
+    time.sleep(2)
 
     while True:
         sql = "SELECT screen_name FROM player;"
@@ -39,14 +42,16 @@ if new_game_selection == "y":
             rounter = result[0]
 
             if rounter % 2 == 0:
-                choice = input(f"{players[0]} it is your turn!")
+                choice = input(f"{players[0][0]} it is your turn!")
+                time.sleep(1)
                 # printteri
                 sql = "UPDATE round_counter SET counter = counter + 1"
                 cursor.execute(sql)
 
             elif rounter % 2 == 1:
-                choice = input(f"{players[1]} it is your turn!")
-                #printteri
+                print(f"{players[1][0]} it is your turn!")
+                time.sleep(1)
+                choice = input("What would you like to do? ")
                 sql = "UPDATE round_counter SET counter = counter + 1"
                 cursor.execute(sql)
 
