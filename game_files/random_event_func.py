@@ -13,11 +13,15 @@ connection = mysql.connector.connect(
 cursor = connection.cursor()
 
 
+# funktio joka laskee montako eventtiä on yhteensä
+# sen jälkeen arpoo tuleeko eventti
+# jos tulee arpoo eventin tietokannasta ja palauttaa sen
+# jos ei printtaa jotain
 def event_randomizer():
-    sql = "SELECT COUNT(*)"
-    sql += " FROM random_events GROUP BY fluff;"
+    sql = "SELECT COUNT(id) FROM random_events;"
     cursor.execute(sql)
     result = cursor.fetchall()
+    len_events = 0
     if cursor.rowcount > 0:
         for row in result:
             len_events = row[0]
@@ -25,10 +29,10 @@ def event_randomizer():
 
     if rand_test % 2 == 1:
         print("Nothing happened!")
+        return
     elif rand_test % 2 == 0:
         randomized_num = random.randint(1, len_events)
-        sql = "SELECT fluff FROM random_events"
-        sql += " WHERE id = '" + str(randomized_num) + "';"
+        sql = "SELECT fluff FROM random_events WHERE id = '" + str(randomized_num) + "';"
         cursor.execute(sql)
         result = cursor.fetchall()
         if cursor.rowcount > 0:
@@ -36,5 +40,3 @@ def event_randomizer():
 
 
 lol = event_randomizer()
-for i in lol:
-    print(i)
