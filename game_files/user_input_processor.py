@@ -20,6 +20,7 @@ def user_input_processor(input_string):
     else:
         print("Bad parameters.")
         # Todennäköisesti parametri puuttuu tai niitä on annettu kaksi
-while True:
+# while True:
     # Tämä loop on turha lopussa, toimii testauksen ajolooppina
-    user_input_processor(input("[ENTER COMMAND]"))
+#    user_input_processor(input("[ENTER COMMAND]"))
+# HUOM!! Jos importatussa pythonfilessä on jotain ajettavaa, se ajetaan automaattisesti importin yhteydessä.
