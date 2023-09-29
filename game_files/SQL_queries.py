@@ -36,7 +36,7 @@ def get_route(travel_mode,player_id,multiply):
     #pelaajan sijainti
     player_location = (player_data[0][1],player_data[0][2])
 
-    city_in_range={}
+    city_in_range={}  #sanakirja kaupungeista ja etäisyydestä pelaajaan
 
 
     #Käy läpi kaupungit ja tarkistaa voiko pelaaja matukstaa sinne
