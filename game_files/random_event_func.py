@@ -17,6 +17,7 @@ cursor = connection.cursor()
 # sen jälkeen arpoo tuleeko eventti
 # jos tulee arpoo eventin tietokannasta ja palauttaa sen
 # jos ei printtaa jotain
+
 def event_randomizer():
     sql = "SELECT COUNT(id) FROM random_events;"
     cursor.execute(sql)
@@ -39,4 +40,3 @@ def event_randomizer():
             return result
 
 
-lol = event_randomizer()
