@@ -28,4 +28,5 @@ sql = "INSERT INTO player SET screen_name = '" + player1 + "';"
 cursor.execute(sql)
 player2 = input("Nickname player 2: ")
 sql = "INSERT INTO player SET screen_name = '" + player2 + "';"
+cursor.execute(sql)
 print(f"Player 2 is now known as {player2}")
