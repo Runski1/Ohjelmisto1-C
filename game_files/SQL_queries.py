@@ -51,6 +51,7 @@ def get_route(travel_mode,player_id,multiply):
                 city_in_range.append(city_name)
             city_in_range.append(city_name)
     result = city_in_range
+
     return result
 #force id(normaalisti tietokannasta
 player_id= 1
