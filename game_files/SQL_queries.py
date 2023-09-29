@@ -55,10 +55,11 @@ def get_route(travel_mode,player_id,multiply):
     result = city_in_range
 
     return result
-#force id(normaalisti tietokannasta
+#force id(normaalisti tietokannasta)
 player_id= 1
-#multiplieri configista
+#force(range multiplier) (config)
 flight_range_multiply = 1
+#force travel mode (config)
 travel_mode = 'hike'
 
 print(get_route(travel_mode, player_id,flight_range_multiply))
