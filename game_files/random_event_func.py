@@ -40,3 +40,4 @@ def event_randomizer():
             return result
 
 
+event_randomizer()
