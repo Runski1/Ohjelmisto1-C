@@ -46,6 +46,7 @@ if new_game_selection == "y":
 
             elif rounter % 2 == 1:
                 choice = input(f"{players[1]} it is your turn!")
+                #printteri
                 sql = "UPDATE round_counter SET counter = counter + 1"
                 cursor.execute(sql)
 
