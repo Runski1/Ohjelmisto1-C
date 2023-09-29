@@ -17,7 +17,7 @@ def get_route(travel_mode,player_id,multiply):
     query2 = f"select name,latitude_deg , longitude_deg from city group by name"
 
 
-    #distance_range =  distance.great_circle(query1[1,2]),query2[1,2])
+
 
     cursor.execute(query1)
     player_data = cursor.fetchall()
