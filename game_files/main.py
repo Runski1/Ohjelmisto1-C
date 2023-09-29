@@ -1,7 +1,9 @@
+import mysql.connector
 import functions
 import user_input_processor
-import os
-import mysql.connector
+import game_formatting
+
+
 
 connection = mysql.connector.connect(
     host='127.0.0.1',
@@ -13,13 +15,7 @@ connection = mysql.connector.connect(
 )
 new_game_selection = input("Start new game (Y/N)").lower()
 if new_game_selection == "y":
-    print(functions.format_database_for_new_game(connection))
-else:
-    # TÄMÄ VAIN YHTEYSTESTI
-    cursor = connection.cursor()
-    cursor.execute("USE kadonnut_testamentti;")
-    cursor.execute("SELECT * FROM city;")
-    print(cursor.fetchall())
+    game_formatting.format(connection)
 
 cursor = connection.cursor()
 player1 = input("Nickname player 1: ")
