@@ -66,6 +66,11 @@ def get_location(player_id):
     return result
 
 
+def set_location(new_location, player_id):
+    sql = "UPDATE player SET location = '" + new_location + "' WHERE id = '" + player_id + "';"
+    cursor.execute(sql)
+
+
 def lock_check(player_id):
     sql = "SELECT lockstate FROM player"
     sql += " WHERE id = '" + player_id + "';"
@@ -114,34 +119,43 @@ def add_to_round_counter():
     cursor.execute(sql)
 
 
-def get_cities_in_range(travel_mode, player_id, multiply):
-    query1 = (f"select player.current_pp,latitude_deg,longitude_deg from city inner join player on "
-              f"city.id = player.location where player.id = '{player_id}'")
-    query2 = f"select name,latitude_deg , longitude_deg from city group by name"
-    query3 = f"select name,latitude_deg , longitude_deg from city where port_city = '1' group by name"
-    if travel_mode == 'boat':
-        query2 = query3
-    cursor.execute(query1)
-    player_data = cursor.fetchall()
-    available_range = player_data[0][0] * multiply
-    # laskee pelaajan maksimi rangen annetulla kertoimella ja nykyisellä rahan määrällä
-    # hakee kaikki kaupungit pelialueelta
-    cursor.execute(query2)
-    city_data = cursor.fetchall()
-    # pelaajan sijainti
-    player_location = (player_data[0][1], player_data[0][2])
-    city_in_range = {}  # sanakirja kaupungeista ja etäisyydestä pelaajaan
-    # Käy läpi kaupungit ja tarkistaa voiko pelaaja matkustaa sinne
-    for city in city_data:
-        city_name = city[0]
-        latitude_deg = city[1]
-        longitude_deg = city[2]
-        city_location = (latitude_deg, longitude_deg)
-        distance = geodesic(player_location, city_location).kilometers
-        # testaa onko kaupunki saavutettavan matkan päässä, jos on niin se lisätään listaan
-        if travel_mode == 'boat' or 'hike' and distance <= 1000 and distance <= available_range:
-            city_in_range[city_name] = distance
-        elif distance <= available_range:
-            city_in_range[city_name] = distance
-    result = city_in_range
-    return result
+def get_city_data():
+    sql = "SELECT * from city;"
+    cursor.execute(sql)
+    all_from_city = cursor.fetchall()
+    all_data_from_city_as_list = []
+    for i in range(len(all_from_city)):
+        all_data_from_city_as_list.append((list(all_from_city[i])))
+    return all_data_from_city_as_list
+
+
+def get_cities_in_range(travel_mode, player):
+    price_multiplier_dict = {
+        "fly": 1,
+        "boat": 0.5,
+        "hike": 0
+    }
+    max_distance_dict = {
+        "fly": 9999999999,
+        "boat": 1000,
+        "hike": 1000
+    }
+    price_multiplier = price_multiplier_dict[travel_mode]
+    max_distance = max_distance_dict[travel_mode]
+    player_location = player[7]
+    cities = get_city_data()
+    player_coords = ((cities[player[7] - 1][3]), (cities[player[7] - 1][4]))
+    player_pp = player[2]
+    cities_in_range = []
+    cost_of_travel = []
+    distances_from_player = []
+    for city in cities:
+        distance_from_player = geodesic(player_coords, ((city[3]), (city[4])))
+
+        if city[0] != player_location and (distance_from_player <= max_distance and
+                                           (distance_from_player * price_multiplier) <= player_pp):
+            cities_in_range.append(city)
+            cost_of_travel.append(distance_from_player * price_multiplier)
+            distances_from_player.append(distance_from_player)
+    return cities_in_range, distances_from_player, cost_of_travel
+
