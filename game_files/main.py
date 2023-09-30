@@ -46,19 +46,34 @@ if new_game_selection == "y":
                 print(f"{player1[1]} it is your turn!\n")
                 time.sleep(1)
                 functions.printer(player1[1], str(player1[0]), connection)
-                time.sleep(1)
-                choice_p1 = input(f"What would you like to do? ")
-                sql = "UPDATE round_counter SET counter = counter + 1"
+                lockstate = functions.lock_check(str(player2[0]), connection)
+                if lockstate > 0:
+                    sql = "UPDATE player SET lockstate = lockstate - 1 WHERE id = '" + player1[0] + "';"
+                    cursor.execute(sql)
+                    continue
+                elif lockstate == 0:
+                    time.sleep(1)
+                    choice_p1 = input(f"What would you like to do? ")
+                sql = "UPDATE round_counter SET counter = counter + 1;"
                 cursor.execute(sql)
 
             elif rounter % 2 == 0:
 
                 print(f"{player2_name} it is your turn!")
                 time.sleep(1)
-                functions.printer(player2_name, connection)
-                choice_p2 = input("\nWhat would you like to do? ")
-                sql = "UPDATE round_counter SET counter = counter + 1"
+                functions.printer(player2[1], str(player2[0]), connection)
+                lockstate = functions.lock_check(str(player2[0]), connection)
+                if lockstate > 0:
+                    sql = "UPDATE player SET lockstate = lockstate - 1 WHERE id = '" + player2[0] + "';"
+                    cursor.execute(sql)
+                    continue
+                elif lockstate == 0:
+                    time.sleep(1)
+                    choice_p2 = input("What would you like to do? ")
+
+                sql = "UPDATE round_counter SET counter = counter + 1;"
                 cursor.execute(sql)
+
 
 
 

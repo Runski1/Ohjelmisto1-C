@@ -90,4 +90,4 @@ def printer(name, player_id, sql_connection):
     print(f"Name: {name}")
     print(f"Current PP: {current_pp[0]}")
     print(f"Location: {current_location[0][0]}")
-    print(f"Lockstate: {lock_status}")
+    print(f"Lockstate: {lock_status}\n")
