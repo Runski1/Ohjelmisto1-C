@@ -39,7 +39,7 @@ def get_route(travel_mode,player_id,multiply):
     city_in_range={}  #sanakirja kaupungeista ja etäisyydestä pelaajaan
 
 
-    #Käy läpi kaupungit ja tarkistaa voiko pelaaja matukstaa sinne
+    #Käy läpi kaupungit ja tarkistaa voiko pelaaja matkustaa sinne
     for city in city_data:
         city_name = city[0]
         latitude_deg = city[1]

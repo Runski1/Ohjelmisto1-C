@@ -1,5 +1,7 @@
 import random
 import os
+
+
 # Matias kävi lisäämässä funktioihin sql_connection-parametrit siinä toiveissa että connectionin voi muodostaa vain
 # mainissa ja kantaa sieltä minne tarvitseekaan
 
@@ -14,7 +16,7 @@ def get_current_pp(player_id, sql_connection):
     cursor = sql_connection.cursor()
     cursor.execute(query)
     result = cursor.fetchone()
-#    print(result)
+    #    print(result)
     return result
 
 
@@ -24,8 +26,8 @@ def add_pp(change_amount, player_id, sql_connection):
     query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}'"
     cursor = sql_connection.cursor()
     cursor.execute(query)
-#    result = cursor.fetchone()
-#    print(result)
+    #    result = cursor.fetchone()
+    #    print(result)
     return
 
 
@@ -35,9 +37,10 @@ def remove_pp(change_amount, player_id, sql_connection):
     query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}'"
     cursor = sql_connection.cursor()
     cursor.execute(query)
-#    result = cursor.fetchone()
-#    print(result)
+    #    result = cursor.fetchone()
+    #    print(result)
     return
+
 
 def format_database_for_new_game(sql_connection):
     try:
@@ -56,3 +59,20 @@ def format_database_for_new_game(sql_connection):
     except:
         return "Something went wrong with database formatting."
 
+
+def get_location(id, sql_connection):
+    sql = "SELECT name FROM city INNER JOIN player ON city.id = player.location"
+    sql += " WHERE player.id = '" + id + "';"
+    cursor = sql_connection.cursor
+    cursor.execute(sql)
+    result = cursor.fethall()
+    return result
+
+
+def printer(name, player_id, sql_connection):
+    current_pp = get_current_pp(player_id, sql_connection)
+    current_location = get_location(player_id, sql_connection)
+    print("---Player status---")
+    print(f"Name: {name}")
+    print(f"Current PP: {current_pp[0][0]}")
+    print(f"Location: {current_location[0][0]}")

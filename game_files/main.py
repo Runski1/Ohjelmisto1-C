@@ -7,7 +7,7 @@ import time
 connection = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
-    # database='kadonnut_testamentti',
+    database='kadonnut_testamentti',
     user='game',
     password='pass',
     autocommit=True
@@ -41,16 +41,20 @@ if new_game_selection == "y":
             result = cursor.fetchone()
             rounter = result[0]
 
-            if rounter % 2 == 0:
-                choice = input(f"{players[0][0]} it is your turn!")
+            if rounter % 2 == 1:
+                player1 = players[0][0]
+                choice = input(f"{player1} it is your turn!")
                 time.sleep(1)
-                # printteri
+                functions.printer(player1, connection)
+                choice = input(f"What would you like to do? ")
                 sql = "UPDATE round_counter SET counter = counter + 1"
                 cursor.execute(sql)
 
-            elif rounter % 2 == 1:
-                print(f"{players[1][0]} it is your turn!")
+            elif rounter % 2 == 0:
+                player2 = players[1][0]
+                print(f"{player2} it is your turn!")
                 time.sleep(1)
+                functions.printer(player2, connection)
                 choice = input("What would you like to do? ")
                 sql = "UPDATE round_counter SET counter = counter + 1"
                 cursor.execute(sql)
@@ -60,6 +64,7 @@ if new_game_selection == "y":
 
 else:
     # TÄMÄ VAIN YHTEYSTESTI
+
     cursor = connection.cursor()
     cursor.execute("USE kadonnut_testamentti;")
     cursor.execute("SELECT * FROM city;")
