@@ -11,7 +11,7 @@ if new_game_selection == "y":
 
     player1_name = input("Nickname player 1: ")
     print(f"Player 1 is now known as {player1_name}.")
-    time.sleep(1)
+    time.sleep(0.3)
     sql = "INSERT INTO player SET screen_name = '" + player1_name + "';"
     cursor.execute(sql)
     player2_name = input("Nickname player 2: ")
