@@ -8,7 +8,7 @@ def travel_fly(parameter):
         available_cities = get_cities_in_range("fly", current_player_id, 1)
         print("---Available cities where you can fly---\n")
         for key, value in available_cities:
-            print(f"{key}: {value.2f} km away")
+            print(f"{key}: {value:.2f} km away")
         print(f"Current PP: {current_pp[0]}")
         print(f"Location: {current_location[0][0]}")
         print(f"Lock state: {lock_status}")
