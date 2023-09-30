@@ -1,8 +1,17 @@
+from functions import *
+
 
 def travel_fly(parameter):
     # Lentokohteen valinta ja kohteiden listaus
+    current_player_id = get_player_data_as_list()[get_round_number() % 2][0]
     if parameter == "?":
-        # Kutsu mahdollisten lentokohteiden lista tässä
+        available_cities = get_cities_in_range("fly", current_player_id, 1)
+        print("---Available cities where you can fly---\n")
+        for key, value in available_cities:
+            print(f"{key}: {value.2f} km away")
+        print(f"Current PP: {current_pp[0]}")
+        print(f"Location: {current_location[0][0]}")
+        print(f"Lock state: {lock_status}")
         print("This should list all available cities where player can fly.")
     print("You begin your flight to " + parameter + ".")
     # Muuten funktion ajo suunnilleen:
