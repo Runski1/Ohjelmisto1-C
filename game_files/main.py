@@ -1,5 +1,5 @@
 from functions import *
-# from user_input_processor import manual
+from user_input_processor import manual
 # import os
 from db_connection import connection
 import time
@@ -21,20 +21,16 @@ if new_game_selection == "y":
     time.sleep(1)
 
     while True:
-        player_table = get_player_data_as_list()  # player_table on lista pelaajien riveistä, kts functions.py
+        player_table = get_player_data_as_list()
         for player in player_table:  # iteroi joka pelaajan läpi vuorollaan
-            round_number = get_round_number()  # haetaan round_counter-taulun arvo vuorossa olevan pelaajan
-            # määrittämiseen
-            # allaoleva toimii vain kahdella pelaajalla atm (modulo 2), mutta se on helposti muutettavissa useammalle
-            # pelaajalle
-            current_player = player_table[round_number % 2]
+            round_number = get_round_number()
+            current_player = player_table[round_number-1 % 2] #lisäsin -1 että saadaan peli aloittamaan pelaaja1:stä
         # Muuttujaan current player tallennetaan siis vuorossa olevan pelaajan tiedot listana: [id, screen_name etc.]
-            print(f"{current_player[1]} it is your turn!\n")  # indeksi 1 viittaa screen_nameen
+            print(f"{current_player[1]} it is your turn!\n")
             time.sleep(1)
             printer(current_player[1], str(current_player[0]))  # Tämä on Miron printterikutsu
             time.sleep(1)
-            choice_p1 = input(
-                f"What would you like to do? ")  # choice_p1 tulee kutsumaan user_input_processorin, mutta atm
+            choice_p1 = manual()  # choice_p1 tulee kutsumaan user_input_processorin, mutta atm
             if choice_p1 == "exit":  # lisäsin siihen vain while loopin breakkausta varten exitin
                 exit()
             print(round_number)  # tämä testaamista varten seuraa vuoronumeroa
