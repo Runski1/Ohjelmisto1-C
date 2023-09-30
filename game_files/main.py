@@ -8,8 +8,6 @@ new_game_selection = input("Start new game (Y/N)").lower()
 if new_game_selection == "y":
     cursor = connection.cursor()
     print(functions.format_database_for_new_game())
-    sql = "INSERT INTO round_counter (counter) VALUES ('1');"
-    cursor.execute(sql)
 
     player1_name = input("Nickname player 1: ")
     print(f"Player 1 is now known as {player1_name}.")
