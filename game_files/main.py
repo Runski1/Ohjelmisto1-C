@@ -36,16 +36,16 @@ if new_game_selection == "y":
         result = cursor.fetchall()
         player1 = list(result[0])
         player2 = list(result[1])
-        for i in player1, player2:
+        for i in result:
             sql = "SELECT counter FROM round_counter;"
             cursor.execute(sql)
             result = cursor.fetchone()
             rounter = result[0]
 
             if rounter % 2 == 1:
-                choice = input(f"{player1[1]} it is your turn!")
+                print(f"{player1[1]} it is your turn!\n")
                 time.sleep(1)
-                functions.printer(player1[1], player1[0], connection)
+                functions.printer(player1[1], str(player1[0]), connection)
                 time.sleep(1)
                 choice_p1 = input(f"What would you like to do? ")
                 sql = "UPDATE round_counter SET counter = counter + 1"
@@ -56,7 +56,7 @@ if new_game_selection == "y":
                 print(f"{player2_name} it is your turn!")
                 time.sleep(1)
                 functions.printer(player2_name, connection)
-                choice_p2 = input("What would you like to do? ")
+                choice_p2 = input("\nWhat would you like to do? ")
                 sql = "UPDATE round_counter SET counter = counter + 1"
                 cursor.execute(sql)
 

@@ -63,16 +63,31 @@ def format_database_for_new_game(sql_connection):
 def get_location(id, sql_connection):
     sql = "SELECT name FROM city INNER JOIN player ON city.id = player.location"
     sql += " WHERE player.id = '" + id + "';"
-    cursor = sql_connection.cursor
+    cursor = sql_connection.cursor()
     cursor.execute(sql)
-    result = cursor.fethall()
+    result = cursor.fetchall()
     return result
 
 
+def lock_check(id, sql_connection):
+    sql = "SELECT lockstate FROM player"
+    sql += " WHERE id = '" + id + "';"
+    cursor = sql_connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    lockstate = int(result[0][0])
+    if lockstate == 0:
+        return "Not locked"
+    else:
+        return lockstate
+
+
 def printer(name, player_id, sql_connection):
-    current_pp = get_current_pp(player_id, sql_connection)
+    current_pp = list(get_current_pp(player_id, sql_connection))
     current_location = get_location(player_id, sql_connection)
-    print("---Player status---")
+    lock_status = lock_check(player_id, sql_connection)
+    print("---Player status---\n")
     print(f"Name: {name}")
-    print(f"Current PP: {current_pp[0][0]}")
+    print(f"Current PP: {current_pp[0]}")
     print(f"Location: {current_location[0][0]}")
+    print(f"Lockstate: {lock_status}")
