@@ -1,21 +1,13 @@
 import functions
-from user_input_processor import manual
-import os
-import mysql.connector
+# from user_input_processor import manual
+# import os
+from db_connection import connection
 import time
 
-connection = mysql.connector.connect(
-    host='127.0.0.1',
-    port=3306,
-    database='kadonnut_testamentti',
-    user='game',
-    password='pass',
-    autocommit=True
-)
 new_game_selection = input("Start new game (Y/N)").lower()
 if new_game_selection == "y":
     cursor = connection.cursor()
-    print(functions.format_database_for_new_game(connection))
+    print(functions.format_database_for_new_game())
     sql = "INSERT INTO round_counter (counter) VALUES ('1');"
     cursor.execute(sql)
 
@@ -45,43 +37,17 @@ if new_game_selection == "y":
             if rounter % 2 == 1:
                 print(f"{player1[1]} it is your turn!\n")
                 time.sleep(1)
-                functions.printer(player1[1], str(player1[0]), connection)
-                lockstate = functions.lock_check(str(player2[0]), connection)
-                if lockstate > 0:
-                    sql = "UPDATE player SET lockstate = lockstate - 1 WHERE id = '" + player1[0] + "';"
-                    cursor.execute(sql)
-                    continue
-                elif lockstate == 0:
-                    time.sleep(1)
-                    choice_p1 = input(f"What would you like to do? ")
-                sql = "UPDATE round_counter SET counter = counter + 1;"
+                functions.printer(player1[1], str(player1[0]))
+                time.sleep(1)
+                choice_p1 = input(f"What would you like to do? ")
+                sql = "UPDATE round_counter SET counter = counter + 1"
                 cursor.execute(sql)
 
             elif rounter % 2 == 0:
 
                 print(f"{player2_name} it is your turn!")
                 time.sleep(1)
-                functions.printer(player2[1], str(player2[0]), connection)
-                lockstate = functions.lock_check(str(player2[0]), connection)
-                if lockstate > 0:
-                    sql = "UPDATE player SET lockstate = lockstate - 1 WHERE id = '" + player2[0] + "';"
-                    cursor.execute(sql)
-                    continue
-                elif lockstate == 0:
-                    time.sleep(1)
-                    choice_p2 = input("What would you like to do? ")
-
-                sql = "UPDATE round_counter SET counter = counter + 1;"
+                functions.printer(player2_name, connection)
+                choice_p2 = input("\nWhat would you like to do? ")
+                sql = "UPDATE round_counter SET counter = counter + 1"
                 cursor.execute(sql)
-
-
-
-
-
-else:
-    # TÄMÄ VAIN YHTEYSTESTI
-
-    cursor = connection.cursor()
-    cursor.execute("USE kadonnut_testamentti;")
-    cursor.execute("SELECT * FROM city;")
-    print(cursor.fetchall())
