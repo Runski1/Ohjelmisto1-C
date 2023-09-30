@@ -9,10 +9,7 @@ def travel_fly(parameter):
         print("---Available cities where you can fly---\n")
         for key, value in available_cities:
             print(f"{key}: {value:.2f} km away")
-        print(f"Current PP: {current_pp[0]}")
-        print(f"Location: {current_location[0][0]}")
-        print(f"Lock state: {lock_status}")
-        print("This should list all available cities where player can fly.")
+        user_input_processor(input(f"{get_player_data_as_list()[get_round_number() % 2][1]} ))
     print("You begin your flight to " + parameter + ".")
     # Muuten funktion ajo suunnilleen:
     # Vaihda pelaajan sijainti=parametri
