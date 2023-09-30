@@ -7,7 +7,7 @@ import time
 connection = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
-    #database='kadonnut_testamentti',
+    database='kadonnut_testamentti',
     user='game',
     password='pass',
     autocommit=True
@@ -43,14 +43,10 @@ if new_game_selection == "y":
             rounter = result[0]
 
             if rounter % 2 == 1:
-                sql = "SELECT id FROM player"
-                sql += " WHERE screen_name = '"+player1_name+"';"
-                cursor.execute(sql)
-                result = cursor.fetchall()
-                player1_id = int(result[0][0])
-                choice = input(f"{player1_name} it is your turn!")
+                choice = input(f"{player1[1]} it is your turn!")
                 time.sleep(1)
-                functions.printer(player1_name, player1_id, connection)
+                functions.printer(player1[1], player1[0], connection)
+                time.sleep(1)
                 choice_p1 = input(f"What would you like to do? ")
                 sql = "UPDATE round_counter SET counter = counter + 1"
                 cursor.execute(sql)
