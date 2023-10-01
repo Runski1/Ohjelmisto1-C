@@ -1,5 +1,5 @@
 from functions import *
-from user_input_processor import manual
+from user_input_processor import *
 # import os
 from db_connection import connection
 import time
@@ -22,16 +22,25 @@ if new_game_selection == "y":
 
     while True:
         player_table = get_player_data_as_list()
-        for player in player_table:  # iteroi joka pelaajan läpi vuorollaan
+        for player in player_table:
             round_number = get_round_number()
-            current_player = player_table[round_number-1 % 2] #lisäsin -1 että saadaan peli aloittamaan pelaaja1:stä
-        # Muuttujaan current player tallennetaan siis vuorossa olevan pelaajan tiedot listana: [id, screen_name etc.]
+            current_player = player_table[round_number-1 % 2]
+            is_lock = lock_check(str(current_player[0]))
             print(f"{current_player[1]} it is your turn!\n")
             time.sleep(1)
-            printer(current_player[1], str(current_player[0]))  # Tämä on Miron printterikutsu
-            time.sleep(1)
-            choice_p1 = manual()  # choice_p1 tulee kutsumaan user_input_processorin, mutta atm
-            if choice_p1 == "exit":  # lisäsin siihen vain while loopin breakkausta varten exitin
-                exit()
-            print(round_number)  # tämä testaamista varten seuraa vuoronumeroa
-            add_to_round_counter()
+
+            if is_lock == "Not locked":
+                printer(current_player[1], str(current_player[0])) #printteri kutsu
+                time.sleep(1)
+                choice = input("\nWhat would you like to do: ")
+                user_input_processor(choice)
+
+                if choice == "exit":
+                    exit()
+                print(round_number)  # tämä testaamista varten seuraa vuoronumeroa
+                add_to_round_counter()
+
+            elif is_lock > 0:
+                printer(current_player[1], str(current_player[0]))
+                lock_roll = dice_roll()
+

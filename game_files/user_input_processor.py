@@ -82,7 +82,7 @@ def manual(parameter):
         'fly': "You can fly to another city with command [fly]. To show all available\n"
                 "destinations and prices use [fly ?]. To start flying to the city of your choosing\n"
                 "type [fly 'cityname'].\n"
-                "Flying is the fastest form of travel and ",
+                "Flying is the fastest form of travel and all so most expensive",
         'sail': "You can sail to another city with command [sail]. To show all available\n"
                 "destinations, prices and how many turns the trip will take, type [sail ?].\n"
                 " To start sailing to the city of your choosing, type [sail 'cityname'].",
