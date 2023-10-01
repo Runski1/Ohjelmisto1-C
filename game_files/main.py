@@ -9,7 +9,7 @@ new_game_selection = input("Start new game (Y/N)").lower()
 if new_game_selection == "y":
     cursor = connection.cursor()
     print(format_database_for_new_game())
-
+    sql = "UPDATE city SET visited = 1 WHERE city.id = '16'"
     player1_name = input("Nickname player 1: ")
     print(f"Player 1 is now known as {player1_name}.")
     time.sleep(1)

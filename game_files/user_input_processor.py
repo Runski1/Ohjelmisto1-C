@@ -9,21 +9,28 @@ def find_city_index(city_name, city_list):
 
 def travel_fly(parameter, player):
     # Lentokohteen valinta ja kohteiden listaus
-    current_player_id = player[0]
-    available_cities, distance, cost = get_cities_in_range("fly", player)
+    current_player_id = str(player[0])
+    available_cities = get_cities_in_range("fly", player)
+    sorted_available_cities = sorted(available_cities, key=lambda x: x[3])
     if parameter == "?":
         print("---Available cities where you can fly---\n")
-        for iterator, city in enumerate(available_cities):
-            print(f"{city[1]}, {city[2]}: {distance[iterator].km:.0f} km, cost: {cost[iterator]} PP")
-        user_input_processor(input(f"{player} "), player)
-    elif parameter != "?" and parameter in available_cities:
-        city_index = find_city_index(parameter, available_cities)
-        set_location(parameter, current_player_id)
-        remove_pp(cost[city_index], current_player_id)
-        print("You begin your flight to " + parameter + ".")
+        for city in sorted_available_cities:
+            if city[5] == 1:
+                visited_status = "visited"
+            else:
+                visited_status = "not visited"
+            print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} PP {visited_status:>15}")
+        print(f"You have {get_current_pp(current_player_id)} PP.")
+        user_input_processor(input(f"{player[1]}: "), player)
+    elif parameter != "?":
+        for city in available_cities:
+            if city[1].lower() == parameter:
+                set_location(str(city[0]), current_player_id)
+                remove_pp(city[4], current_player_id)
+                print("You begin your flight to " + parameter + ".")
+                break
     else:
         print("Something is wrong here")
-
     # Muuten funktion ajo suunnilleen:
     # Vaihda pelaajan sijainti=parametri
     # Vaihda pelaajan current_PP -= lennon hinta
@@ -135,7 +142,7 @@ commands_without_parameter = ["search", "hire", "help", "exit"]
 def user_input_processor(input_string, current_player):
     # Tämä funktio käsittelee käyttäjäsyötteen:
     # splittaa välilyönnistä listaksi
-    input_as_list = input_string.split()
+    input_as_list = input_string.lower().split()
     # etsii listan ensimmäistä alkiota vastaavaa arvoa command_dictionarysta
     selected_function = command_dictionary[input_as_list[0]]
     # Jos käyttäjä ei antanut parametria:
