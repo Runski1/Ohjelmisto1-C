@@ -3,9 +3,11 @@ import os
 from db_connection import connection
 from geopy.distance import geodesic
 from math import floor
+
 cursor = connection.cursor()
-# Matias kävi lisäämässä funktioihin sql_connection-parametrit siinä toiveissa että connectionin voi muodostaa vain
-# mainissa ja kantaa sieltä minne tarvitseekaan
+# Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
+# mysql.connector.errors.DatabaseError: 2014 (HY000): Commands out of sync; you can't run this command now
+# -erroriin
 
 
 def dice_roll():
@@ -14,11 +16,9 @@ def dice_roll():
 
 
 def get_current_pp(player_id):
-    query = f"SELECT current_pp FROM player WHERE id='{player_id}'"
+    query = f"SELECT current_pp FROM player WHERE id='{player_id}';"
     cursor.execute(query)
-    result = cursor.fetchone()
-    # Taikatemppu?
-    cursor.fetchall()
+    result = cursor.fetchone()[0]
     return result
 
 
@@ -27,7 +27,6 @@ def add_pp(change_amount, player_id):
     new_pp = current_pp + change_amount
     query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}'"
     cursor.execute(query)
-    cursor.commit()
     #    result = cursor.fetchone()
     #    print(result)
     return
@@ -36,11 +35,9 @@ def add_pp(change_amount, player_id):
 def remove_pp(change_amount, player_id):
     current_pp = get_current_pp(player_id)
     new_pp = current_pp - change_amount
-    query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}'"
+    query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}';"
+#    cursor = connection.cursor()
     cursor.execute(query)
-    cursor.fetchall()  # Miten tämä ei dumppaa kursorin dataa?
-    #    result = cursor.fetchone()
-    #    print(result)
     return
 
 
@@ -67,21 +64,24 @@ def get_location(player_id):
     sql += " WHERE player.id = '" + player_id + "';"
     cursor.execute(sql)
     result = cursor.fetchall()
+#    cursor.close()
     return result
 
 
 def set_location(new_location, player_id):
-    sql = "UPDATE player SET location = '" + new_location + "' WHERE player.id = '" + player_id + "';"
-    sql += "UPDATE city SET visited = 1 WHERE city.id = '" + new_location + "';"
+    sql = "UPDATE player SET location = '" + new_location + "' WHERE player.id = '" + player_id + "'"
     cursor.execute(sql)
-    cursor.fetchall()
+    sql = " UPDATE city SET visited = 1 WHERE city.id = '" + new_location + "'"
+    cursor.execute(sql)
+#    cursor.close()
 
 
 def lock_check(player_id):
     sql = "SELECT lockstate FROM player"
-    sql += " WHERE id = '" + player_id + "';"
+    sql += " WHERE id = '" + player_id + "'"
     cursor.execute(sql)
     result = cursor.fetchall()
+#    cursor.close()
     lock_state = int(result[0][0])
     if lock_state == 0:
         return "Not locked"
@@ -102,9 +102,10 @@ def printer(name, player_id):
 
 def get_player_data_as_list():
     # SQL-kyselyllä kaikki player-taulusta
-    sql = "SELECT * FROM player;"
+    sql = "SELECT * FROM player"
     cursor.execute(sql)
     all_from_player_table = cursor.fetchall()
+#    cursor.close()
     # Alustetaan lista
     all_from_player_table_as_list = []
     # Muutetaan kaikki data player-taulusta listaksi
@@ -115,20 +116,24 @@ def get_player_data_as_list():
 
 
 def get_round_number():
-    sql = "SELECT counter FROM round_counter;"
+    sql = "SELECT counter FROM round_counter"
     cursor.execute(sql)
-    return cursor.fetchone()[0]
+    result = cursor.fetchone()[0]
+#    cursor.close()
+    return result
 
 
 def add_to_round_counter():
     sql = "UPDATE round_counter SET counter = counter + 1"
     cursor.execute(sql)
+#    cursor.close()
 
 
 def get_city_data():
     sql = "SELECT * from city;"
     cursor.execute(sql)
     all_from_city = cursor.fetchall()
+#    cursor.close()
     all_data_from_city_as_list = []
     for i in range(len(all_from_city)):
         all_data_from_city_as_list.append((list(all_from_city[i])))
