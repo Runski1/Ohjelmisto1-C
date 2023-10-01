@@ -1,5 +1,5 @@
 from functions import *
-from user_input_processor import *
+from user_input_processor import manual
 # import os
 from db_connection import connection
 import time
