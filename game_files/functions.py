@@ -3,7 +3,7 @@ import os
 from db_connection import connection
 from geopy.distance import geodesic
 from math import floor
-
+from config import config
 cursor = connection.cursor()
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
 # mysql.connector.errors.DatabaseError: 2014 (HY000): Commands out of sync; you can't run this command now
@@ -161,17 +161,17 @@ def get_ports(cities):
 
 def get_cities_in_range(travel_mode, player):
     price_multiplier_dict = {
-        "fly": 1,
-        "boat": 0.5,
-        "hike": 0
+        "fly": config.get('config', 'FlyPriceMultiplier'),  # HUOM Nämä config-filestä tuodut on stringejä!
+        "boat": config.get('config', 'BoatPriceMultiplier'),
+        "hike": config.get('config', 'HikePriceMultiplier')
     }
     max_distance_dict = {
-        "fly": 9999999999,
-        "boat": 1000,
-        "hike": 1000
+        "fly": config.get('config', 'MaxDistanceFly'),
+        "boat": config.get('config', 'MaxDistanceBoat'),
+        "hike": config.get('config', 'MaxDistanceHike')
     }
-    price_multiplier = price_multiplier_dict[travel_mode]
-    max_distance = max_distance_dict[travel_mode]
+    price_multiplier = int(price_multiplier_dict[travel_mode])
+    max_distance = int(max_distance_dict[travel_mode])
     player_location = player[8]
     cities = get_city_data()
     if travel_mode == "boat":
@@ -187,3 +187,8 @@ def get_cities_in_range(travel_mode, player):
             cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
     return cities_in_range
 
+
+def lock_reduce (id):
+    cursor = connection.cursor()
+    sql = "UPDATE player SET lockstate = lockstate = -1 WHERE id = '"+id+"'"
+    cursor.execute(sql)
