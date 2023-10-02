@@ -21,11 +21,11 @@ def end_game_email():
         time.sleep(speed)     # Käytä muuttujan "nopeus" arvoa odotusaikana
     # Muuta nopeutta satunnaisesti
         speed += random.uniform(-0.01, 0.01)  # Lisää tai vähennä nopeutta pienellä satunnaisella määrällä
-        speed = max(min_speed, min(speed, max_speed))
+        speed = max(min_speed, min(speed, max_speed))#rajoittaa nopeutta ettei ohjelma kaadu;DD
     # Lopuksi, jätä kursori paikalleen
     sys.stdout.write('\n')
 
-    sql = "SELECT NAME FROM city where visited ='0';"
+    sql = "SELECT NAME FROM city;"
     cursor.execute(sql)
     result2 = cursor.fetchall()
 
