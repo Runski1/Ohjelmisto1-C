@@ -170,7 +170,7 @@ def get_cities_in_range(travel_mode, player):
         "boat": config.get('config', 'MaxDistanceBoat'),
         "hike": config.get('config', 'MaxDistanceHike')
     }
-    price_multiplier = int(price_multiplier_dict[travel_mode])
+    price_multiplier = float(price_multiplier_dict[travel_mode])
     max_distance = int(max_distance_dict[travel_mode])
     player_location = player[8]
     cities = get_city_data()

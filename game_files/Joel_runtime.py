@@ -88,8 +88,35 @@ def travel_sail(parameter, player):
                 break
     else:
         print("Something is wrong here")
-player = get_player_data_as_list()
-#print(player[0])
-player = player[0]
-#print(get_city_data())
-print(get_cities_in_range("boat", player))
+
+
+def travel_sail(parameter, player):
+    # player-muuttujassa tuodaan koko vuorossa olevan pelaajan rivi tietokannasta
+    current_player_id = str(player[0])  # pelaajan id stringinä
+    available_cities = get_cities_in_range("boat", player)  # boat-parametri tätä funktiota varten
+    sorted_available_cities = sorted(available_cities, key=lambda x: x[3])  # lambda-funktio järjestää etäisyyden mukaan
+    # pienimmästä etäisyydestä suorimpaan listan saavuttettavissa olevista kaupungeista
+    if parameter == "?":  # Tämä tulostaa pelaajalle saavutettavissa olevat kaupungit
+        print("---Available cities where you can fly---\n")
+        for city in sorted_available_cities:
+            if city[5] == 1:  # if-else tulostaa visited tai not visited riippuen kaupungin tilasta
+                visited_status = "visited"
+            else:
+                visited_status = "not visited"
+            # printti muotoituna taulukkomaiseksi, aja funktio niin näet
+            print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} PP {visited_status:>15}")
+        print(f"You have {get_current_pp(current_player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
+        return True
+        # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
+    elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
+        for city in available_cities:
+            if city[1].lower() == parameter:
+                set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
+                remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
+                print("You begin your sail to " + parameter + ".")  # kuittaus onnistuneesta matkasta
+                break  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
+        return False
+    else:
+        print("Something is wrong here")
+        return True
+print(get_player_data_as_list())
