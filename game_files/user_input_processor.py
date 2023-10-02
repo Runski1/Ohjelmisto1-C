@@ -70,8 +70,12 @@ def work(parameter, player):
 
 
 def search(player):
-    sql = f"SELECT "
+    sql = f"SELECT back_city FROM CITY inner join player on city.id = player.location and player.screen_name = {'player'};  "
+
+
+
     print("NOTE: Look up if player.location is also a bag_city")
+    if
     print("You search for grandma's suitcase, but it isn't here.")
     # Checkaa onko player.location bag_city
     # jos on, playeristä tulee laukunkantaja
