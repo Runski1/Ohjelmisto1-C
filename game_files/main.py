@@ -39,11 +39,4 @@ if new_game_selection == "y":
 
             elif is_lock > 0:
                 printer(current_player[1], str(current_player[0]))
-
-                input("You are locked, throw dice with enter.")
-                lock_roll = dice_roll()
-                if lock_roll > 7:
-                    sql = "UPDATE player SET lockstate = '0' WHERE id '" + current_player + "'"
-                    print("Broke your lock ends next round.")
-                else:
-                    print("You are still locked next round.")
+                input("\nYou are locked this round.")
