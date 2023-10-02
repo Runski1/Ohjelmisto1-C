@@ -1,8 +1,9 @@
 from functions import *
-from user_input_processor import manual
+from user_input_processor import user_input_processor
 # import os
 from db_connection import connection
-import time
+
+# import time
 
 new_game_selection = input("Start new game (Y/N)").lower()
 if new_game_selection == "y":
@@ -29,7 +30,7 @@ if new_game_selection == "y":
             if is_lock == "Not locked":
                 printer(current_player[1], str(current_player[0]))  # printteri kutsu
                 choice = input("\nWhat would you like to do: ")
-                user_input_processor(choice)
+                user_input_processor(choice, current_player[0])
 
                 print(round_number)
 
@@ -39,5 +40,4 @@ if new_game_selection == "y":
                 printer(current_player[1], str(current_player[0]))
 
                 input("You are locked, throw dice with enter.")
-                dice_roll()
-
+                lock_roll = dice_roll()
