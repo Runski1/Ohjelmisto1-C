@@ -74,7 +74,7 @@ def work(parameter, player):
     # You can contribute to the function
 
 
-def search(player):
+def search(player):  # TÄMÄ TRIGGERAA SQL-SYNTAX -ERRORIN!!!!!!!!!!!!!!!!
     sql = (f"SELECT bag_city FROM city inner join player "
            f"on city.id = player.location and player.screen_name = '{player}'")
     cursor.execute(sql)
@@ -90,11 +90,6 @@ def search(player):
         elif item_value >= 0:
             add_pp(item_value, player[0])
     return False
-    # Checkaa onko player.location bag_city
-    # jos on, playeristä tulee laukunkantaja
-    # player.location ei ole enää bag_city
-    # Tulosta laukun löytyneen
-    # next turn
 
 
 def hire(player):
