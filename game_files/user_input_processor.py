@@ -1,5 +1,5 @@
 from functions import *
-
+from db_connection import connection
 
 def find_city_index(city_name, city_list):
     for index, city_data in enumerate(city_list):
