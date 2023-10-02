@@ -32,8 +32,10 @@ def travel_fly(parameter, player):
                 remove_pp(city[4], current_player_id)  # vähennetään lennon hinta pelaajan rahoista
                 print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 break  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
+        return False
     else:
         print("Something is wrong here")
+        return True
 
 
 def travel_sail(parameter, player):
@@ -73,7 +75,7 @@ def work(parameter, player):
 
 def search(player):
     cursor = connection.cursor()
-    sql = (f"SELECT back_city FROM CITY inner join player "
+    sql = (f"SELECT bag_city FROM CITY inner join player "
            f"on city.id = player.location and player.screen_name = '{player}';")
     cursor.execute(sql)
     result = cursor.fetchall()
