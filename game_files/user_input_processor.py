@@ -72,6 +72,7 @@ def work(parameter, player):
 
 
 def search(player):
+    sql = f"SELECT "
     print("NOTE: Look up if player.location is also a bag_city")
     print("You search for grandma's suitcase, but it isn't here.")
     return False
