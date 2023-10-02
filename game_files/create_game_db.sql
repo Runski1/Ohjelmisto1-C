@@ -60,6 +60,14 @@ create table round_counter
     counter int default 1 not null
 );
 
+create table random_items
+(
+    id                  int auto_increment
+    primary key,
+    item_description    varchar(255)  not null,
+    value               float not null
+);
+
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (1, 'Tirana', 'Albania', 41.4147, 19.7206, 0, 0, 0);
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (2, 'Vienna', 'Austria', 48.1103, 16.5697, 0, 0, 0);
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (3, 'Sarajevo', 'Bosnia and Herzegovina', 43.8246, 18.3315, 0, 0, 0);
