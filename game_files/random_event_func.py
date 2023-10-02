@@ -39,5 +39,3 @@ def event_randomizer():
         if cursor.rowcount > 0:
             return result
 
-
-event_randomizer()

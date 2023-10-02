@@ -189,6 +189,6 @@ def get_cities_in_range(travel_mode, player):
 
 
 def lock_reduce (id):
-    cursor = connection.cursor()
+#    cursor = connection.cursor()
     sql = "UPDATE player SET lockstate = lockstate = -1 WHERE id = '"+id+"'"
     cursor.execute(sql)

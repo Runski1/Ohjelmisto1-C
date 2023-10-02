@@ -99,6 +99,9 @@ def search(player):
 def hire(player):
     print("NOTE: Look up if player.location is also a bag_city")
     print("You hire a local detective to look for your grandma's suitcase.")
+    location = get_location(player[0])
+    sql = "SELECT bag_city"
+
     return True
     # Checkaa onko player.location bag_city
     # jos on, playeristä tulee laukunkantaja
