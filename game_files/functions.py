@@ -149,6 +149,23 @@ def get_ports(cities):
     return port_cities
 
 
+def print_available_cities(travel_mode, city_list, player_id):
+    if travel_mode == "fly":
+        print("---Available cities where you can fly to---")
+    elif travel_mode == "boat":
+        print("---Available cities where you can sail to---")
+    else:
+        print("---Available cities where you can hitchhike to---")
+    for city in city_list:
+        if city[5] == 1:  # if-else tulostaa visited tai not visited riippuen kaupungin tilasta
+            visited_status = "visited"
+        else:
+            visited_status = "not visited"
+        # printti muotoituna taulukkomaiseksi, aja funktio niin näet
+        print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} PP {visited_status:>15}")
+    print(f"You have {get_current_pp(player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
+
+
 def get_cities_in_range(travel_mode, player):
     price_multiplier_dict = {
         "fly": config.get('config', 'FlyPriceMultiplier'),  # HUOM Nämä config-filestä tuodut on stringejä!
@@ -160,7 +177,7 @@ def get_cities_in_range(travel_mode, player):
         "boat": config.get('config', 'MaxDistanceBoat'),
         "hike": config.get('config', 'MaxDistanceHike')
     }
-    price_multiplier = int(price_multiplier_dict[travel_mode])
+    price_multiplier = float(price_multiplier_dict[travel_mode])
     max_distance = int(max_distance_dict[travel_mode])
     player_location = player[8]
     cities = get_city_data()
