@@ -12,41 +12,40 @@ connection = mysql.connector.connect(
          )
 
 
+def end_game_email():
+    cursor = connection.cursor()
+    sql = "SELECT COUNT(id) FROM player;"
+    cursor.execute(sql)
+    result1 = cursor.fetchall()
+    luggage_amount = result1[0][0] - 1
+    end_game_email = f"Hey! This Jarmo from FunAir. We have found {luggage_amount}: luggage(s) that matches with your lost one! Here is the list of airports where you can find it/them."
+    speed = 0.08 #kirjoitus nopeus
+    min_speed = 0.04  # Alin  kirjoitus nopeus
+    max_speed = 0.1   # Ylin kirjoitus nopeus
+    for letter in end_game_email:
+        sys.stdout.write(letter)
+        sys.stdout.flush()  # Päivitä näyttö
+        time.sleep(speed)     # Käytä muuttujan "nopeus" arvoa odotusaikana
+    # Muuta nopeutta satunnaisesti
+        speed += random.uniform(-0.01, 0.01)  # Lisää tai vähennä nopeutta pienellä satunnaisella määrällä
+        speed = max(min_speed, min(speed, max_speed))
+    # Lopuksi, jätä kursori paikalleen
+    sys.stdout.write('\n')
 
+    sql = "SELECT NAME FROM city where visited ='0';"
+    cursor.execute(sql)
+    result2 = cursor.fetchall()
 
-cursor = connection.cursor()
-sql = "SELECT COUNT(id) FROM player;"
-cursor.execute(sql)
-result1 = cursor.fetchall()
-luggage_amount = result1[0][0] - 1
-end_game_email = f"Hey! This Jarmo from FunAir. We have found {luggage_amount}: luggage(s) that matches with your lost one! Here is the list of airports where you can find it/them."
-speed = 0.08 #kirjoitus nopeus
-min_speed = 0.04  # Alin  kirjoitus nopeus
-max_speed = 0.1   # Ylin kirjoitus nopeus
-for letter in end_game_email:
-    sys.stdout.write(letter)
-    sys.stdout.flush()  # Päivitä näyttö
-    time.sleep(speed)     # Käytä muuttujan "nopeus" arvoa odotusaikana
-# Muuta nopeutta satunnaisesti
-    speed += random.uniform(-0.01, 0.01)  # Lisää tai vähennä nopeutta pienellä satunnaisella määrällä
-    speed = max(min_speed, min(speed, max_speed))
-# Lopuksi, jätä kursori paikalleen
-sys.stdout.write('\n')
+    # Sekoitetaan tulokset satunnaisessa järjestyksessä
+    random.shuffle(result2)
 
-sql = "SELECT NAME FROM city where visited ='0';"
-cursor.execute(sql)
-result2 = cursor.fetchall()
+    # Tulostetaan enintään result1 verran kaupunkien nimet
+    for i, row in enumerate(result2):
+        if i >= luggage_amount:
+            break
+        print(row[0])
 
-# Sekoitetaan tulokset satunnaisessa järjestyksessä
-random.shuffle(result2)
-
-# Tulostetaan enintään result1 verran kaupunkien nimet
-for i, row in enumerate(result2):
-    if i >= luggage_amount:
-        break
-    print(row[0])
-
-
+end_game_email()
 
 
 
