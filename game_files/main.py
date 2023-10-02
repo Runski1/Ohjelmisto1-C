@@ -27,16 +27,17 @@ if new_game_selection == "y":
             current_player = player_table[round_number - 1 % 2]
             is_lock = lock_check(str(current_player[0]))
             print(f"{current_player[1]} it is your turn!\n")
-
             if is_lock == "Not locked":
                 printer(current_player[1], str(current_player[0]))  # printteri kutsu
                 while turn:
                     choice = input("\nWhat would you like to do: ")
-                    user_input_processor(choice, current_player[0])
-                    print(round_number)
+                    turn = user_input_processor(choice, current_player)
+                    print(round_number)  # tarkitus
 
                 add_to_round_counter()
 
             elif is_lock > 0:
-                printer(current_player[1], str(current_player[0]))
-                input("\nYou are locked this round.")
+                printer(current_player[1], current_player[0])
+                input("\nYou are locked this round. (Press enter to continue: ")
+                lock_reduce(current_player[0])
+                continue

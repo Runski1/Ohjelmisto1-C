@@ -165,3 +165,9 @@ def get_cities_in_range(travel_mode, player):
                                            price <= player_pp):
             cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
     return cities_in_range
+
+
+def lock_reduce (id):
+    cursor = connection.cursor()
+    sql = "UPDATE player SET lockstate = lockstate = -1 WHERE id = '"+id+"'"
+    cursor.execute(sql)
