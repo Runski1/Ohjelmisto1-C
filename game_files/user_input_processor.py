@@ -32,8 +32,10 @@ def travel_fly(parameter, player):
                 remove_pp(city[4], current_player_id)  # vähennetään lennon hinta pelaajan rahoista
                 print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 break  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
+        return False
     else:
         print("Something is wrong here")
+        return True
 
 
 def travel_sail(parameter, player):
@@ -73,10 +75,10 @@ def work(parameter, player):
 
 def search(player):
     cursor = connection.cursor()
-    sql = f"SELECT back_city FROM CITY inner join player on city.id = player.location and player.screen_name = '{player}';"
+    sql = f"SELECT bag_city FROM CITY inner join player on city.id = player.location and player.screen_name = '{player}'"
     cursor.execute(sql)
     result = cursor.fetchall()
-    if result[0] == 1
+    if result[0] == 1:
         print('Congratulation you have found grandma`s lost luggage!!! Be fast and head back to Helsinki before anyone '
               ' else does!')
     else:
@@ -161,7 +163,7 @@ def user_input_processor(input_string, current_player):
         return selected_function(current_player)
         # Kutsuu funktion ilman parametria
     elif len(input_as_list) == 2:
-        selected_function(input_as_list[1], current_player)
+        return selected_function(input_as_list[1], current_player)
         # kutsuu funktion käyttäen listan toista alkiota parametrina
     else:
         print("Bad parameters.")
