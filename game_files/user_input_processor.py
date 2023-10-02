@@ -1,5 +1,8 @@
 from functions import *
 from db_connection import connection
+from random_event_func import item_randomizer
+cursor = connection.cursor()
+
 
 def find_city_index(city_name, city_list):
     for index, city_data in enumerate(city_list):
@@ -73,8 +76,7 @@ def work(parameter, player):
 
 
 def search(player):
-    cursor = connection.cursor()
-    sql = (f"SELECT bag_city FROM CITY inner join player "
+    sql = (f"SELECT bag_city FROM city inner join player "
            f"on city.id = player.location and player.screen_name = '{player}'")
     cursor.execute(sql)
     result = cursor.fetchall()
@@ -85,8 +87,8 @@ def search(player):
         item_name, item_value = item_randomizer()
         print(f'Nah! No grandma`s luggage in here! But you found {item_name} and it`s worth {item_value}')
         if item_value <= 0:
-            remove_pp(item_value, player[0]) #player 0 on id
-        elif item_value >=0:
+            remove_pp(item_value, player[0])  # player 0 on id
+        elif item_value >= 0:
             add_pp(item_value, player[0])
     return False
     # Checkaa onko player.location bag_city
@@ -99,9 +101,6 @@ def search(player):
 def hire(player):
     print("NOTE: Look up if player.location is also a bag_city")
     print("You hire a local detective to look for your grandma's suitcase.")
-    location = get_location(player[0])
-    sql = "SELECT bag_city"
-
     return True
     # Checkaa onko player.location bag_city
     # jos on, playeristä tulee laukunkantaja
@@ -140,6 +139,7 @@ def help_function(player):
         print(key)
     print("For more information about a certain command, type [man command].")
     return True
+
 
 command_dictionary = {
     'help': help_function,

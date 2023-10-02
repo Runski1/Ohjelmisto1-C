@@ -29,7 +29,7 @@ def event_randomizer():
     rand_test = random.randint(1, 6)
 
     if rand_test % 2 == 1:
-        print("No eventos for you m8!")
+        print("No events for you m8!")
         return
     elif rand_test % 2 == 0:
         randomized_num = random.randint(1, len_events)
@@ -39,3 +39,9 @@ def event_randomizer():
         if cursor.rowcount > 0:
             return result
 
+
+event_randomizer()
+
+
+def item_randomizer():
+    return "one dirty sock", 0

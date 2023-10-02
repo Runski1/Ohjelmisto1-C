@@ -17,9 +17,8 @@ def dice_roll():
 
 def get_current_pp(player_id):
     query = f"SELECT current_pp FROM player WHERE id='{player_id}'"
-  #  cursor = connection.cursor()
     cursor.execute(query)
-    result = cursor.fetchone()
+    result = int(cursor.fetchone())
 #    cursor.close()
     return result
 
@@ -27,12 +26,8 @@ def get_current_pp(player_id):
 def add_pp(change_amount, player_id):
     current_pp = get_current_pp(player_id)
     new_pp = current_pp + change_amount
- #   cursor = connection.cursor()
     query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}'"
     cursor.execute(query)
- #   cursor.close()
-    #    result = cursor.fetchone()
-    #    print(result)
     return
 
 
@@ -40,15 +35,12 @@ def remove_pp(change_amount, player_id):
     current_pp = get_current_pp(player_id)
     new_pp = current_pp - change_amount
     query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}'"
-#    cursor = connection.cursor()
     cursor.execute(query)
- #   cursor.close()
     return
 
 
 def format_database_for_new_game():
     try:
- #       cursor = connection.cursor()
         # current working dir
         cwd = os.getcwd()
         # Itellä on tuo with open-syntaksi vähän ymmärryksen tavoittamattomissa
@@ -59,7 +51,6 @@ def format_database_for_new_game():
             if sql_query:  # onko query tyhjä? -> FALSE
                 cursor.execute(sql_query)
         connection.commit()
- #       cursor.close()
         return "Database formatting completed."
     except:
         return ("Something went wrong with database formatting.\n"
@@ -67,7 +58,6 @@ def format_database_for_new_game():
 
 
 def get_location(player_id):
-#    cursor = connection.cursor()
     sql = "SELECT name FROM city INNER JOIN player ON city.id = player.location"
     sql += " WHERE player.id = '" + player_id + "';"
     cursor.execute(sql)
@@ -77,7 +67,6 @@ def get_location(player_id):
 
 
 def set_location(new_location, player_id):
-#    cursor = connection.cursor()
     sql = "UPDATE player SET location = '" + new_location + "' WHERE player.id = '" + player_id + "';"
     sql += "UPDATE city SET visited = 1 WHERE city.id = '" + new_location + "';"
     cursor.execute(sql)
@@ -85,7 +74,6 @@ def set_location(new_location, player_id):
 
 
 def lock_check(player_id):
-#    cursor = connection.cursor()
     sql = "SELECT lockstate FROM player"
     sql += " WHERE id = '" + player_id + "';"
     cursor.execute(sql)
@@ -110,7 +98,6 @@ def printer(name, player_id):
 
 
 def get_player_data_as_list():
-#    cursor = connection.cursor()
     # SQL-kyselyllä kaikki player-taulusta
     sql = "SELECT * FROM player;"
     cursor.execute(sql)
@@ -126,7 +113,6 @@ def get_player_data_as_list():
 
 
 def get_round_number():
-#    cursor = connection.cursor()
     sql = "SELECT counter FROM round_counter;"
     cursor.execute(sql)
     result = cursor.fetchone()[0]
@@ -135,14 +121,12 @@ def get_round_number():
 
 
 def add_to_round_counter():
-#    cursor = connection.cursor()
     sql = "UPDATE round_counter SET counter = counter + 1"
     cursor.execute(sql)
 #    cursor.close()
 
 
 def get_city_data():
-#    cursor = connection.cursor()
     sql = "SELECT * from city;"
     cursor.execute(sql)
     all_from_city = cursor.fetchall()
@@ -152,12 +136,14 @@ def get_city_data():
         all_data_from_city_as_list.append((list(all_from_city[i])))
     return all_data_from_city_as_list
 
+
 def get_ports(cities):
     port_cities = []
     for city in cities:
         if city[7] == 1:
             port_cities.append(city)
     return port_cities
+
 
 def get_cities_in_range(travel_mode, player):
     price_multiplier_dict = {
@@ -188,7 +174,6 @@ def get_cities_in_range(travel_mode, player):
     return cities_in_range
 
 
-def lock_reduce (id):
-#    cursor = connection.cursor()
-    sql = "UPDATE player SET lockstate = lockstate = -1 WHERE id = '"+id+"'"
+def lock_reduce(player_id):
+    sql = "UPDATE player SET lockstate = lockstate = -1 WHERE id = '"+player_id+"'"
     cursor.execute(sql)
