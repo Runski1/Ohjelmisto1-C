@@ -177,3 +177,29 @@ def get_cities_in_range(travel_mode, player):
 def lock_reduce(player_id):
     sql = "UPDATE player SET lockstate = lockstate = -1 WHERE id = '"+player_id+"'"
     cursor.execute(sql)
+
+
+def event_randomizer():
+    sql = "SELECT COUNT(id) FROM random_events;"
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    len_events = 0
+    if cursor.rowcount > 0:
+        for row in result:
+            len_events = row[0]
+    rand_test = random.randint(1, 6)
+
+    if rand_test % 2 == 1:
+        print("No events for you m8!")
+        return
+    elif rand_test % 2 == 0:
+        randomized_num = random.randint(1, len_events)
+        sql = "SELECT fluff FROM random_events WHERE id = '" + str(randomized_num) + "';"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        if cursor.rowcount > 0:
+            return result
+
+
+def item_randomizer():
+    return "Testauskeppi", 10000

@@ -1,6 +1,5 @@
 from functions import *
 from db_connection import connection
-from random_event_func import item_randomizer
 cursor = connection.cursor()
 
 
