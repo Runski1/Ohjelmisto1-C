@@ -15,7 +15,7 @@ teksti = "Tervetuloa Python-kirjain kerrallaan!"
 for kirjain in teksti:
     sys.stdout.write(kirjain)
     sys.stdout.flush()  # Päivitä näyttö
-    time.sleep(0.1)     # Odota 0.1 sekuntia ennen seuraavaa kirjainta
+    time.sleep(0.05)     # Odota 0.1 sekuntia ennen seuraavaa kirjainta
 
 # Lopuksi, jätä kursori paikalleen
 sys.stdout.write('\n')
