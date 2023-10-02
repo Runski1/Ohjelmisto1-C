@@ -31,8 +31,7 @@ def travel_fly(parameter, player):
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 remove_pp(city[4], current_player_id)  # vähennetään lennon hinta pelaajan rahoista
                 print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
-                break  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
-        return False
+                return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
         print("Something is wrong here")
         return True
