@@ -27,6 +27,7 @@ create table player
     prizeholder    tinyint(1) default 0 not null,
     real_prize     tinyint(1) default 0 not null,
     event_eligible tinyint(1) default 0 null,
+    total_dice     int        default 0 null,
     location       int        default 16 not null,
     constraint player_city__fk
         foreign key (location) references city (id)
@@ -107,3 +108,4 @@ INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitud
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (46, 'Ankara', 'Turkey', 40.1281, 32.9951, 0, 0, 0);
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (47, 'Kiev', 'Ukraine', 50.345, 30.8947, 0, 0, 0);
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (48, 'Prishtina', 'Kosovo', 42.5728, 21.0358, 0, 0, 0);
+INSERT INTO kadonnut_testamentti.round_counter (counter) VALUES ('1');

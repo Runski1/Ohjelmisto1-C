@@ -1,16 +1,22 @@
 import mysql.connector
-
+from geopy.distance import geodesic
 
 connection = mysql.connector.connect(
          host='127.0.0.1',
          port=3306,
-         database='viimeinen_testamentti',
-         user='root',
-         password='rootwadap',
+         database='kadonnut_testamentti',
+         user='game',
+         password='pass',
          autocommit=True
          )
 
-def get_flight_route(player_id)
-    cursor = connection.cursor()
-    cursor.execute(f"select current_PP.player, latitude.city,longitude.city FROM player, city where player.id = '{player_id}' group by type")
-    result = cursor.fetchall()  # hakee ensimmäisen tulosrivin
+
+
+# force id(normaalisti tietokannasta)
+current_player_id = 1
+# force(range multiplier) (config)
+flight_range_multiply = 1
+# force travel mode (config)
+chosen_travel_mode = 'hike'
+
+print(get_cities_in_range(chosen_travel_mode, current_player_id, flight_range_multiply))
