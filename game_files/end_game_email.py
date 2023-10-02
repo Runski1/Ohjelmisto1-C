@@ -1,15 +1,8 @@
 import random
 import sys
 import time
-import mysql.connector
-connection = mysql.connector.connect(
-         host='127.0.0.1',
-         port=3306,
-         database='kadonnut_testamentti',
-         user='game',
-         password='pass',
-         autocommit=True
-         )
+from db_connection import connection
+
 
 
 def end_game_email():
@@ -29,11 +22,11 @@ def end_game_email():
         time.sleep(speed)  # Käytä muuttujan "nopeus" arvoa odotusaikana
     # Muuta nopeutta satunnaisesti
         speed += random.uniform(-0.01, 0.01)  # Lisää tai vähennä nopeutta pienellä satunnaisella määrällä
-        speed = max(min_speed, min(speed, max_speed))
+        speed = max(min_speed, min(speed, max_speed))#rajoittaa nopeutta ettei ohjelma kaadu;DD
     # Lopuksi, jätä kursori paikalleen
     sys.stdout.write('\n')
 
-    sql = "SELECT NAME FROM city where visited ='0';"
+    sql = "SELECT NAME FROM city;"
     cursor.execute(sql)
     result2 = cursor.fetchall()
 
@@ -47,6 +40,7 @@ def end_game_email():
         print(row[0])
 
 end_game_email()
+
 
 
 
