@@ -16,17 +16,21 @@ def dice_roll():
 
 
 def get_current_pp(player_id):
-    query = f"SELECT current_pp FROM player WHERE id='{player_id}';"
+    query = f"SELECT current_pp FROM player WHERE id='{player_id}'"
+  #  cursor = connection.cursor()
     cursor.execute(query)
-    result = cursor.fetchone()[0]
+    result = cursor.fetchone()
+#    cursor.close()
     return result
 
 
 def add_pp(change_amount, player_id):
     current_pp = get_current_pp(player_id)
     new_pp = current_pp + change_amount
+ #   cursor = connection.cursor()
     query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}'"
     cursor.execute(query)
+ #   cursor.close()
     #    result = cursor.fetchone()
     #    print(result)
     return
@@ -35,14 +39,16 @@ def add_pp(change_amount, player_id):
 def remove_pp(change_amount, player_id):
     current_pp = get_current_pp(player_id)
     new_pp = current_pp - change_amount
-    query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}';"
+    query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}'"
 #    cursor = connection.cursor()
     cursor.execute(query)
+ #   cursor.close()
     return
 
 
 def format_database_for_new_game():
     try:
+ #       cursor = connection.cursor()
         # current working dir
         cwd = os.getcwd()
         # Itellä on tuo with open-syntaksi vähän ymmärryksen tavoittamattomissa
@@ -53,6 +59,7 @@ def format_database_for_new_game():
             if sql_query:  # onko query tyhjä? -> FALSE
                 cursor.execute(sql_query)
         connection.commit()
+ #       cursor.close()
         return "Database formatting completed."
     except:
         return ("Something went wrong with database formatting.\n"
@@ -60,6 +67,7 @@ def format_database_for_new_game():
 
 
 def get_location(player_id):
+#    cursor = connection.cursor()
     sql = "SELECT name FROM city INNER JOIN player ON city.id = player.location"
     sql += " WHERE player.id = '" + player_id + "';"
     cursor.execute(sql)
@@ -69,16 +77,17 @@ def get_location(player_id):
 
 
 def set_location(new_location, player_id):
-    sql = "UPDATE player SET location = '" + new_location + "' WHERE player.id = '" + player_id + "'"
-    cursor.execute(sql)
-    sql = " UPDATE city SET visited = 1 WHERE city.id = '" + new_location + "'"
+#    cursor = connection.cursor()
+    sql = "UPDATE player SET location = '" + new_location + "' WHERE player.id = '" + player_id + "';"
+    sql += "UPDATE city SET visited = 1 WHERE city.id = '" + new_location + "';"
     cursor.execute(sql)
 #    cursor.close()
 
 
 def lock_check(player_id):
+#    cursor = connection.cursor()
     sql = "SELECT lockstate FROM player"
-    sql += " WHERE id = '" + player_id + "'"
+    sql += " WHERE id = '" + player_id + "';"
     cursor.execute(sql)
     result = cursor.fetchall()
 #    cursor.close()
@@ -101,8 +110,9 @@ def printer(name, player_id):
 
 
 def get_player_data_as_list():
+#    cursor = connection.cursor()
     # SQL-kyselyllä kaikki player-taulusta
-    sql = "SELECT * FROM player"
+    sql = "SELECT * FROM player;"
     cursor.execute(sql)
     all_from_player_table = cursor.fetchall()
 #    cursor.close()
@@ -116,7 +126,8 @@ def get_player_data_as_list():
 
 
 def get_round_number():
-    sql = "SELECT counter FROM round_counter"
+#    cursor = connection.cursor()
+    sql = "SELECT counter FROM round_counter;"
     cursor.execute(sql)
     result = cursor.fetchone()[0]
 #    cursor.close()
@@ -124,12 +135,14 @@ def get_round_number():
 
 
 def add_to_round_counter():
+#    cursor = connection.cursor()
     sql = "UPDATE round_counter SET counter = counter + 1"
     cursor.execute(sql)
 #    cursor.close()
 
 
 def get_city_data():
+#    cursor = connection.cursor()
     sql = "SELECT * from city;"
     cursor.execute(sql)
     all_from_city = cursor.fetchall()
@@ -139,6 +152,12 @@ def get_city_data():
         all_data_from_city_as_list.append((list(all_from_city[i])))
     return all_data_from_city_as_list
 
+def get_ports(cities):
+    port_cities = []
+    for city in cities:
+        if city[7] == 1:
+            port_cities.append(city)
+    return port_cities
 
 def get_cities_in_range(travel_mode, player):
     price_multiplier_dict = {
@@ -155,6 +174,8 @@ def get_cities_in_range(travel_mode, player):
     max_distance = int(max_distance_dict[travel_mode])
     player_location = player[8]
     cities = get_city_data()
+    if travel_mode == "boat":
+        cities = get_ports(cities)
     player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     player_pp = player[2]
     cities_in_range = []
