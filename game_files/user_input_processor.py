@@ -121,7 +121,6 @@ def help_function(player):
     for key in command_dictionary.keys():
         print(key)
     print("For more information about a certain command, type [man command].")
-    return True
 
 
 command_dictionary = {
@@ -141,21 +140,19 @@ commands_without_parameter = ["search", "hire", "help", "exit"]
 
 
 def user_input_processor(input_string, current_player):
-    flag = True
     # Tämä funktio käsittelee käyttäjäsyötteen:
     # splittaa välilyönnistä listaksi
     input_as_list = input_string.lower().split()
     # etsii listan ensimmäistä alkiota vastaavaa arvoa command_dictionarysta
-    while flag:
-        selected_function = command_dictionary[input_as_list[0]]
-        # Jos käyttäjä ei antanut parametria:
-        if len(input_as_list) < 2 and input_as_list[0] in commands_without_parameter:
-            selected_function(current_player)
-            # Kutsuu funktion ilman parametria
-        elif len(input_as_list) == 2:
-            selected_function(input_as_list[1], current_player)
-            # kutsuu funktion käyttäen listan toista alkiota parametrina
-        else:
-            print("Bad parameters.")
+    selected_function = command_dictionary[input_as_list[0]]
+    # Jos käyttäjä ei antanut parametria:
+    if len(input_as_list) < 2 and input_as_list[0] in commands_without_parameter:
+        selected_function(current_player)
+        # Kutsuu funktion ilman parametria
+    elif len(input_as_list) == 2:
+        selected_function(input_as_list[1], current_player)
+        # kutsuu funktion käyttäen listan toista alkiota parametrina
+    else:
+        print("Bad parameters.")
         # Todennäköisesti parametri puuttuu tai niitä on annettu kaksi
 # HUOM!! Jos importatussa pythonfilessä on jotain ajettavaa, se ajetaan automaattisesti importin yhteydessä.
