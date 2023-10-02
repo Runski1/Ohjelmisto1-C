@@ -8,35 +8,32 @@ def find_city_index(city_name, city_list):
 
 
 def travel_fly(parameter, player):
-    # Lentokohteen valinta ja kohteiden listaus
-    current_player_id = str(player[0])
-    available_cities = get_cities_in_range("fly", player)
-    sorted_available_cities = sorted(available_cities, key=lambda x: x[3])
-    if parameter == "?":
+    # player-muuttujassa tuodaan koko vuorossa olevan pelaajan rivi tietokannasta
+    current_player_id = str(player[0])  # pelaajan id stringinä
+    available_cities = get_cities_in_range("fly", player)  # fly-parametri tätä funktiota varten
+    sorted_available_cities = sorted(available_cities, key=lambda x: x[3])  # lambda-funktio järjestää etäisyyden mukaan
+    # pienimmästä etäisyydestä suorimpaan listan saavuttettavissa olevista kaupungeista
+    if parameter == "?":  # Tämä tulostaa pelaajalle saavutettavissa olevat kaupungit
         print("---Available cities where you can fly---\n")
         for city in sorted_available_cities:
-            if city[5] == 1:
+            if city[5] == 1:  # if-else tulostaa visited tai not visited riippuen kaupungin tilasta
                 visited_status = "visited"
             else:
                 visited_status = "not visited"
+            # printti muotoituna taulukkomaiseksi, aja funktio niin näet
             print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} PP {visited_status:>15}")
-        print(f"You have {get_current_pp(current_player_id)} PP.")
-        user_input_processor(input(f"{player[1]}: "), player)
-    elif parameter != "?":
+        print(f"You have {get_current_pp(current_player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
+        user_input_processor(input(f"{player[1]}: "), player)  # Tämä kutsuu user_input_processoria uudestaan
+        # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
+    elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
         for city in available_cities:
             if city[1].lower() == parameter:
-                set_location(str(city[0]), current_player_id)
-                remove_pp(city[4], current_player_id)
-                print("You begin your flight to " + parameter + ".")
-                break
+                set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
+                remove_pp(city[4], current_player_id)  # vähennetään lennon hinta pelaajan rahoista
+                print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
+                break  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
         print("Something is wrong here")
-    # Muuten funktion ajo suunnilleen:
-    # Vaihda pelaajan sijainti=parametri
-    # Vaihda pelaajan current_PP -= lennon hinta
-    # Rollaa random event
-    # Tulosta lennon päättyneen parametri-sijaintiin
-    # next turn
 
 
 def travel_sail(parameter, player):
