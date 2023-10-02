@@ -83,6 +83,7 @@ def search(player):
         print('Nah! No grandma`s luggage in here!')
 
 
+
     return False
     # Checkaa onko player.location bag_city
     # jos on, playeristä tulee laukunkantaja
