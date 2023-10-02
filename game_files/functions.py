@@ -142,7 +142,7 @@ def get_city_data():
 
 def get_cities_in_range(travel_mode, player):
     price_multiplier_dict = {
-        "fly": config.get('config', 'FlyPriceMultiplier'),
+        "fly": config.get('config', 'FlyPriceMultiplier'),  # HUOM Nämä config-filestä tuodut on stringejä!
         "boat": config.get('config', 'BoatPriceMultiplier'),
         "hike": config.get('config', 'HikePriceMultiplier')
     }
@@ -151,8 +151,8 @@ def get_cities_in_range(travel_mode, player):
         "boat": config.get('config', 'MaxDistanceBoat'),
         "hike": config.get('config', 'MaxDistanceHike')
     }
-    price_multiplier = price_multiplier_dict[travel_mode]
-    max_distance = max_distance_dict[travel_mode]
+    price_multiplier = int(price_multiplier_dict[travel_mode])
+    max_distance = int(max_distance_dict[travel_mode])
     player_location = player[8]
     cities = get_city_data()
     player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
