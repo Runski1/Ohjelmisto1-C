@@ -23,7 +23,7 @@ def travel_fly(parameter, player):
             # printti muotoituna taulukkomaiseksi, aja funktio niin näet
             print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} PP {visited_status:>15}")
         print(f"You have {get_current_pp(current_player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
-        user_input_processor(input(f"{player[1]}: "), player)  # Tämä kutsuu user_input_processoria uudestaan
+        return True
         # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
     elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
         for city in available_cities:
@@ -63,15 +63,23 @@ def travel_hitchhike(parameter, player):
 def work(parameter, player):
     if parameter == "?":
         print("This should list all available jobs.")
+        return True
     print('You start working.')
     print(parameter)
+    return False
     # This function is a stub.
     # You can contribute to the function
 
 
 def search(player):
+    sql = f"SELECT back_city FROM CITY inner join player on city.id = player.location and player.screen_name = {'player'};  "
+
+
+
     print("NOTE: Look up if player.location is also a bag_city")
+    if
     print("You search for grandma's suitcase, but it isn't here.")
+    return False
     # Checkaa onko player.location bag_city
     # jos on, playeristä tulee laukunkantaja
     # player.location ei ole enää bag_city
@@ -82,6 +90,7 @@ def search(player):
 def hire(player):
     print("NOTE: Look up if player.location is also a bag_city")
     print("You hire a local detective to look for your grandma's suitcase.")
+    return True
     # Checkaa onko player.location bag_city
     # jos on, playeristä tulee laukunkantaja
     # player.location ei ole enää bag_city
@@ -118,7 +127,7 @@ def help_function(player):
     for key in command_dictionary.keys():
         print(key)
     print("For more information about a certain command, type [man command].")
-
+    return True
 
 command_dictionary = {
     'help': help_function,
@@ -144,12 +153,13 @@ def user_input_processor(input_string, current_player):
     selected_function = command_dictionary[input_as_list[0]]
     # Jos käyttäjä ei antanut parametria:
     if len(input_as_list) < 2 and input_as_list[0] in commands_without_parameter:
-        selected_function(current_player)
+        return selected_function(current_player)
         # Kutsuu funktion ilman parametria
     elif len(input_as_list) == 2:
         selected_function(input_as_list[1], current_player)
         # kutsuu funktion käyttäen listan toista alkiota parametrina
     else:
         print("Bad parameters.")
+        return True
         # Todennäköisesti parametri puuttuu tai niitä on annettu kaksi
 # HUOM!! Jos importatussa pythonfilessä on jotain ajettavaa, se ajetaan automaattisesti importin yhteydessä.
