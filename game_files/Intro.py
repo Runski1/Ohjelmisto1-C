@@ -1,8 +1,17 @@
-
 from rich.console import Console
 
+console = Console(highlight=False)
+
+console.print("Test print")
+console.print("[green]Test print (green)")
+console.print("[bold]Test print (bold)")
+console.print("[bold underline]Test print (bold underline)")
+
+input()
+'''from rich.console import Console
+
 console = Console()
-console.print("Hello",style= 'Blue')
+console.print("Hello",style= 'Blue')'''
 
 '''speed = 0.08  # kirjoitusnopeus
 min_speed = 0.04  # Alin  kirjoitus nopeus
