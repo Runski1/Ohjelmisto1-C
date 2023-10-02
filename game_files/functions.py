@@ -202,4 +202,9 @@ def event_randomizer():
 
 
 def item_randomizer():
-    return "Testauskeppi", 10000
+    item_id_roll = str(random.randint(1, 169))
+    sql = f"SELECT item_description, value FROM random_items WHERE id='" + item_id_roll + "'"
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    item_name, item_value = result[0]  # tuple unpacker
+    return item_name, item_value  # Nämä ovat n. 95% pelkkää arvotonta paskaa
