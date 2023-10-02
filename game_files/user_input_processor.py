@@ -76,7 +76,7 @@ def work(parameter, player):
 
 def search(player):
     cursor = connection.cursor()
-    sql = (f"SELECT back_city FROM CITY inner join player "
+    sql = (f"SELECT bag_city FROM CITY inner join player "
            f"on city.id = player.location and player.screen_name = '{player}';")
     cursor.execute(sql)
     result = cursor.fetchall()
