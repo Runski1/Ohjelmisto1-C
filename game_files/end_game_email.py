@@ -11,7 +11,7 @@ def end_game_email():
     result1 = cursor.fetchall()
     luggage_amount = result1[0][0] - 1
     email_string = (f"Hey! This Jarmo from FunAir. We have found {luggage_amount} luggage(s) that matches with your "
-                      f"lost one! Here is the list of airports where you can find it/them.")
+                    f"lost one! Here is the list of airports where you can find it/them.")
     speed = 0.08  # kirjoitusnopeus
     min_speed = 0.04  # Alin  kirjoitus nopeus
     max_speed = 0.1   # Ylin kirjoitus nopeus
@@ -40,13 +40,3 @@ def end_game_email():
 
 
 end_game_email()
-
-
-
-
-
-
-
-
-
-
