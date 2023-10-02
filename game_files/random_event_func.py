@@ -40,8 +40,6 @@ def event_randomizer():
             return result
 
 
-event_randomizer()
-
 
 def item_randomizer():
     return "one dirty sock", 0

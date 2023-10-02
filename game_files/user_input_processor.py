@@ -2,6 +2,7 @@ from functions import *
 from db_connection import connection
 from random_event_func import item_randomizer
 cursor = connection.cursor()
+from config import config
 
 
 def find_city_index(city_name, city_list):
@@ -101,12 +102,28 @@ def search(player):
 def hire(player):
     print("NOTE: Look up if player.location is also a bag_city")
     print("You hire a local detective to look for your grandma's suitcase.")
+    price_multiplier_dict = {
+        "hire": config.get('config', 'HiringPrice')
+    }
+    if player[2] > price_multiplier_dict:
+        player_id = get_location(player[0])
+        remove_pp(price_multiplier_dict, player_id)
+        player_id = get_location(player[0])
+        sql = f"SELECT bag_city FROM city WHERE name = '{player_id}'"
+        cursor.execute(sql)
+        result = int(cursor.fetchall())
+        if result == 1:
+            sql = f"UPDATE player SET prizeholder = 1 WHERE id = '{player_id}'"
+            cursor.execute(sql)
+            print("You found grandmas luggage!")
+
+        else:
+            print("Nothing found from this airport.")
+
+    elif player[2] < price_multiplier_dict:
+        print("You dont have enough pp to hire detective.")
+
     return True
-    # Checkaa onko player.location bag_city
-    # jos on, playeristä tulee laukunkantaja
-    # player.location ei ole enää bag_city
-    # Tulosta laukun löytyneen
-    # Tämä ei päätä vuoroa
 
 
 def manual(parameter, player):

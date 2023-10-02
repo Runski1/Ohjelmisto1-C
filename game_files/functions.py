@@ -16,10 +16,9 @@ def dice_roll():
 
 
 def get_current_pp(player_id):
-    query = f"SELECT current_pp FROM player WHERE id='{player_id}'"
+    query = f"SELECT current_pp FROM player WHERE id='{str(player_id)}'"
     cursor.execute(query)
-    result = int(cursor.fetchone())
-#    cursor.close()
+    result = cursor.fetchone()
     return result
 
 
@@ -70,7 +69,6 @@ def set_location(new_location, player_id):
     sql = "UPDATE player SET location = '" + new_location + "' WHERE player.id = '" + player_id + "';"
     sql += "UPDATE city SET visited = 1 WHERE city.id = '" + new_location + "';"
     cursor.execute(sql)
-#    cursor.close()
 
 
 def lock_check(player_id):
@@ -78,7 +76,6 @@ def lock_check(player_id):
     sql += " WHERE id = '" + player_id + "';"
     cursor.execute(sql)
     result = cursor.fetchall()
-#    cursor.close()
     lock_state = int(result[0][0])
     if lock_state == 0:
         return "Not locked"
