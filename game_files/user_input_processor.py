@@ -1,4 +1,6 @@
 from functions import *
+from db_connection import connection
+cursor = connection.cursor()
 
 
 def find_city_index(city_name, city_list):
@@ -34,6 +36,7 @@ def travel_fly(parameter, player):
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
         print("Something is wrong here")
+        return True
 
 
 def travel_sail(parameter, player):
@@ -82,8 +85,6 @@ def search(player):
               ' else does!')
     else:
         print('Nah! No grandma`s luggage in here!')
-
-
 
     return False
     # Checkaa onko player.location bag_city
@@ -134,6 +135,7 @@ def help_function(player):
         print(key)
     print("For more information about a certain command, type [man command].")
     return True
+
 
 command_dictionary = {
     'help': help_function,
