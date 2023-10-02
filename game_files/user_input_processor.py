@@ -166,7 +166,7 @@ def user_input_processor(input_string, current_player):
         return selected_function(current_player)
         # Kutsuu funktion ilman parametria
     elif len(input_as_list) == 2:
-        selected_function(input_as_list[1], current_player)
+        return selected_function(input_as_list[1], current_player)
         # kutsuu funktion käyttäen listan toista alkiota parametrina
     else:
         print("Bad parameters.")
