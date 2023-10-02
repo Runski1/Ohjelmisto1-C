@@ -88,6 +88,7 @@ def search(player):
         elif item_value >=0:
             add_pp(item_value, player[0])
     return False
+
     # Checkaa onko player.location bag_city
     # jos on, playeristä tulee laukunkantaja
     # player.location ei ole enää bag_city
