@@ -23,7 +23,7 @@ def travel_fly(parameter, player):
             # printti muotoituna taulukkomaiseksi, aja funktio niin näet
             print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} PP {visited_status:>15}")
         print(f"You have {get_current_pp(current_player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
-        user_input_processor(input(f"{player[1]}: "), player)  # Tämä kutsuu user_input_processoria uudestaan
+        return True
         # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
     elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
         for city in available_cities:

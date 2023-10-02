@@ -24,7 +24,7 @@ if new_game_selection == "y":
         for player in player_table:
             turn = True
             round_number = get_round_number()
-            current_player = player_table[round_number - 1 % 2]
+            current_player = player_table[(round_number-1) % 2]
             is_lock = lock_check(str(current_player[0]))
             print(f"{current_player[1]} it is your turn!\n")
             if is_lock == "Not locked":
