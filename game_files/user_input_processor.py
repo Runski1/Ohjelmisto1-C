@@ -1,4 +1,6 @@
 from functions import *
+from db_connection import connection
+cursor = connection.cursor()
 
 
 def find_city_index(city_name, city_list):
@@ -31,8 +33,7 @@ def travel_fly(parameter, player):
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 remove_pp(city[4], current_player_id)  # vähennetään lennon hinta pelaajan rahoista
                 print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
-                break  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
-        return False
+                return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
         print("Something is wrong here")
         return True
@@ -93,20 +94,16 @@ def work(parameter, player):
 
 def search(player):
     cursor = connection.cursor()
-    sql = (f"SELECT bag_city FROM CITY inner join player "
-           f"on city.id = player.location and player.screen_name = '{player}';")
+    sql = (f"SELECT bag_city FROM city "
+           f"inner join player on city.id = player.location and player.screen_name = '{player}'")
     cursor.execute(sql)
     result = cursor.fetchall()
     if result[0] == 1:
         print('Congratulation you have found grandma`s lost luggage!!! Be fast and head back to Helsinki before anyone '
               ' else does!')
     else:
-        item_name, item_value = item_randomizer()
-        print(f'Nah! No grandma`s luggage in here! But you found {item_name} and it`s worth {item_value}')
-        if item_value <= 0:
-            remove_pp(item_value, player[0]) #player 0 on id
-        elif item_value >=0:
-            add_pp(item_value, player[0])
+        print('Nah! No grandma`s luggage in here!')
+
     return False
     # Checkaa onko player.location bag_city
     # jos on, playeristä tulee laukunkantaja
@@ -157,6 +154,7 @@ def help_function(player):
     print("For more information about a certain command, type [man command].")
     return True
 
+
 command_dictionary = {
     'help': help_function,
     'fly': travel_fly,
@@ -184,7 +182,7 @@ def user_input_processor(input_string, current_player):
         return selected_function(current_player)
         # Kutsuu funktion ilman parametria
     elif len(input_as_list) == 2:
-        selected_function(input_as_list[1], current_player)
+        return selected_function(input_as_list[1], current_player)
         # kutsuu funktion käyttäen listan toista alkiota parametrina
     else:
         print("Bad parameters.")
