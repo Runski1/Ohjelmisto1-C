@@ -195,7 +195,7 @@ def get_cities_in_range(travel_mode, player):
 
 
 def lock_reduce(player_id):
-    sql = "UPDATE player SET lockstate = lockstate = -1 WHERE id = '"+player_id+"'"
+    sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player_id}'"
     cursor.execute(sql)
 
 
@@ -228,3 +228,15 @@ def item_randomizer():
     result = cursor.fetchall()
     item_name, item_value = result[0]  # tuple unpacker
     return item_name, int(item_value)  # Nämä ovat n. 95% pelkkää arvotonta paskaa
+
+def set_lockstate(distance, player_id, counter):
+    if distance != 0:
+        dice_throw = dice_roll()
+        print("dice throw: " + str(dice_throw))
+        dice_total = floor(0.02 * distance)
+        print("dice total: " + str(dice_total))
+        lock_amount = dice_total - dice_throw
+        print("lock amount: " + str(lock_amount))
+    query = f"UPDATE player SET lockstate = '{lock_amount}' WHERE id = '{player_id}'"
+    cursor.execute(query)
+    return

@@ -37,4 +37,5 @@ while True:
             printer(current_player)
             input("\nYou are locked this round. (Press enter to continue: ")
             lock_reduce(current_player[0])
+            add_to_round_counter()
             continue

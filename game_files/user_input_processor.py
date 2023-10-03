@@ -67,6 +67,8 @@ def travel_hitchhike(parameter, player):
         for city in available_cities:
             if city[1].lower() == parameter:
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
+                print("city dist: " + str(city[3]))
+                set_lockstate(city[3], player[0],0)
                 print("You begin your hitchhike to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 input("<Press ENTER to continue>")
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
