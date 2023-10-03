@@ -95,14 +95,16 @@ def hire(player):
     price_multiplier_dict = {
         "hire": config.get('config', 'HiringPrice')
     }
-    if player[2] > price_multiplier_dict:
-        player_id = get_location(player[0])
-        remove_pp(price_multiplier_dict, player_id)
-        player_id = get_location(player[0])
-        sql = f"SELECT bag_city FROM city WHERE name = '{player_id}'"
+    price_hire = int(price_multiplier_dict["hire"])
+    player_id = str(player[0])
+    player_location = str(player[8])
+    if player[2] > price_hire:
+        remove_pp(price_hire, player[0])
+        sql = "SELECT bag_city FROM city INNER JOIN player ON city.id = player.location"
+        sql += f" WHERE player.location = '{player_location}'"
         cursor.execute(sql)
-        result = int(cursor.fetchall())
-        if result == 1:
+        result = list(cursor.fetchall())
+        if result[0] == 1:
             sql = f"UPDATE player SET prizeholder = 1 WHERE id = '{player_id}'"
             cursor.execute(sql)
             print("You found grandmas luggage!")
@@ -110,7 +112,7 @@ def hire(player):
         else:
             print("Nothing found from this airport.")
 
-    elif player[2] < price_multiplier_dict:
+    elif player[2] < price_hire:
         print("You dont have enough pp to hire detective.")
 
     return True
