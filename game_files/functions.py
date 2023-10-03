@@ -180,9 +180,9 @@ def get_cities_in_range(travel_mode, player):
     max_distance = int(max_distance_dict[travel_mode])
     player_location = player[8]
     cities = get_city_data()
+    player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     if travel_mode == "boat":
         cities = get_ports(cities)
-    player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     player_pp = player[2]
     cities_in_range = []
     for city in cities:
@@ -195,7 +195,7 @@ def get_cities_in_range(travel_mode, player):
 
 
 def lock_reduce(player_id):
-    sql = "UPDATE player SET lockstate = lockstate = -1 WHERE id = '"+player_id+"'"
+    sql = "UPDATE player SET lockstate = lockstate - 1 WHERE id = '"+player_id+"'"
     cursor.execute(sql)
 
 
@@ -228,3 +228,31 @@ def item_randomizer():
     result = cursor.fetchall()
     item_name, item_value = result[0]  # tuple unpacker
     return item_name, int(item_value)  # Nämä ovat n. 95% pelkkää arvotonta paskaa
+
+
+def get_not_visited_city_ids():
+    sql = "SELECT id FROM city WHERE visited = '0'"
+    cursor.execute(sql)
+    cities = cursor.fetchall()
+    result = []
+    for city in cities:
+        result.append(city[0])
+    return result
+
+
+def generate_main_bag():
+    not_visited_cities = get_not_visited_city_ids()
+    random_city = random.choice(not_visited_cities)
+    sql = f"UPDATE city SET bag_city = 1 WHERE id = '{random_city}'"
+    cursor.execute(sql)
+
+
+def generate_additional_bags():
+    not_visited_cities = get_not_visited_city_ids()
+    playercount = len(get_player_data_as_list())
+    random_cities = random.sample(not_visited_cities, playercount)
+    for id in random_cities:
+        sql = f"UPDATE city SET bag_city = 1 WHERE id = '{id}'"
+        cursor.execute(sql)
+
+

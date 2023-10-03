@@ -14,6 +14,13 @@ if new_game_selection == "y":
     sql = "INSERT INTO player SET screen_name = '" + player2_name + "'"
     cursor.execute(sql)
     print(f"Player 2 is now known as {player2_name}")
+    # TESTAA BAG GENERATORIA
+    generate_additional_bags()
+    sql = "SELECT * FROM city WHERE bag_city = '1'"
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    for object in result:
+        print(object)
 
 while True:
     player_table = get_player_data_as_list()

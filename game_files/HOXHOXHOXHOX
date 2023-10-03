@@ -2,12 +2,6 @@
          LUOTTE JTN PUUTTUVAA --------------------------------------------------------------------
 
 
-Kaksiosaiset nimet tuottavat ongelmia tällä hetkellä user_input_processorin kanssa.
-Esim Gran Canarialle ei pysty lentämään tai seilaamaan, koska liikkumisfunktiot ottavat kaupungin nimen vain yhdessä
-osassa parametrina.
-    Poistetaan gran canaria ja muut kaksiosaiset mestat?
-    Nimetään ne Gran_Canaria jne?
-
 sail-funktion list_available_cities -listan ensimmäisen alkion etäisyys ja siitä syystä myös matkan hinta on vituillaan
 Mulla oli sama ongelma fly-funktion kanssa, vika löytyy jostain listaindekseistä tms. Koska fly ja sail käyttävät samaa
 funktiota etsimään sopivat kaupungit, mutta fly ei tee sitä virhettä, vika lienee siinä funktiossa joka erittelee
