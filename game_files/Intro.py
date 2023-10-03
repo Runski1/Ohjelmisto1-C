@@ -3,11 +3,20 @@ from config import config
 def tutorial():
 
     print("Welcome to the tutorial of this game!\n"
-          "If you want more info about user commands type *help*\n"
-          "Fly to another city type" + config.get('config','FlyPriceMultiplier') +"PP/km     *fly* \n"
-          "Sail to another city type        *sail* Money charge: + config.get('config','BoatPriceMultiplier') +"PP/km\n"
-          "Hike to another city type        *hike*  Charge: 0 PP/km\n"
-          "Hire private detective to search luggage on airport type*hire*"
+          "If you want more info about user commands type: *help*\n"
+          "Fly to another city type: *fly*\n "
+          "Money charge: "+ config.get('config','FlyPriceMultiplier') +"PP/km\n"
+          "Sail to another city type: *sail*\n"
+          "Money charge: "+ config.get('config','BoatPriceMultiplier') + "PP/km\n"
+          "Hike to another city type: *hike*\n"
+          "Money Charge: 0 PP/km \n"
+          "Hire private detective to search luggage on airport type: *hire*\n"
+          "Money charge: "+ config.get('config','HiringPrice') +" PP\n"
+          "\n"
+          "If you want to search luggage in current location type *search*\n"
+          "If you got better things to do type: *exit*\n"
+
+
 
 
 
