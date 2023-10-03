@@ -3,22 +3,19 @@ import threading
 import sys
 import time
 
-def loading_text_animation(text, iterations, delay):
-    for _ in range(iterations):
+def intro():
+
+
+    for _ in range(3):
+        text = "Loading... "
         sys.stdout.write('\r' + text)
         sys.stdout.flush()
-        time.sleep(delay)
+        time.sleep(0.5)
         sys.stdout.write('\r' + ' ' * len(text) + '\r')  # Hide the text
         sys.stdout.flush()
-        time.sleep(delay)
+        time.sleep(0.5)
 
-loading_text = "Loading... "
-iterations = 3  # Number of times to flicker
-delay = 0.5  # Time in seconds for each flicker
-
-loading_text_animation(loading_text, iterations, delay)
-print("Loading complete!")
-def intro():
+    print("Loading complete!")
     intro_text = (
 
     "          ▄▄▄▄▀ ▄  █ ▄███▄       █    ████▄    ▄▄▄▄▄      ▄▄▄▄▀        ▄▄▄▄▀ ▄███▄     ▄▄▄▄▄      ▄▄▄▄▀ ██   █▀▄▀█ ▄███▄      ▄     ▄▄▄▄▀\n"
@@ -43,21 +40,22 @@ def intro():
     sys.stdout.write('\n')
 
 
-    return intro_text
+    intro_text2 = print(
+            "                   _________________________________________________________________________________________________________\n"
+            "                   |** Your grandma has returned from her trip to New-Europe and has noticed that she forgot her luggage  **|\n"
+            "                   |*** at some airport, which she cannot remember. In her luggage, there is her precious testament that ***|\n"
+            "                   |*** she's carrying with her just in case. Your goal is to track down grandma's lost luggage because  ***|\n"
+            "                   |***** you may have the opportunity to get your name into the testament after returning it to her.  *****|\n"
+            "                   |________________________________________________________________________________________________________|\n")
+
+    return intro_text, intro_text2
 
 
-intro_text2 = (
-                            "                   _________________________________________________________________________________________________________\n"
-                            "                   |** Your grandma has returned from her trip to New-Europe and has noticed that she forgot her luggage  **|\n"
-                            "                   |*** at some airport, which she cannot remember. In her luggage, there is her precious testament that ***|\n"
-                            "                   |*** she's carrying with her just in case. Your goal is to track down grandma's lost luggage because  ***|\n"
-                            "                   |***** you may have the opportunity to get your name into the testament after returning it to her.  *****|\n"
-                            "                   |________________________________________________________________________________________________________|\n")
 
 
 
 intro()
-print(intro_text2)
+
 
 
 
