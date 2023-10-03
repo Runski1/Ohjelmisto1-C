@@ -16,7 +16,7 @@ def tutorial():
     f"{Fore.GREEN}Hire private detective to search luggage on airport type: {Fore.RED}hire\n"
     f"{Fore.GREEN}Money charge: {Fore.BLUE}"+ config.get('config','HiringPrice') +" PP\n"
     "\n"
-    f"{Fore.GREEN}If you want to search luggage in current location type: {Fore.RED}   search\n"
+    f"{Fore.GREEN}If you want to search luggage in current location type: {Fore.RED}  search\n"
     f"{Fore.GREEN}If you got better things to do type:            {Fore.RED}          exit\n")
     return tutorial_text
 
