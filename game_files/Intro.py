@@ -1,24 +1,24 @@
 from colorama import Fore, Back, Style
 
-'''from config import config
+from config import config
 
 def tutorial():
 
-    print("Welcome to the tutorial of this game!\n"
-          "If you want more info about user commands type: *help*\n"
-          "Fly to another city type:                       *fly*\n "
-          "Money charge: "+ config.get('config','FlyPriceMultiplier') +"PP/km\n"
-          "Sail to another city type:                      *sail*\n"
-          "Money charge: "+ config.get('config','BoatPriceMultiplier') + "PP/km\n"
-          "Hike to another city type:                      *hike*\n"
-          "Money Charge: 0 PP/km \n"
-          "Hire private detective to search luggage on airport type: *hire*\n"
-          "Money charge: "+ config.get('config','HiringPrice') +" PP\n"
-          "\n"
-          "If you want to search luggage in current location type *search*\n"
-          "If you got better things to do type:            *exit*\n"
-
-'''
+    tutorial_text=print(
+    f"{Fore.GREEN}Welcome to the tutorial of this game!\n"
+    f"{Fore.GREEN}If you want more info about user commands type: {Fore.RED}          help\n"
+    f"{Fore.GREEN}Fly to another city type:                       {Fore.RED}          fly\n"
+    f"{Fore.GREEN}Money charge: {Fore.BLUE}"+ config.get('config','FlyPriceMultiplier') +"PP/km\n"
+    f"{Fore.GREEN}Sail to another city type:                      {Fore.RED}          sail\n"
+    f"{Fore.GREEN}Money charge: {Fore.BLUE}"+ config.get('config','BoatPriceMultiplier') + "PP/km\n"
+    f"{Fore.GREEN}Hike to another city type:                      {Fore.RED}          hike\n"
+    f"{Fore.GREEN}Money Charge: {Fore.BLUE}0 PP/km \n"
+    f"{Fore.GREEN}Hire private detective to search luggage on airport type: {Fore.RED}hire\n"
+    f"{Fore.GREEN}Money charge: {Fore.BLUE}"+ config.get('config','HiringPrice') +" PP\n"
+    "\n"
+    f"{Fore.GREEN}If you want to search luggage in current location type {Fore.RED}   search\n"
+    f"{Fore.GREEN}If you got better things to do type:            {Fore.RED}          exit\n")
+    return tutorial_text
 
 
 
@@ -71,11 +71,12 @@ def intro():
 
     return intro_text, intro_text2
 intro()
-print(Fore.RED + 'some red text')
 
-#user_input = input("Do you want to run tutorial for this game to get on track?(y/n)").lower()
-#if user_input == "y":
-    #tutorial()
+
+
+user_input = input(f"{Fore.RED}Do you want to run tutorial for this game to get on track?(y/n)").lower()
+if user_input == "y":
+    tutorial()
 
 
 
