@@ -1,5 +1,5 @@
 from config import config
-from colorama import fore back style
+from colorama import Fore, Back, Style
 
 def tutorial():
 
@@ -70,9 +70,9 @@ def intro():
 
     return intro_text, intro_text2
 intro()
-#user_input = input("Do you want to run tutorial for this game to get on track?(y/n)").lower()
-#if user_input == "y":
-    #tutorial()
+user_input = input("Do you want to run tutorial for this game to get on track?(y/n)").lower()
+if user_input == "y":
+    tutorial()
 
 
 
