@@ -1,10 +1,20 @@
+from config import config
 
-import threading
-import sys
-import time
+def tutorial():
+
+    print("Welcome to the tutorial of this game!\n"
+          "If you want more info about user commands type *help*\n"
+          "Fly to another city type" + config.get('config','FlyPriceMultiplier') +"PP/km     *fly* \n"
+          "Sail to another city type        *sail* Money charge: + config.get('config','BoatPriceMultiplier') +"PP/km\n"
+          "Hike to another city type        *hike*  Charge: 0 PP/km\n"
+          "Hire private detective to search luggage on airport type*hire*"
+
+
+
 
 def intro():
-
+    import sys
+    import time
 
     for _ in range(3):
         text = "Loading... "
@@ -49,18 +59,18 @@ def intro():
             "                   |________________________________________________________________________________________________________|\n")
 
     return intro_text, intro_text2
-
-
-
-
-
 intro()
+user_input = input("Do you want to run tutorial for this game to get on track?(y/n)").lower()
+if user_input == "y":
+    tutorial()
 
 
 
 
-#def tutorial():
-    #print("This is text")
+
+
+
+
 
 
 
