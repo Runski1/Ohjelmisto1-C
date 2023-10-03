@@ -11,8 +11,8 @@ def end_game_email():
     result1 = cursor.fetchall()
     luggage_amount = result1[0][0] - 1
     email_string = (f"Hey! This Jarmo from FunAir. We have found {luggage_amount} luggage(s) that matches with your "
-                      f"lost one! Here is the list of airports where you can find it/them.")
-    speed = 0.08  # kirjoitusnopeus
+                    f"lost one! Here is the list of airports where you can find it/them.")
+    speed = 0.09  # kirjoitusnopeus
     min_speed = 0.04  # Alin  kirjoitus nopeus
     max_speed = 0.1   # Ylin kirjoitus nopeus
     for letter in email_string:
@@ -20,7 +20,7 @@ def end_game_email():
         sys.stdout.flush()  # Päivitä näyttö
         time.sleep(speed)  # Käytä muuttujan "nopeus" arvoa odotusaikana
     # Muuta nopeutta satunnaisesti
-        speed += random.uniform(-0.01, 0.01)  # Lisää tai vähennä nopeutta pienellä satunnaisella määrällä
+        speed += random.uniform(-0.03, 0.03)  # Lisää tai vähennä nopeutta pienellä satunnaisella määrällä
         speed = max(min_speed, min(speed, max_speed))  # rajoittaa nopeutta ettei ohjelma kaadu;DD
     # Lopuksi, jätä kursori paikalleen
     sys.stdout.write('\n')
@@ -40,13 +40,3 @@ def end_game_email():
 
 
 end_game_email()
-
-
-
-
-
-
-
-
-
-

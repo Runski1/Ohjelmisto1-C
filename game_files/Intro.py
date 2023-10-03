@@ -1,17 +1,14 @@
-from rich.console import Console
 
-console = Console(highlight=False)
 
-console.print("Test print")
-console.print("[green]Test print (green)")
-console.print("[bold]Test print (bold)")
-console.print("[bold underline]Test print (bold underline)")
 
-input()
-'''from rich.console import Console
+intro_text =  print("_________________________________________________________________________________________________________\n"
+                    "|** Your grandma has returned from her trip to New-Europe and has noticed that she forgot her luggage  **|\n"
+                    "|*** at some airport, which she cannot remember. In her luggage, there is her precious testament that ***|\n"
+                    "|*** she's carrying with her just in case. Your goal is to track down grandma's lost luggage because  ***|\n"
+                    "|***** you may have the opportunity to get your name into the testament after returning it to her.  *****|\n"
+                    "|________________________________________________________________________________________________________|")
 
-console = Console()
-console.print("Hello",style= 'Blue')'''
+intro_text
 
 '''speed = 0.08  # kirjoitusnopeus
 min_speed = 0.04  # Alin  kirjoitus nopeus
