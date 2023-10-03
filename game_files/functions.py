@@ -228,4 +228,4 @@ def item_randomizer():
     cursor.execute(sql)
     result = cursor.fetchall()
     item_name, item_value = result[0]  # tuple unpacker
-    return item_name, item_value  # Nämä ovat n. 95% pelkkää arvotonta paskaa
+    return item_name, int(item_value)  # Nämä ovat n. 95% pelkkää arvotonta paskaa

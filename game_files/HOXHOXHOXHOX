@@ -28,7 +28,6 @@ satamakaupungissa. Tilalla voisi olla joku tuloste, missä mainitaan ettei satam
         You have 100 PP.
         5
 man-käyttäjäfunktio lopettaa vuoron
-    man hire dictionary-entry puuttuu? KeyError
     man fly: Flying is the fastest form of travel and  -- lause päättyy kesken
         pitää kokonaisuudessaan siistiä manuaali
 
