@@ -1,5 +1,6 @@
-from config import config
 from colorama import Fore, Back, Style
+
+'''from config import config
 
 def tutorial():
 
@@ -17,7 +18,7 @@ def tutorial():
           "If you want to search luggage in current location type *search*\n"
           "If you got better things to do type:            *exit*\n"
 
-
+'''
 
 
 
@@ -70,9 +71,11 @@ def intro():
 
     return intro_text, intro_text2
 intro()
-user_input = input("Do you want to run tutorial for this game to get on track?(y/n)").lower()
-if user_input == "y":
-    tutorial()
+print(Fore.RED + 'some red text')
+
+#user_input = input("Do you want to run tutorial for this game to get on track?(y/n)").lower()
+#if user_input == "y":
+    #tutorial()
 
 
 
