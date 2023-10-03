@@ -37,7 +37,7 @@ def intro():
         time.sleep(0.5)
 
     print("Loading complete!")
-    intro_text = (
+    intro_text = (Fore.GREEN +
 
     "          ▄▄▄▄▀ ▄  █ ▄███▄       █    ████▄    ▄▄▄▄▄      ▄▄▄▄▀        ▄▄▄▄▀ ▄███▄     ▄▄▄▄▄      ▄▄▄▄▀ ██   █▀▄▀█ ▄███▄      ▄     ▄▄▄▄▀\n"
     "       ▀▀▀ █   █   █ █▀   ▀      █    █   █   █     ▀▄ ▀▀▀ █        ▀▀▀ █    █▀   ▀   █     ▀▄ ▀▀▀ █    █ █  █ █ █ █▀   ▀      █ ▀▀▀ █\n"
@@ -61,7 +61,7 @@ def intro():
     sys.stdout.write('\n')
 
 
-    intro_text2 = print(
+    intro_text2 = print(Fore.BLUE+
             "                   _________________________________________________________________________________________________________\n"
             "                   |** Your grandma has returned from her trip to New-Europe and has noticed that she forgot her luggage  **|\n"
             "                   |*** at some airport, which she cannot remember. In her luggage, there is her precious testament that ***|\n"
