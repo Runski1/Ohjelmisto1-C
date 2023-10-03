@@ -22,12 +22,9 @@ satamakaupungissa. Tilalla voisi olla joku tuloste, missä mainitaan ettei satam
         You have 100 PP.
         5
 man-käyttäjäfunktio lopettaa vuoron
-    man hire dictionary-entry puuttuu? KeyError
     man fly: Flying is the fastest form of travel and  -- lause päättyy kesken
         pitää kokonaisuudessaan siistiä manuaali
 
 Help-tuloste melko ruma.
 
-<class 'int'> tuloste jossain debugina tulostuu ainakin fly ja sail-komentojen jälkeen
-    jäänyt luultavasti multa
 uorocounter tulostautuu vielä joka vuoron jälkeen

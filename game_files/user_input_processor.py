@@ -1,5 +1,6 @@
 from functions import *
 from db_connection import connection
+from config import config
 cursor = connection.cursor()
 from config import config
 
@@ -25,6 +26,7 @@ def travel_fly(parameter, player):
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 remove_pp(city[4], current_player_id)  # vähennetään lennon hinta pelaajan rahoista
                 print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
+                input("<Press ENTER to continue>")
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
         print("Something is wrong here")
@@ -46,6 +48,7 @@ def travel_sail(parameter, player):
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
                 print("You begin sailing to " + parameter + ".")  # kuittaus onnistuneesta matkasta
+                input("<Press ENTER to continue>")
                 return False
 
 
@@ -71,9 +74,9 @@ def work(parameter, player):
     # You can contribute to the function
 
 
-def search(player):  # TÄMÄ TRIGGERAA SQL-SYNTAX -ERRORIN
-    sql = (f"SELECT bag_city FROM city inner join player "
-           f"on city.id = player.location and player.screen_name = '{player}'")
+def search(player):
+    sql = (f"SELECT bag_city FROM city inner join player on "
+           f"city.id = player.location and player.screen_name = '{player[1]}'")
     cursor.execute(sql)
     result = cursor.fetchall()
     if result[0] == 1:
@@ -86,6 +89,7 @@ def search(player):  # TÄMÄ TRIGGERAA SQL-SYNTAX -ERRORIN
             remove_pp(item_value, player[0])  # player 0 on id
         elif item_value >= 0:
             add_pp(item_value, player[0])
+    input("<Press ENTER to continue>")
     return False
 
 
@@ -133,12 +137,19 @@ def manual(parameter, player):
                 "an approximation on how many turns the trip will take with command [hike ?].\n"
                 "To start hitchhiking to the city of your choosing, type [hike 'city_name'].\n"
                 "You never know if strangers will let you in their car, so hitchhiking is luck-based.",
+        'hire': "You can [hire] a private detective to search for grandma's suitcase. Hiring a detective will cost\n"
+                "you " + config.get('config', 'HiringPrice') + " PP. If you hire one, you wont use your turn, but you "
+                                                               "also cannot find any cool stuff you might \n"
+                "come by when searching yourself.",
         'work': "This is a placeholder for work manual entry. Work has not been yet implemented to the game.",
-        'search': "This is a placeholder for search manual entry",
+        'search': "You can [search] for grandma's suitcase in your current location. Searching for yourself will\n"
+                  "also end your turn, but you can find lots of cool stuff when searching yourself. If you dont wish\n"
+                  "to use your turn to search, you can [hire] a private detective instead.",
         'exit': "[exit] will end the game running and hopefully save your progress.",
         'man': "You dirty bastard, trying to break me are you?"
         }
     print(manual_dictionary[parameter])
+    input("<Press ENTER to continue>")
 
 
 def help_function(player):

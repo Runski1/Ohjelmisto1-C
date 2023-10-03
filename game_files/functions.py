@@ -20,7 +20,6 @@ def get_current_pp(player_id):
     cursor.execute(query)
     result = cursor.fetchone()
     current_pp = result[0]  # queryn tulos tuplesta ulos
-    print(type(current_pp))
     return current_pp  # type(current_pp)=int
 
 
@@ -228,4 +227,4 @@ def item_randomizer():
     cursor.execute(sql)
     result = cursor.fetchall()
     item_name, item_value = result[0]  # tuple unpacker
-    return item_name, item_value  # Nämä ovat n. 95% pelkkää arvotonta paskaa
+    return item_name, int(item_value)  # Nämä ovat n. 95% pelkkää arvotonta paskaa
