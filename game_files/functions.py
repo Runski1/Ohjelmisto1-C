@@ -20,7 +20,6 @@ def get_current_pp(player_id):
     cursor.execute(query)
     result = cursor.fetchone()
     current_pp = result[0]  # queryn tulos tuplesta ulos
-    print(type(current_pp))
     return current_pp  # type(current_pp)=int
 
 

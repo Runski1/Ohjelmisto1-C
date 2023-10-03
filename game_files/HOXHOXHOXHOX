@@ -8,8 +8,6 @@ osassa parametrina.
     Poistetaan gran canaria ja muut kaksiosaiset mestat?
     Nimetään ne Gran_Canaria jne?
 
-Search-funktiossa sql-syntaxerror
-
 sail-funktion list_available_cities -listan ensimmäisen alkion etäisyys ja siitä syystä myös matkan hinta on vituillaan
 Mulla oli sama ongelma fly-funktion kanssa, vika löytyy jostain listaindekseistä tms. Koska fly ja sail käyttävät samaa
 funktiota etsimään sopivat kaupungit, mutta fly ei tee sitä virhettä, vika lienee siinä funktiossa joka erittelee
@@ -33,6 +31,4 @@ man-käyttäjäfunktio lopettaa vuoron
 
 Help-tuloste melko ruma.
 
-<class 'int'> tuloste jossain debugina tulostuu ainakin fly ja sail-komentojen jälkeen
-    jäänyt luultavasti multa
 uorocounter tulostautuu vielä joka vuoron jälkeen

@@ -25,6 +25,7 @@ def travel_fly(parameter, player):
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 remove_pp(city[4], current_player_id)  # vähennetään lennon hinta pelaajan rahoista
                 print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
+                input("<Press ENTER to continue>")
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
         print("Something is wrong here")
@@ -46,6 +47,7 @@ def travel_sail(parameter, player):
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
                 print("You begin sailing to " + parameter + ".")  # kuittaus onnistuneesta matkasta
+                input("<Press ENTER to continue>")
                 return False
 
 
@@ -71,9 +73,9 @@ def work(parameter, player):
     # You can contribute to the function
 
 
-def search(player):  # TÄMÄ TRIGGERAA SQL-SYNTAX -ERRORIN
-    sql = (f"SELECT bag_city FROM city inner join player "
-           f"on city.id = player.location and player.screen_name = '{player}'")
+def search(player):
+    sql = (f"SELECT bag_city FROM city inner join player on "
+           f"city.id = player.location and player.screen_name = '{player[1]}'")
     cursor.execute(sql)
     result = cursor.fetchall()
     if result[0] == 1:
@@ -86,6 +88,7 @@ def search(player):  # TÄMÄ TRIGGERAA SQL-SYNTAX -ERRORIN
             remove_pp(item_value, player[0])  # player 0 on id
         elif item_value >= 0:
             add_pp(item_value, player[0])
+    input("<Press ENTER to continue>")
     return False
 
 
@@ -127,6 +130,7 @@ def manual(parameter, player):
         'man': "You dirty bastard, trying to break me are you?"
         }
     print(manual_dictionary[parameter])
+    input("<Press ENTER to continue>")
 
 
 def help_function(player):
