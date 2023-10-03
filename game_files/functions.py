@@ -237,6 +237,9 @@ def set_lockstate(distance, player_id, counter):
         print("dice total: " + str(dice_total))
         lock_amount = dice_total - dice_throw
         print("lock amount: " + str(lock_amount))
+    if counter != 0:
+        lock_amount = counter
+        print(lock_amount)
     query = f"UPDATE player SET lockstate = '{lock_amount}' WHERE id = '{player_id}'"
     cursor.execute(query)
     return
