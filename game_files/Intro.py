@@ -1,20 +1,21 @@
 from config import config
+from colorama import fore back style
 
 def tutorial():
 
     print("Welcome to the tutorial of this game!\n"
           "If you want more info about user commands type: *help*\n"
-          "Fly to another city type: *fly*\n "
+          "Fly to another city type:                       *fly*\n "
           "Money charge: "+ config.get('config','FlyPriceMultiplier') +"PP/km\n"
-          "Sail to another city type: *sail*\n"
+          "Sail to another city type:                      *sail*\n"
           "Money charge: "+ config.get('config','BoatPriceMultiplier') + "PP/km\n"
-          "Hike to another city type: *hike*\n"
+          "Hike to another city type:                      *hike*\n"
           "Money Charge: 0 PP/km \n"
           "Hire private detective to search luggage on airport type: *hire*\n"
           "Money charge: "+ config.get('config','HiringPrice') +" PP\n"
           "\n"
           "If you want to search luggage in current location type *search*\n"
-          "If you got better things to do type: *exit*\n"
+          "If you got better things to do type:            *exit*\n"
 
 
 
@@ -69,9 +70,9 @@ def intro():
 
     return intro_text, intro_text2
 intro()
-user_input = input("Do you want to run tutorial for this game to get on track?(y/n)").lower()
-if user_input == "y":
-    tutorial()
+#user_input = input("Do you want to run tutorial for this game to get on track?(y/n)").lower()
+#if user_input == "y":
+    #tutorial()
 
 
 
