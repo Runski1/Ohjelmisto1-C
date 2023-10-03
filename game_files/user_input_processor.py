@@ -2,7 +2,6 @@ from functions import *
 from db_connection import connection
 from config import config
 cursor = connection.cursor()
-from config import config
 
 
 def find_city_index(city_name, city_list):
@@ -94,31 +93,34 @@ def search(player):
 
 
 def hire(player):
-    print("NOTE: Look up if player.location is also a bag_city")
-    print("You hire a local detective to look for your grandma's suitcase.")
     price_multiplier_dict = {
         "hire": config.get('config', 'HiringPrice')
     }
     price_hire = int(price_multiplier_dict["hire"])
     player_id = str(player[0])
-    player_location = str(player[8])
-    if player[2] > price_hire:
-        remove_pp(price_hire, player[0])
-        sql = "SELECT bag_city FROM city INNER JOIN player ON city.id = player.location"
-        sql += f" WHERE player.location = '{player_location}'"
-        cursor.execute(sql)
-        result = list(cursor.fetchall())
-        if result[0] == 1:
-            sql = f"UPDATE player SET prizeholder = 1 WHERE id = '{player_id}'"
+    print(f"You hire a local detective to look for your grandma's suitcase. Cost is {price_hire}.")
+    yes_no = input("Do you want to hire a detective? y/n: ")
+    if yes_no == "y":
+        player_location = str(player[8])
+        if player[2] > price_hire:
+            remove_pp(price_hire, player[0])
+            sql = "SELECT bag_city FROM city INNER JOIN player ON city.id = player.location"
+            sql += f" WHERE player.location = '{player_location}'"
             cursor.execute(sql)
-            print("You found grandmas luggage!")
+            result = list(cursor.fetchall())
+            if result[0] == 1:
+                sql = f"UPDATE player SET prizeholder = 1 WHERE id = '{player_id}'"
+                cursor.execute(sql)
+                print("You found grandmas luggage!")
 
-        else:
-            print("Nothing found from this airport.")
+            else:
+                print("Nothing found from this airport.")
 
-    elif player[2] < price_hire:
-        print("You dont have enough pp to hire detective.")
+        elif player[2] < price_hire:
+            print("You dont have enough pp to hire detective.")
 
+    elif yes_no == "n":
+        print("You didnt hire a detective.")
     return True
 
 
