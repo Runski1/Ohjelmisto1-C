@@ -180,6 +180,7 @@ def manual(parameter, player):
         }
     print(manual_dictionary[parameter])
     input("<Press ENTER to continue>")
+    return True     # Lisätty perään ettei vuoro vaihdu jos käyttää man toimintoa.
 
 
 def help_function(player):
