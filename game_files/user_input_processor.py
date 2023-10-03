@@ -48,46 +48,31 @@ def travel_sail(parameter, player):
                 remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
                 print("You begin sailing to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 input("<Press ENTER to continue>")
-                return False
-    # player-muuttujassa tuodaan koko vuorossa olevan pelaajan rivi tietokannasta
-    current_player_id = str(player[0])  # pelaajan id stringinä
-    available_cities = get_cities_in_range("boat", player)  # boat-parametri tätä funktiota varten
-    sorted_available_cities = sorted(available_cities, key=lambda x: x[3])  # lambda-funktio järjestää etäisyyden mukaan
-    # pienimmästä etäisyydestä suorimpaan listan saavuttettavissa olevista kaupungeista
-    if parameter == "?":  # Tämä tulostaa pelaajalle saavutettavissa olevat kaupungit
-        print("---Available cities where you can sail---\n")
-        for city in sorted_available_cities:
-            if city[5] == 1:  # if-else tulostaa visited tai not visited riippuen kaupungin tilasta
-                visited_status = "visited"
-            else:
-                visited_status = "not visited"
-            # printti muotoituna taulukkomaiseksi, aja funktio niin näet
-            print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} PP {visited_status:>15}")
-        print(f"You have {get_current_pp(current_player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
-        return True
-        # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
-    elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
-        for city in available_cities:
-            if city[1].lower() == parameter:
-                set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
-                remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
-                print("You begin your sail to " + parameter + ".")  # kuittaus onnistuneesta matkasta
-                break  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
-        return False
+                return False # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
         print("Something is wrong here")
         return True
 
 
 def travel_hitchhike(parameter, player):
-    if parameter == "?":
-        print("This should list all available cities where player can hitchhike.")
-    print('You start hitchhiking to ' + parameter + '.')
-    # Funktion ajo:
-    # Laske etäisyys parametrina annettuun kaupunkiin
-    # Etäisyydestä lockstaten total roll amount
-    # Kutsu roll-funktiota ja addaa totaliin
-    # next turn
+    # player-muuttujassa tuodaan koko vuorossa olevan pelaajan rivi tietokannasta
+    current_player_id = str(player[0])  # pelaajan id stringinä
+    available_cities = get_cities_in_range("hike", player)  # hike-parametri tätä funktiota varten
+    sorted_available_cities = sorted(available_cities, key=lambda x: x[3])  # lambda-funktio järjestää etäisyyden mukaan
+    # pienimmästä etäisyydestä suorimpaan listan saavuttettavissa olevista kaupungeista
+    if parameter == "?":  # Tämä tulostaa pelaajalle saavutettavissa olevat kaupungit
+        print_available_cities("hike", sorted_available_cities, current_player_id)
+        return True  # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
+    elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
+        for city in available_cities:
+            if city[1].lower() == parameter:
+                set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
+                print("You begin your hitchhike to " + parameter + ".")  # kuittaus onnistuneesta matkasta
+                input("<Press ENTER to continue>")
+                return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
+    else:
+        print("Something is wrong here")
+        return True
 
 
 def work(parameter, player):
