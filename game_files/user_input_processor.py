@@ -17,17 +17,8 @@ def travel_fly(parameter, player):
     sorted_available_cities = sorted(available_cities, key=lambda x: x[3])  # lambda-funktio järjestää etäisyyden mukaan
     # pienimmästä etäisyydestä suorimpaan listan saavuttettavissa olevista kaupungeista
     if parameter == "?":  # Tämä tulostaa pelaajalle saavutettavissa olevat kaupungit
-        print("---Available cities where you can fly---\n")
-        for city in sorted_available_cities:
-            if city[5] == 1:  # if-else tulostaa visited tai not visited riippuen kaupungin tilasta
-                visited_status = "visited"
-            else:
-                visited_status = "not visited"
-            # printti muotoituna taulukkomaiseksi, aja funktio niin näet
-            print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} PP {visited_status:>15}")
-        print(f"You have {get_current_pp(current_player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
-        return True
-        # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
+        print_available_cities("fly", sorted_available_cities, current_player_id)
+        return True  # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
     elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
         for city in available_cities:
             if city[1].lower() == parameter:
@@ -41,16 +32,21 @@ def travel_fly(parameter, player):
 
 
 def travel_sail(parameter, player):
-    if parameter == "?":
-        print("This should list all available cities where player can sail.")
-    print('You start sailing to ' + parameter + '.')
-    # Muuten funktion ajo suunnilleen:
-    # Vaihda pelaajan sijainti=parametri
-    # Vaihda pelaajan current_PP -= laivamatkan hinta
-    # Rollaa random event
-    # lockstate = laivamatkan kesto
-    # tulosta "Olet matkalla xxxxx"
-    # next turn
+    # player-muuttujassa tuodaan koko vuorossa olevan pelaajan rivi tietokannasta
+    current_player_id = str(player[0])  # pelaajan id stringinä
+    available_cities = get_cities_in_range("boat", player)  # boat-parametri tätä funktiota varten
+    sorted_available_cities = sorted(available_cities, key=lambda x: x[3])  # lambda-funktio järjestää etäisyyden mukaan
+    # pienimmästä etäisyydestä suorimpaan listan saavuttettavissa olevista kaupungeista
+    if parameter == "?":  # Tämä tulostaa pelaajalle saavutettavissa olevat kaupungit
+        print_available_cities("boat", sorted_available_cities, current_player_id)
+        return True  # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
+    elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
+        for city in available_cities:
+            if city[1].lower() == parameter:
+                set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
+                remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
+                print("You begin sailing to " + parameter + ".")  # kuittaus onnistuneesta matkasta
+                return False
 
 
 def travel_hitchhike(parameter, player):
@@ -75,7 +71,7 @@ def work(parameter, player):
     # You can contribute to the function
 
 
-def search(player):
+def search(player):  # TÄMÄ TRIGGERAA SQL-SYNTAX -ERRORIN
     sql = (f"SELECT bag_city FROM city inner join player "
            f"on city.id = player.location and player.screen_name = '{player}'")
     cursor.execute(sql)
@@ -86,16 +82,11 @@ def search(player):
     else:
         item_name, item_value = item_randomizer()
         print(f'Nah! No grandma`s luggage in here! But you found {item_name} and it`s worth {item_value}')
-        if item_value <= 0:
+        if item_value <= 0:  # Tällä hetkellä tietokannassa ei ole itemeitä mistä menettää rahaa. Voisi lisätä...? :)
             remove_pp(item_value, player[0])  # player 0 on id
         elif item_value >= 0:
             add_pp(item_value, player[0])
     return False
-    # Checkaa onko player.location bag_city
-    # jos on, playeristä tulee laukunkantaja
-    # player.location ei ole enää bag_city
-    # Tulosta laukun löytyneen
-    # next turn
 
 
 def hire(player):

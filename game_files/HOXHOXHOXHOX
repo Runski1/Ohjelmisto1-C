@@ -1,0 +1,39 @@
+---------KIRJOITELKAA TÄHÄN MITÄ VIKOJA/PUUTTEITA TULEE VASTAAN JA POISTAKAA ENTRYT JOS KORJAATTE/
+         LUOTTE JTN PUUTTUVAA --------------------------------------------------------------------
+
+
+Kaksiosaiset nimet tuottavat ongelmia tällä hetkellä user_input_processorin kanssa.
+Esim Gran Canarialle ei pysty lentämään tai seilaamaan, koska liikkumisfunktiot ottavat kaupungin nimen vain yhdessä
+osassa parametrina.
+    Poistetaan gran canaria ja muut kaksiosaiset mestat?
+    Nimetään ne Gran_Canaria jne?
+
+Search-funktiossa sql-syntaxerror
+
+sail-funktion list_available_cities -listan ensimmäisen alkion etäisyys ja siitä syystä myös matkan hinta on vituillaan
+Mulla oli sama ongelma fly-funktion kanssa, vika löytyy jostain listaindekseistä tms. Koska fly ja sail käyttävät samaa
+funktiota etsimään sopivat kaupungit, mutta fly ei tee sitä virhettä, vika lienee siinä funktiossa joka erittelee
+satamakaupungit.
+tämä saattaa johtua edellämainitusta bugista, mutta sailia ei tarvitsisi pystyä edes ajamaan, mikäli ei ole
+satamakaupungissa. Tilalla voisi olla joku tuloste, missä mainitaan ettei satamaa ole.
+        Name: Kille
+        Current PP: 100
+        Location: Paris
+        Lock state: not locked
+
+        What would you like to do: sail ?
+        ---Available cities where you can sail to---
+        Oslo           :          Norway          : 0 km : cost   0    PP     not visited
+        <class 'int'>
+        You have 100 PP.
+        5
+man-käyttäjäfunktio lopettaa vuoron
+    man hire dictionary-entry puuttuu? KeyError
+    man fly: Flying is the fastest form of travel and  -- lause päättyy kesken
+        pitää kokonaisuudessaan siistiä manuaali
+
+Help-tuloste melko ruma.
+
+<class 'int'> tuloste jossain debugina tulostuu ainakin fly ja sail-komentojen jälkeen
+    jäänyt luultavasti multa
+uorocounter tulostautuu vielä joka vuoron jälkeen
