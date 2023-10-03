@@ -180,9 +180,9 @@ def get_cities_in_range(travel_mode, player):
     max_distance = int(max_distance_dict[travel_mode])
     player_location = player[8]
     cities = get_city_data()
+    player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     if travel_mode == "boat":
         cities = get_ports(cities)
-    player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     player_pp = player[2]
     cities_in_range = []
     for city in cities:
