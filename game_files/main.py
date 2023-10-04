@@ -29,7 +29,6 @@ while True:
                 # MIRON PRINTTERIÄ UUDESTAAN?
                 choice = input("\nWhat would you like to do: ")
                 turn = user_input_processor(choice, current_player)
-                # print(round_number)
 
             add_to_round_counter()
 
