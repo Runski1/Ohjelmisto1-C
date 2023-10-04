@@ -233,9 +233,12 @@ def set_lockstate(distance, player_id, counter):
     if distance != 0:
         dice_throw = dice_roll()
         print("dice throw: " + str(dice_throw))
-        dice_total = floor(0.02 * distance)
+        dice_multiplier = config.get("config", "HikeDistanceMultiplier")
+        dice_total = floor(float(dice_multiplier) * distance)
         print("dice total: " + str(dice_total))
         lock_amount = dice_total - dice_throw
+        if lock_amount < 0:
+            lock_amount = config.get("config", "MinLockAmount")
         print("lock amount: " + str(lock_amount))
     if counter != 0:
         lock_amount = counter
