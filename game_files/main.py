@@ -35,6 +35,6 @@ while True:
 
         elif is_lock > 0:
             printer(current_player)
-            input("\nYou are locked this round. (Press enter to continue: ")
-            lock_reduce(current_player[0])
+            input("\nYou are locked this round. (Press enter to continue)")
+            lock_reduce(current_player)
             continue

@@ -58,6 +58,8 @@ def travel_sail(parameter, player):
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
                 print("You begin your sail to " + parameter + ".")  # kuittaus onnistuneesta matkasta
+                print(f"\nYou are now in {parameter}.")
+                event_randomizer(player)
                 break  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
         return False
     else:

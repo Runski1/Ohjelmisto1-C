@@ -199,9 +199,10 @@ def get_cities_in_range(travel_mode, player):
     return cities_in_range
 
 
-def lock_reduce(player_id):
-    sql = "UPDATE player SET lockstate = lockstate = -1 WHERE id = '" + player_id + "'"
+def lock_reduce(player):
+    sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
     cursor.execute(sql)
+    print("Player lock updated.")
 
 
 def event_randomizer(player):
@@ -232,6 +233,13 @@ def event_randomizer(player):
             print(fluff)
             sql = f"UPDATE player SET current_pp = current_pp - {player[2]} WHERE id = '{playerid}'"
             cursor.execute(sql)
+            print(f"Your PP updates to 0.")
+            if int(outcome_h[1]) > 0:
+                sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
+                cursor.execute(sql)
+                print(f"Your lockstate updates to + {outcome_h[1]}.")
+                return False
+
             return True
         # jossei pelaajalta ryöstetä kaikkea omaisuutta ruvetaan tutkimaan erinäisiä vaihtoehtoja mitä
         # eventistä tulee
@@ -292,7 +300,6 @@ def event_randomizer(player):
                         return False
                     else:
                         return True
-
 
 
 def item_randomizer():
