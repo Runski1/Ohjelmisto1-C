@@ -67,8 +67,9 @@ def intro():
             "                   |*** at some airport, which she cannot remember. In her luggage, there is her precious testament that ***|\n"
             "                   |*** she's carrying with her just in case. Your goal is to track down grandma's lost luggage because  ***|\n"
             "                   |***** you may have the opportunity to get your name into the testament after returning it to her.  *****|\n"
-            "                   |________________________________________________________________________________________________________|\n")
-
+            "                   |________________________________________________________________________________________________________|\n"
+            f"                             {Fore.GREEN}This is a text based adventure game where you can make your actions by typing them.\n"
+            f"                             {Fore.GREEN}                                   More info in tutorial                           \n")
     return intro_text, intro_text2
 intro()
 
