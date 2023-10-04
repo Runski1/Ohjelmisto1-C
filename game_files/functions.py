@@ -248,7 +248,7 @@ def event_randomizer(player):
                 input("Press Enter to roll dice: ")
                 roll = dice_roll()
                 print(f"\nYou rolled {roll}.")
-                if roll > rand_event[0][2]:
+                if roll >= rand_event[0][2]:
                     sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
                     cursor.execute(sql)
                     print(f"Your pp updates {outcome_h[0]}.")

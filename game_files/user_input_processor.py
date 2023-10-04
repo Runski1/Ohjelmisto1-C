@@ -26,6 +26,8 @@ def travel_fly(parameter, player):
                 remove_pp(city[4], current_player_id)  # vähennetään lennon hinta pelaajan rahoista
                 print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 input("<Press ENTER to continue>")
+                print(f"You are now in {parameter}.\n")
+                event_randomizer(player)
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
         print("Something is wrong here")
