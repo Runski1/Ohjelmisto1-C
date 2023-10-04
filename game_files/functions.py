@@ -205,15 +205,19 @@ def lock_reduce(player_id):
 
 
 def event_randomizer(player):
+    # Haetaan kaikkien eventtien määrä ja kokeillaan tuleeko eventtiä vai ei
     sql = "SELECT COUNT(id) FROM random_events"
     cursor.execute(sql)
     events_sum = cursor.fetchall()
     rand_test = random.randint(1, 12)
     playerid = str(player[0])
-
+    # jos eventtiä ei tule tulostetaan allaoleva
     if rand_test % 2 == 1:
         print("No events for you this time.")
-        return
+        return False
+    # jos eventti tulee, haetaan arpomalla eventti kaikkien eventtien joukosta ja käsitellään sitä
+    # niin että outcom_high jaetaan splitillä kahteen osaan ja outcome_lower jaetaan kahteen osaan
+    # sekä tallennetaan fluff teksi muuttujaksi.
     elif rand_test % 2 == 0:
         randomized_num = random.randint(1, events_sum[0][0])
         sql = f"SELECT * FROM random_events WHERE id = {randomized_num}"
@@ -222,12 +226,15 @@ def event_randomizer(player):
         outcome_h = rand_event[0][3].split(",")
         outcome_l = rand_event[0][4].split(",")
         fluff = rand_event[0][1]
-
+        # kokeillaan tuleeko pelaaja ryöstetyksi menettäen kaikki pp:nsä
+        # ja tyhjennetään pelaajalta kaikki pp:t
         if outcome_h[0] == "robbed":
             print(fluff)
             sql = f"UPDATE player SET current_pp = current_pp - {player[2]} WHERE id = '{playerid}'"
             cursor.execute(sql)
             return True
+        # jossei pelaajalta ryöstetä kaikkea omaisuutta ruvetaan tutkimaan erinäisiä vaihtoehtoja mitä
+        # eventistä tulee
         else:
             if rand_event[0][2] == 0:
                 print(fluff)
@@ -241,13 +248,15 @@ def event_randomizer(player):
                     return False
                 else:
                     return True
-
+            # jos eventissä pitää heittää noppaa heitetään sitä pelaajan avustuksella
+            # sen jälkeen testataan onko nopan heitto tarpeeksi iso roll_treshold sarakkeen määräämän arvon perusteella
             elif rand_event[0][2] > 0:
                 print(fluff)
                 print(f"\nYou need to roll at least {rand_event[0][2]}.")
                 input("Press Enter to roll dice: ")
                 roll = dice_roll()
                 print(f"\nYou rolled {roll}.")
+                #jos isompi tai yhtäiso tehdään näin
                 if roll >= rand_event[0][2]:
                     sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
                     cursor.execute(sql)
@@ -259,7 +268,7 @@ def event_randomizer(player):
                         return False
                     else:
                         return True
-
+                # jos pienempi tehdään näin
                 elif roll < rand_event[0][2]:
                     sql = f"UPDATE player SET current_pp = current_pp {str(outcome_l[0])} WHERE id = '{playerid}'"
                     cursor.execute(sql)
@@ -271,7 +280,7 @@ def event_randomizer(player):
                         return False
                     else:
                         return True
-
+                # jos suurempi tehdään näin
                 elif roll > rand_event[0][2]:
                     sql = f"UPDATE player SET current_pp = current_pp {str(outcome_h[0])} WHERE id = '{playerid}'"
                     cursor.execute(sql)

@@ -41,22 +41,6 @@ def travel_sail(parameter, player):
     sorted_available_cities = sorted(available_cities, key=lambda x: x[3])  # lambda-funktio järjestää etäisyyden mukaan
     # pienimmästä etäisyydestä suorimpaan listan saavuttettavissa olevista kaupungeista
     if parameter == "?":  # Tämä tulostaa pelaajalle saavutettavissa olevat kaupungit
-        print_available_cities("boat", sorted_available_cities, current_player_id)
-        return True  # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
-    elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
-        for city in available_cities:
-            if city[1].lower() == parameter:
-                set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
-                remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
-                print("You begin sailing to " + parameter + ".")  # kuittaus onnistuneesta matkasta
-                input("<Press ENTER to continue>")
-                return False
-    # player-muuttujassa tuodaan koko vuorossa olevan pelaajan rivi tietokannasta
-    current_player_id = str(player[0])  # pelaajan id stringinä
-    available_cities = get_cities_in_range("boat", player)  # boat-parametri tätä funktiota varten
-    sorted_available_cities = sorted(available_cities, key=lambda x: x[3])  # lambda-funktio järjestää etäisyyden mukaan
-    # pienimmästä etäisyydestä suorimpaan listan saavuttettavissa olevista kaupungeista
-    if parameter == "?":  # Tämä tulostaa pelaajalle saavutettavissa olevat kaupungit
         print("---Available cities where you can sail---\n")
         for city in sorted_available_cities:
             if city[5] == 1:  # if-else tulostaa visited tai not visited riippuen kaupungin tilasta
