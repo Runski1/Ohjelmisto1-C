@@ -4,7 +4,10 @@ from db_connection import connection
 from geopy.distance import geodesic
 from math import floor
 from config import config
+
 cursor = connection.cursor()
+
+
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
 # mysql.connector.errors.DatabaseError: 2014 (HY000): Commands out of sync; you can't run this command now
 # -erroriin
@@ -78,7 +81,7 @@ def lock_check(player_id):  # Printer ei tarvitse tätä enää, tarvitseeko jok
     sql += " WHERE id = '" + player_id + "';"
     cursor.execute(sql)
     result = cursor.fetchall()
-#    cursor.close()
+    #    cursor.close()
     lock_state = int(result[0][0])
     if lock_state == 0:
         return "Not locked"
@@ -105,7 +108,7 @@ def get_player_data_as_list():
     sql = "SELECT * FROM player;"
     cursor.execute(sql)
     all_from_player_table = cursor.fetchall()
-#    cursor.close()
+    #    cursor.close()
     # Alustetaan lista
     all_from_player_table_as_list = []
     # Muutetaan kaikki data player-taulusta listaksi
@@ -119,13 +122,15 @@ def get_round_number():
     sql = "SELECT counter FROM round_counter;"
     cursor.execute(sql)
     result = cursor.fetchone()[0]
-#    cursor.close()
+    #    cursor.close()
     return result
 
 
 def add_to_round_counter():
     sql = "UPDATE round_counter SET counter = counter + 1"
     cursor.execute(sql)
+
+
 #    cursor.close()
 
 
@@ -133,7 +138,7 @@ def get_city_data():
     sql = "SELECT * from city;"
     cursor.execute(sql)
     all_from_city = cursor.fetchall()
-#    cursor.close()
+    #    cursor.close()
     all_data_from_city_as_list = []
     for i in range(len(all_from_city)):
         all_data_from_city_as_list.append((list(all_from_city[i])))
@@ -195,30 +200,90 @@ def get_cities_in_range(travel_mode, player):
 
 
 def lock_reduce(player_id):
-    sql = "UPDATE player SET lockstate = lockstate = -1 WHERE id = '"+player_id+"'"
+    sql = "UPDATE player SET lockstate = lockstate = -1 WHERE id = '" + player_id + "'"
     cursor.execute(sql)
 
 
-def event_randomizer():
-    sql = "SELECT COUNT(id) FROM random_events;"
+def event_randomizer(player):
+    sql = "SELECT COUNT(id) FROM random_events"
     cursor.execute(sql)
-    result = cursor.fetchall()
-    len_events = 0
-    if cursor.rowcount > 0:
-        for row in result:
-            len_events = row[0]
-    rand_test = random.randint(1, 6)
+    events_sum = cursor.fetchall()
+    rand_test = random.randint(1, 12)
+    playerid = str(player[0])
 
     if rand_test % 2 == 1:
-        print("No events for you m8!")
+        print("No events for you this time.")
         return
     elif rand_test % 2 == 0:
-        randomized_num = random.randint(1, len_events)
-        sql = "SELECT fluff FROM random_events WHERE id = '" + str(randomized_num) + "';"
+        randomized_num = random.randint(1, events_sum[0][0])
+        sql = f"SELECT * FROM random_events WHERE id = {randomized_num}"
         cursor.execute(sql)
-        result = cursor.fetchall()
-        if cursor.rowcount > 0:
-            return result
+        rand_event = cursor.fetchall()
+        outcome_h = rand_event[0][3].split(",")
+        outcome_l = rand_event[0][4].split(",")
+        fluff = rand_event[0][1]
+
+        if outcome_h[0] == "robbed":
+            print(fluff)
+            sql = f"UPDATE player SET current_pp = current_pp - {player[2]} WHERE id = '{playerid}'"
+            cursor.execute(sql)
+            return True
+        else:
+            if rand_event[0][2] == 0:
+                print(fluff)
+                sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
+                cursor.execute(sql)
+                print(f"\nYour pp updates to {outcome_h[0]}.")
+                if int(outcome_h[1]) > 0:
+                    sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
+                    cursor.execute(sql)
+                    print(f"Your lockstate updated + {outcome_h[1]}.")
+                    return False
+                else:
+                    return True
+
+            elif rand_event[0][2] > 0:
+                print(fluff)
+                print(f"\nYou need to roll at least {rand_event[0][2]}.")
+                input("Press Enter to roll dice: ")
+                roll = dice_roll()
+                print(f"\nYou rolled {roll}.")
+                if roll > rand_event[0][2]:
+                    sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
+                    cursor.execute(sql)
+                    print(f"Your pp updates {outcome_h[0]}.")
+                    if int(outcome_h[1]) > 0:
+                        sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
+                        cursor.execute(sql)
+                        print(f"Your lockstate updates + {outcome_h[1]}.")
+                        return False
+                    else:
+                        return True
+
+                elif roll < rand_event[0][2]:
+                    sql = f"UPDATE player SET current_pp = current_pp {str(outcome_l[0])} WHERE id = '{playerid}'"
+                    cursor.execute(sql)
+                    print(f"Your pp updates {outcome_l[1]}.")
+                    if int(outcome_l[1]) > 0:
+                        sql = f"UPDATE player SET lockstate = lockstate + {str(outcome_l[1])} WHERE id = '{playerid}'"
+                        cursor.execute(sql)
+                        print(f"Your lockstate updates + {outcome_l[1]}.")
+                        return False
+                    else:
+                        return True
+
+                elif roll > rand_event[0][2]:
+                    sql = f"UPDATE player SET current_pp = current_pp {str(outcome_h[0])} WHERE id = '{playerid}'"
+                    cursor.execute(sql)
+                    print(f"Your pp updates {outcome_h[0]}.")
+                    if int(outcome_h[1]) > 0:
+                        sql = f"UPDATE player SET lockstate = + {str(outcome_h[1])} WHERE id = '{playerid}'"
+                        cursor.execute(sql)
+                        print(f"Your lockstate updates + {outcome_h[1]}.")
+                        return False
+                    else:
+                        return True
+
 
 
 def item_randomizer():
