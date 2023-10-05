@@ -75,7 +75,7 @@ intro()
 
 
 
-user_input = input(f"{Fore.RED}                                        Do you want to run tutorial for this game to get on track?(y/n)").lower()
+user_input = input(f"{Fore.RED}Do you want to run tutorial for this game to get on track?(y/n)").lower()
 if user_input == "y":
     tutorial()
 
