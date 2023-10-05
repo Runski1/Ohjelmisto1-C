@@ -1,7 +1,7 @@
 from functions import *
 from user_input_processor import user_input_processor
 from db_connection import connection
-from Helsinki_Sysmä import helsinki_sysma
+#import Helsinki_Sysma
 
 new_game_selection = input("Start new game (Y/N)").lower()
 if new_game_selection == "y":
@@ -30,7 +30,7 @@ while True:
         round_number = get_round_number()
         current_player = player_table[(round_number-1) % 2]
         if current_player[4] == 1 and current_player[8] == 16:
-            helsinki_sysma(current_player[1])
+            Helsinki_Sysma(current_player[1])
         is_lock = lock_check(str(current_player[0]))
         print(f"\n{current_player[1]} it is your turn!\n")
         if is_lock == "Not locked":
@@ -45,6 +45,6 @@ while True:
         elif is_lock > 0:
             printer(current_player)
             input("\nYou are locked this round. (Press enter to continue: ")
-            lock_reduce(current_player[0])
+            lock_reduce(str(current_player[0]))
             add_to_round_counter()
             continue

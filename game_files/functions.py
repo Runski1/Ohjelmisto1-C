@@ -200,12 +200,10 @@ def get_cities_in_range(travel_mode, player):
 
 
 def lock_reduce(player):
-    if player[3] > 0:
-        sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
-        cursor.execute(sql)
-        print("Player lock updated.")
-    else:
-        return
+    sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
+    cursor.execute(sql)
+    print("Player lock updated.")
+    return
 
 
 def event_randomizer(player):
