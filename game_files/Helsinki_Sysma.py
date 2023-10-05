@@ -40,11 +40,9 @@ def helsinki_sysma(player):
     print(f"{Fore.GREEN}{num_roll2}")
     lost_cities = ("Lohja","Korso","Kerava","Jyväskylä","Pieksämäki","Mellunmäki","Itäkeskus")
 
-
-    time.sleep(1.0)
-    if num_roll == num_roll2:
+    if num_roll != num_roll2:
         victory = (f"                                            {Fore.BLUE}!!!!!!!{Fore.LIGHTYELLOW_EX}****{Fore.RED}{player} OMG YOU MADE IT{Fore.LIGHTYELLOW_EX}**** {Fore.BLUE}!!!!!!!\n"
-                   f"                                      {Fore.BLUE}!!!!!!!{Fore.LIGHTYELLOW_EX}****{Fore.RED}Your name i$ now on te$tament {Fore.LIGHTYELLOW_EX}**** {Fore.BLUE}!!!!!!!\n")
+                   f"                                      {Fore.BLUE}!!!!!!!{Fore.LIGHTYELLOW_EX}****{Fore.RED}Your name i$ on the te$tament now {Fore.LIGHTYELLOW_EX}**** {Fore.BLUE}!!!!!!!\n")
 
         victory2 =  ("\n\n\n\n\n\n\n\n\n"
                     "  /$$$$$$                                                     /$$               /$$             /$$     /$$\n"
