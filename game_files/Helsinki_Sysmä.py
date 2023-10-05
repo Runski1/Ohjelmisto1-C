@@ -49,7 +49,7 @@ if num_roll == num_roll2:
 else:
     print(f"{Fore.BLUE}Your not so loyal Dungo-driver got lost despite of your guiding:´(\n"
           f"You have arrived to {Fore.YELLOW}{random.choice(lost_cities)}\n\n"
-          f"{Fore.RED}You get angry and driver gets you back to Helsinki!!!")
+          f"{Fore.RED}You get angry and your driver gets you back to Helsinki!!!")
 
 
 
