@@ -7,21 +7,14 @@ new_game_selection = input("Start new game (Y/N)").lower()
 if new_game_selection == "y":
     cursor = connection.cursor()
     print(format_database_for_new_game())
-    player1_name = input("Nickname player 1: ")
+    player1_name = str(input("Nickname player 1: ").strip)
     print(f"Player 1 is now known as {player1_name}.")
     sql = "INSERT INTO player SET screen_name = '" + player1_name + "'"
     cursor.execute(sql)
-    player2_name = input("Nickname player 2: ")
+    player2_name = str(input("Nickname player 2: ").strip)
     sql = "INSERT INTO player SET screen_name = '" + player2_name + "'"
     cursor.execute(sql)
     print(f"Player 2 is now known as {player2_name}")
-    # TESTAA BAG GENERATORIA
-    generate_additional_bags()
-    sql = "SELECT * FROM city WHERE bag_city = '1'"
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    for object in result:
-        print(object)
 
 while True:
     player_table = get_player_data_as_list()
