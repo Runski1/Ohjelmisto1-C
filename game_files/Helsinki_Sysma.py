@@ -77,9 +77,7 @@ def helsinki_sysma(player):
         f"You have arrived to {Fore.YELLOW}{random.choice(lost_cities)}\n\n"
         f"{Fore.RED}You get angry and your driver gets you back to Helsinki!!!")
 
-player = "Ville"
 
-helsinki_sysma(player)
 
 
 
