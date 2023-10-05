@@ -248,17 +248,16 @@ def event_randomizer(player):
         else:
             # jos eventissä pitää heittää noppaa heitetään sitä pelaajan avustuksella
             # sen jälkeen testataan onko nopan heitto tarpeeksi iso roll_treshold sarakkeen määräämän arvon perusteella
+            roll = dice_roll()
             if rand_event[0][2] > 0:
                 print(fluff)
                 print(f"\nYou need to roll at least {rand_event[0][2]}.")
                 input("Press Enter to roll dice: ")
-            roll = dice_roll()
-            if rand_event[0][2] > 0:
                 print(f"\nYou rolled {roll}.")
             # jos isompi tai yhtä iso, tehdään näin
             if roll >= rand_event[0][2]:
-                add_pp(outcome_h[0], int(playerid))
-                print(f"Your pp changes {outcome_h[0]}.")
+                add_pp(int(outcome_h[0]), playerid)
+                print(f"Your pp changes are {outcome_h[0]}.")
                 if int(outcome_h[1]) > 0:
                     set_lockstate(0, playerid, outcome_h[1], "diggoo")
                     print(f"Your lockstate updates + {outcome_h[1]}.")
@@ -267,8 +266,8 @@ def event_randomizer(player):
                     return True
             # jos pienempi tehdään näin
             elif roll < rand_event[0][2]:
-                add_pp(outcome_l, int(playerid))
-                print(f"Your pp updates {outcome_l[1]}.")
+                add_pp(int(outcome_l[0]), playerid)
+                print(f"Your pp updates are {outcome_l[1]}.")
                 if int(outcome_l[1]) > 0:
                     set_lockstate(0, playerid, outcome_l[1], "diggoo")
                     print(f"Your lockstate updates + {outcome_l[1]}.")
