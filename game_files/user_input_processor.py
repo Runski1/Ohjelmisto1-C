@@ -26,6 +26,8 @@ def travel_fly(parameter, player):
                 remove_pp(city[4], current_player_id)  # vähennetään lennon hinta pelaajan rahoista
                 print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 input("<Press ENTER to continue>")
+                print(f"You are now in {parameter}.\n")
+                event_randomizer(player)
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
         print("Something is wrong here")
@@ -39,16 +41,30 @@ def travel_sail(parameter, player):
     sorted_available_cities = sorted(available_cities, key=lambda x: x[3])  # lambda-funktio järjestää etäisyyden mukaan
     # pienimmästä etäisyydestä suorimpaan listan saavuttettavissa olevista kaupungeista
     if parameter == "?":  # Tämä tulostaa pelaajalle saavutettavissa olevat kaupungit
-        print_available_cities("boat", sorted_available_cities, current_player_id)
-        return True  # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
+        print("---Available cities where you can sail---\n")
+        for city in sorted_available_cities:
+            if city[5] == 1:  # if-else tulostaa visited tai not visited riippuen kaupungin tilasta
+                visited_status = "visited"
+            else:
+                visited_status = "not visited"
+            # printti muotoituna taulukkomaiseksi, aja funktio niin näet
+            print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} PP {visited_status:>15}")
+        print(f"You have {get_current_pp(current_player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
+        return True
+        # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
     elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
         for city in available_cities:
             if city[1].lower() == parameter:
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
-                print("You begin sailing to " + parameter + ".")  # kuittaus onnistuneesta matkasta
-                input("<Press ENTER to continue>")
-                return False
+                print("You begin your sail to " + parameter + ".")  # kuittaus onnistuneesta matkasta
+                print(f"\nYou are now in {parameter}.")
+                event_randomizer(player)
+                break  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
+        return False
+    else:
+        print("Something is wrong here")
+        return True
 
 
 def travel_hitchhike(parameter, player):
@@ -93,14 +109,35 @@ def search(player):
 
 
 def hire(player):
-    print("NOTE: Look up if player.location is also a bag_city")
-    print("You hire a local detective to look for your grandma's suitcase.")
+    price_multiplier_dict = {
+        "hire": config.get('config', 'HiringPrice')
+    }
+    price_hire = int(price_multiplier_dict["hire"])
+    player_id = str(player[0])
+    print(f"You hire a local detective to look for your grandma's suitcase. Cost is {price_hire}.")
+    yes_no = input("Do you want to hire a detective? y/n: ")
+    if yes_no == "y":
+        player_location = str(player[8])
+        if player[2] > price_hire:
+            remove_pp(price_hire, player[0])
+            sql = "SELECT bag_city FROM city INNER JOIN player ON city.id = player.location"
+            sql += f" WHERE player.location = '{player_location}'"
+            cursor.execute(sql)
+            result = list(cursor.fetchall())
+            if result[0] == 1:
+                sql = f"UPDATE player SET prizeholder = 1 WHERE id = '{player_id}'"
+                cursor.execute(sql)
+                print("You found grandmas luggage!")
+
+            else:
+                print("Nothing found from this airport.")
+
+        elif player[2] < price_hire:
+            print("You dont have enough pp to hire detective.")
+
+    elif yes_no == "n":
+        print("You didnt hire a detective.")
     return True
-    # Checkaa onko player.location bag_city
-    # jos on, playeristä tulee laukunkantaja
-    # player.location ei ole enää bag_city
-    # Tulosta laukun löytyneen
-    # Tämä ei päätä vuoroa
 
 
 def manual(parameter, player):
@@ -131,6 +168,7 @@ def manual(parameter, player):
         }
     print(manual_dictionary[parameter])
     input("<Press ENTER to continue>")
+    return True     # Lisätty perään ettei vuoro vaihdu jos käyttää man toimintoa.
 
 
 def help_function(player):

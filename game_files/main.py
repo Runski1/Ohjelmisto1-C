@@ -28,8 +28,9 @@ while True:
         turn = True
         round_number = get_round_number()
         current_player = player_table[(round_number-1) % 2]
+
         is_lock = lock_check(str(current_player[0]))
-        print(f"{current_player[1]} it is your turn!\n")
+        print(f"\n{current_player[1]} it is your turn!\n")
         if is_lock == "Not locked":
             printer(current_player)  # printteri kutsu HUOM tässä voisi tuoda kaikki tiedot
             while turn:  # HUOM!!!! TÄMÄ LOOP EI TULOSTA PELAAJAN TILAA UUDESTAAN, PITÄISIKÖ ANTAA PELAAJAN KUTSUA
@@ -42,6 +43,6 @@ while True:
 
         elif is_lock > 0:
             printer(current_player)
-            input("\nYou are locked this round. (Press enter to continue: ")
-            lock_reduce(current_player[0])
+            input("\nYou are locked this round. (Press enter to continue)")
+            lock_reduce(current_player)
             continue

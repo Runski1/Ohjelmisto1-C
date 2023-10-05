@@ -78,7 +78,7 @@ def lock_check(player_id):  # Printer ei tarvitse tätä enää, tarvitseeko jok
     sql += " WHERE id = '" + player_id + "';"
     cursor.execute(sql)
     result = cursor.fetchall()
-#    cursor.close()
+    #    cursor.close()
     lock_state = int(result[0][0])
     if lock_state == 0:
         return "Not locked"
@@ -183,6 +183,7 @@ def get_cities_in_range(travel_mode, player):
     player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     if travel_mode == "boat":
         cities = get_ports(cities)
+    player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     player_pp = player[2]
     cities_in_range = []
     for city in cities:
@@ -194,31 +195,107 @@ def get_cities_in_range(travel_mode, player):
     return cities_in_range
 
 
-def lock_reduce(player_id):
-    sql = "UPDATE player SET lockstate = lockstate - 1 WHERE id = '"+player_id+"'"
+def lock_reduce(player):
+    sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
     cursor.execute(sql)
+    print("Player lock updated.")
 
 
-def event_randomizer():
-    sql = "SELECT COUNT(id) FROM random_events;"
+def event_randomizer(player):
+    # Haetaan kaikkien eventtien määrä ja kokeillaan tuleeko eventtiä vai ei
+    sql = "SELECT COUNT(id) FROM random_events"
     cursor.execute(sql)
-    result = cursor.fetchall()
-    len_events = 0
-    if cursor.rowcount > 0:
-        for row in result:
-            len_events = row[0]
-    rand_test = random.randint(1, 6)
-
+    events_sum = cursor.fetchall()
+    rand_test = random.randint(1, 12)
+    playerid = str(player[0])
+    # jos eventtiä ei tule tulostetaan allaoleva
     if rand_test % 2 == 1:
-        print("No events for you m8!")
-        return
+        print("No events for you this time.")
+        return False
+    # jos eventti tulee, haetaan arpomalla eventti kaikkien eventtien joukosta ja käsitellään sitä
+    # niin että outcom_high jaetaan splitillä kahteen osaan ja outcome_lower jaetaan kahteen osaan
+    # sekä tallennetaan fluff teksi muuttujaksi.
     elif rand_test % 2 == 0:
-        randomized_num = random.randint(1, len_events)
-        sql = "SELECT fluff FROM random_events WHERE id = '" + str(randomized_num) + "';"
+        randomized_num = random.randint(1, events_sum[0][0])
+        sql = f"SELECT * FROM random_events WHERE id = {randomized_num}"
         cursor.execute(sql)
-        result = cursor.fetchall()
-        if cursor.rowcount > 0:
-            return result
+        rand_event = cursor.fetchall()
+        outcome_h = rand_event[0][3].split(",")
+        outcome_l = rand_event[0][4].split(",")
+        fluff = rand_event[0][1]
+        # kokeillaan tuleeko pelaaja ryöstetyksi menettäen kaikki pp:nsä
+        # ja tyhjennetään pelaajalta kaikki pp:t
+        if outcome_h[0] == "robbed":
+            print(fluff)
+            sql = f"UPDATE player SET current_pp = current_pp - {player[2]} WHERE id = '{playerid}'"
+            cursor.execute(sql)
+            print(f"Your PP updates to 0.")
+            if int(outcome_h[1]) > 0:
+                sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
+                cursor.execute(sql)
+                print(f"Your lockstate updates to + {outcome_h[1]}.")
+                return False
+
+            return True
+        # jossei pelaajalta ryöstetä kaikkea omaisuutta ruvetaan tutkimaan erinäisiä vaihtoehtoja mitä
+        # eventistä tulee
+        else:
+            if rand_event[0][2] == 0:
+                print(fluff)
+                sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
+                cursor.execute(sql)
+                print(f"\nYour pp updates to {outcome_h[0]}.")
+                if int(outcome_h[1]) > 0:
+                    sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
+                    cursor.execute(sql)
+                    print(f"Your lockstate updated + {outcome_h[1]}.")
+                    return False
+                else:
+                    return True
+            # jos eventissä pitää heittää noppaa heitetään sitä pelaajan avustuksella
+            # sen jälkeen testataan onko nopan heitto tarpeeksi iso roll_treshold sarakkeen määräämän arvon perusteella
+            elif rand_event[0][2] > 0:
+                print(fluff)
+                print(f"\nYou need to roll at least {rand_event[0][2]}.")
+                input("Press Enter to roll dice: ")
+                roll = dice_roll()
+                print(f"\nYou rolled {roll}.")
+                #jos isompi tai yhtäiso tehdään näin
+                if roll >= rand_event[0][2]:
+                    sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
+                    cursor.execute(sql)
+                    print(f"Your pp updates {outcome_h[0]}.")
+                    if int(outcome_h[1]) > 0:
+                        sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
+                        cursor.execute(sql)
+                        print(f"Your lockstate updates + {outcome_h[1]}.")
+                        return False
+                    else:
+                        return True
+                # jos pienempi tehdään näin
+                elif roll < rand_event[0][2]:
+                    sql = f"UPDATE player SET current_pp = current_pp {str(outcome_l[0])} WHERE id = '{playerid}'"
+                    cursor.execute(sql)
+                    print(f"Your pp updates {outcome_l[1]}.")
+                    if int(outcome_l[1]) > 0:
+                        sql = f"UPDATE player SET lockstate = lockstate + {str(outcome_l[1])} WHERE id = '{playerid}'"
+                        cursor.execute(sql)
+                        print(f"Your lockstate updates + {outcome_l[1]}.")
+                        return False
+                    else:
+                        return True
+                # jos suurempi tehdään näin
+                elif roll > rand_event[0][2]:
+                    sql = f"UPDATE player SET current_pp = current_pp {str(outcome_h[0])} WHERE id = '{playerid}'"
+                    cursor.execute(sql)
+                    print(f"Your pp updates {outcome_h[0]}.")
+                    if int(outcome_h[1]) > 0:
+                        sql = f"UPDATE player SET lockstate = + {str(outcome_h[1])} WHERE id = '{playerid}'"
+                        cursor.execute(sql)
+                        print(f"Your lockstate updates + {outcome_h[1]}.")
+                        return False
+                    else:
+                        return True
 
 
 def item_randomizer():
