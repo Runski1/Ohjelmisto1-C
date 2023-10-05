@@ -234,12 +234,10 @@ def event_randomizer(player):
         # ja tyhjennetään pelaajalta kaikki pp:t
         if outcome_h[0] == "robbed":
             print(fluff)
-            sql = f"UPDATE player SET current_pp = current_pp - {player[2]} WHERE id = '{playerid}'"
-            cursor.execute(sql)
-            print(f"Your PP updates to 0.")
+            remove_pp(player[2], player[0])
+            print(f"You have no PP.")
             if int(outcome_h[1]) > 0:
-                sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
-                cursor.execute(sql)
+                # Tähän lockstate
                 print(f"Your lockstate updates to + {outcome_h[1]}.")
                 return False
 
@@ -267,7 +265,7 @@ def event_randomizer(player):
                 input("Press Enter to roll dice: ")
                 roll = dice_roll()
                 print(f"\nYou rolled {roll}.")
-                #jos isompi tai yhtäiso tehdään näin
+                # jos isompi tai yhtä iso, tehdään näin
                 if roll >= rand_event[0][2]:
                     sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
                     cursor.execute(sql)
@@ -368,8 +366,7 @@ def generate_additional_bags():
     not_visited_cities = get_not_visited_city_ids()
     playercount = len(get_player_data_as_list())
     random_cities = random.sample(not_visited_cities, playercount)
-    for id in random_cities:
-        sql = f"UPDATE city SET bag_city = 1 WHERE id = '{id}'"
+    for city_id in random_cities:
+        sql = f"UPDATE city SET bag_city = 1 WHERE id = '{city_id}'"
         cursor.execute(sql)
-
 
