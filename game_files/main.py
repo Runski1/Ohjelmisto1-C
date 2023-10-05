@@ -1,7 +1,7 @@
 from functions import *
 from user_input_processor import user_input_processor
 from db_connection import connection
-from Helsinki_Sysmä import helsinki_sysma
+from Helsinki_Sysma import helsinki_sysma
 
 new_game_selection = input("Start new game (Y/N)").lower()
 if new_game_selection == "y":
