@@ -1,7 +1,7 @@
 from db_connection import connection
 
 #after_end_game
-def ending_check(helsinki_sysmä)
+def ending_check(helsinki_sysmä,player)
     cursor = connection.cursor()
     sql = ("SELECT PLAYER.id, PLAYER.location, PLAYER.prizeholder FROM player INNER JOIN city ON player.location = city.id "
            "WHERE city.NAME = 'Helsinki' and PLAYER.prizeholder= '1';")
