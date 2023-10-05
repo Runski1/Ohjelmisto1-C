@@ -1,6 +1,6 @@
 from db_connection import connection
 from colorama import Fore, Back, Style
-
+import random
 from functions import dice_roll
 #after_end_game
 '''def ending_check(helsinki_sysmä,player)
@@ -41,11 +41,14 @@ input(f"{Fore.BLUE}You have to guide route for your loyal Dungo-driver. If you g
 num_roll2 = dice_roll()
 print(f"{Fore.GREEN}{num_roll2}")
 lost_cities = ("Lohja","Korso","Kerava","Jyväskylä","Pieksämäki","Mellunmäki","Itäkeskus")
+
+
+time.sleep(1.0)
 if num_roll == num_roll2:
     print("win")
 else:
     print(f"{Fore.BLUE}Your not so loyal Dungo-driver got lost despite of your guiding:´(\n"
-          f"You have arrived to {Fore.YELLOW}{lost_cities[0]}\n\n"
+          f"You have arrived to {Fore.YELLOW}{random.choice(lost_cities)}\n\n"
           f"{Fore.RED}You get angry and driver gets you back to Helsinki!!!")
 
 
