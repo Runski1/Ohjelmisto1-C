@@ -229,17 +229,28 @@ def item_randomizer():
     item_name, item_value = result[0]  # tuple unpacker
     return item_name, int(item_value)  # Nämä ovat n. 95% pelkkää arvotonta paskaa
 
-def set_lockstate(distance, player_id, counter):
+def set_lockstate(distance, player_id, counter, travel_type):
     if distance != 0:
-        dice_throw = dice_roll()
-        print("dice throw: " + str(dice_throw))
-        dice_multiplier = config.get("config", "HikeDistanceMultiplier")
-        dice_total = floor(float(dice_multiplier) * distance)
-        print("dice total: " + str(dice_total))
-        lock_amount = dice_total - dice_throw
-        if lock_amount < 0:
-            lock_amount = config.get("config", "MinLockAmount")
-        print("lock amount: " + str(lock_amount))
+        if travel_type == "hike":
+            dice_throw = dice_roll()
+            print("dice throw: " + str(dice_throw))
+            dice_multiplier = config.get("config", "HikeDistanceMultiplier")
+            dice_total = floor(float(dice_multiplier) * distance)
+            print("dice total: " + str(dice_total))
+            lock_amount = dice_total - dice_throw
+            if lock_amount < 0:
+                lock_amount = config.get("config", "MinLockAmountHike")
+            print("lock amount: " + str(lock_amount))
+        elif travel_type == "sail":
+            dice_throw = dice_roll()
+            print("dice throw: " + str(dice_throw))
+            dice_multiplier = config.get("config", "BoatDistanceMultiplier")
+            dice_total = floor(float(dice_multiplier) * distance)
+            print("dice total: " + str(dice_total))
+            lock_amount = dice_total - dice_throw
+            if lock_amount < 0:
+                lock_amount = config.get("config", "MinLockAmountBoat")
+            print("lock amount: " + str(lock_amount))
     if counter != 0:
         lock_amount = counter
         print(lock_amount)

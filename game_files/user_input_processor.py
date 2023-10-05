@@ -46,7 +46,7 @@ def travel_sail(parameter, player):
             if city[1].lower() == parameter:
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
-                set_lockstate(city[3], player[0], 0)
+                set_lockstate(city[3], player[0], 0, "sail")
                 print("You begin sailing to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 input("<Press ENTER to continue>")
                 return False # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
@@ -69,7 +69,7 @@ def travel_hitchhike(parameter, player):
             if city[1].lower() == parameter:
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 print("city dist: " + str(city[3]))
-                set_lockstate(city[3], player[0],0)
+                set_lockstate(city[3], player[0],0, "hike")
                 print("You begin your hitchhike to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 input("<Press ENTER to continue>")
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
