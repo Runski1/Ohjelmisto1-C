@@ -368,3 +368,12 @@ def generate_additional_bags():
         sql = f"UPDATE city SET bag_city = 1 WHERE id = '{city_id}'"
         cursor.execute(sql)
 
+def check_if_in_port(player):
+    query = f"SELECT id FROM city WHERE port_city = '1'"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    for i in result:
+        if player[8] == i:
+            return True
+        else:
+            return False
