@@ -18,7 +18,7 @@ from db_connection import connection
 
 import sys
 import time
-def helsinki_sysmä():
+def helsinki_sysma():
     print("You have arrived to Helsinki! Your grandma lives in Sysmä, so you have to order Dungo-driver to get there.")
     calling_text = [".", "..", "...", "...."]
     for _ in range(2):
@@ -32,6 +32,6 @@ def helsinki_sysmä():
             time.sleep(0.5)
 
 
-helsinki_sysmä()
+helsinki_sysma()
 
     #dice_roll()
