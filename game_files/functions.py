@@ -4,7 +4,10 @@ from db_connection import connection
 from geopy.distance import geodesic
 from math import floor
 from config import config
+
 cursor = connection.cursor()
+
+
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
 # mysql.connector.errors.DatabaseError: 2014 (HY000): Commands out of sync; you can't run this command now
 # -erroriin
@@ -78,7 +81,7 @@ def lock_check(player_id):  # Printer ei tarvitse tätä enää, tarvitseeko jok
     sql += " WHERE id = '" + player_id + "';"
     cursor.execute(sql)
     result = cursor.fetchall()
-#    cursor.close()
+    #    cursor.close()
     lock_state = int(result[0][0])
     if lock_state == 0:
         return "Not locked"
@@ -110,7 +113,7 @@ def get_player_data_as_list():
     sql = "SELECT * FROM player"
     cursor.execute(sql)
     all_from_player_table = cursor.fetchall()
-#    cursor.close()
+    #    cursor.close()
     # Alustetaan lista
     all_from_player_table_as_list = []
     # Muutetaan kaikki data player-taulusta listaksi
@@ -124,13 +127,15 @@ def get_round_number():
     sql = "SELECT counter FROM round_counter"
     cursor.execute(sql)
     result = cursor.fetchone()[0]
-#    cursor.close()
+    #    cursor.close()
     return result
 
 
 def add_to_round_counter():
     sql = "UPDATE round_counter SET counter = counter + 1"
     cursor.execute(sql)
+
+
 #    cursor.close()
 
 
@@ -138,7 +143,7 @@ def get_city_data():
     sql = "SELECT * from city"
     cursor.execute(sql)
     all_from_city = cursor.fetchall()
-#    cursor.close()
+    #    cursor.close()
     all_data_from_city_as_list = []
     for i in range(len(all_from_city)):
         all_data_from_city_as_list.append((list(all_from_city[i])))
@@ -207,14 +212,13 @@ def lock_reduce(player):
 
 
 def event_randomizer(player):
-
     event_multiplier = float(config.get('config', 'RandomEventChance'))
     rand_test = random.uniform(0, 1)
     # Haetaan kaikkien eventtien määrä ja kokeillaan tuleeko eventtiä vai ei
     sql = "SELECT COUNT(id) FROM random_events"
     cursor.execute(sql)
     events_sum = cursor.fetchall()
-    playerid = str(player[0])
+    playerid = player[0]
     # jos eventtiä ei tule tulostetaan allaoleva
     if rand_test > event_multiplier:
         print("No events for you this time.")
@@ -241,7 +245,8 @@ def event_randomizer(player):
                 print(f"Your lockstate updates to + {outcome_h[1]}.")
                 return False
 
-            return True
+            else:
+                return True
         # jossei pelaajalta ryöstetä kaikkea omaisuutta ruvetaan tutkimaan erinäisiä vaihtoehtoja mitä
         # eventistä tulee
         else:
@@ -290,17 +295,6 @@ def event_randomizer(player):
                     else:
                         return True
                 # jos suurempi tehdään näin
-                elif roll > rand_event[0][2]:
-                    sql = f"UPDATE player SET current_pp = current_pp {str(outcome_h[0])} WHERE id = '{playerid}'"
-                    cursor.execute(sql)
-                    print(f"Your pp updates {outcome_h[0]}.")
-                    if int(outcome_h[1]) > 0:
-                        sql = f"UPDATE player SET lockstate = + {str(outcome_h[1])} WHERE id = '{playerid}'"
-                        cursor.execute(sql)
-                        print(f"Your lockstate updates + {outcome_h[1]}.")
-                        return False
-                    else:
-                        return True
 
 
 def item_randomizer():
@@ -311,7 +305,9 @@ def item_randomizer():
     item_name, item_value = result[0]  # tuple unpacker
     return item_name, int(item_value)  # Nämä ovat n. 95% pelkkää arvotonta paskaa
 
+
 def determine_travel_lock_amount(distance, travel_type):
+    travel_lock_amount = 0
     if travel_type == "hike":
         if distance <= 300:
             travel_lock_amount = 1
@@ -333,7 +329,9 @@ def determine_travel_lock_amount(distance, travel_type):
             travel_lock_amount += random.randint(2, 3)
     return travel_lock_amount
 
+
 def set_lockstate(distance, player_id, counter, travel_type):
+    lock_amount = 0
     if distance != 0:
         lock_amount = determine_travel_lock_amount(distance, travel_type)
     if counter != 0:
@@ -369,4 +367,3 @@ def generate_additional_bags():
     for city_id in random_cities:
         sql = f"UPDATE city SET bag_city = 1 WHERE id = '{city_id}'"
         cursor.execute(sql)
-
