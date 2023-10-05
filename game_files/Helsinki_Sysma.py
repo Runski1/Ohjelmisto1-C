@@ -42,7 +42,7 @@ def helsinki_sysma(player):
 
     if num_roll != num_roll2:
         victory = (f"                                            {Fore.BLUE}!!!!!!!{Fore.LIGHTYELLOW_EX}****{Fore.RED}{player} OMG YOU MADE IT{Fore.LIGHTYELLOW_EX}**** {Fore.BLUE}!!!!!!!\n"
-                   f"                                      {Fore.BLUE}!!!!!!!{Fore.LIGHTYELLOW_EX}****{Fore.RED}Your name i$ on the te$tament now {Fore.LIGHTYELLOW_EX}**** {Fore.BLUE}!!!!!!!\n")
+                   f"                                      {Fore.BLUE}!!!!!!!{Fore.LIGHTYELLOW_EX}****{Fore.RED}Your name i$ on the te$tament now{Fore.LIGHTYELLOW_EX}**** {Fore.BLUE}!!!!!!!\n")
 
         victory2 =  ("\n\n\n\n\n\n\n\n\n"
                     "  /$$$$$$                                                     /$$               /$$             /$$     /$$\n"
