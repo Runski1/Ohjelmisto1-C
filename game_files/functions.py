@@ -98,13 +98,14 @@ def printer(player):
     print(f"Current PP: {current_pp}")
     print(f"Location: {current_location}")
     if player[4] > 0:
-        print(f"You have grandma's luggage!")
+        print(f"Take your grandma's luggage back to her at Sysma!")
     else:
-        print("You dont have grandma's luggage.")
+        print("Find your grandma's luggage.")
     if lock_status == 0:
         print("Lock state: not locked")
     else:
         print(f"Lock state: locked for {lock_status} turns")
+    return True
 
 
 def get_player_data_as_list():

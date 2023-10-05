@@ -182,6 +182,7 @@ def help_function(player):
 
 command_dictionary = {
     'help': help_function,
+    'status': printer,
     'fly': travel_fly,
     'sail': travel_sail,
     'hike': travel_hitchhike,
@@ -192,7 +193,7 @@ command_dictionary = {
     'man': manual
 }
 # Tuodaan käyttäjän kutsuttavat funktiot ajoa varten, ne on kirjoitettu eri fileen selkeyden takia.
-commands_without_parameter = ["search", "hire", "help", "exit"]
+commands_without_parameter = ["status","search", "hire", "help", "exit"]
 # Koska osa funktioista kutsutaan parametrin kanssa, tämä väistää errorin käytettäessä listattuja funktioita
 
 
