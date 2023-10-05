@@ -36,6 +36,11 @@ def travel_fly(parameter, player):
 
 
 def travel_sail(parameter, player):
+    while check_if_in_port(player) == True:
+        break
+    else:
+        print("You are not in a port city, thus you cannot sail")
+        return True
     # player-muuttujassa tuodaan koko vuorossa olevan pelaajan rivi tietokannasta
     current_player_id = str(player[0])  # pelaajan id stringinä
     available_cities = get_cities_in_range("boat", player)  # boat-parametri tätä funktiota varten

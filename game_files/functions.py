@@ -4,10 +4,7 @@ from db_connection import connection
 from geopy.distance import geodesic
 from math import floor
 from config import config
-
 cursor = connection.cursor()
-
-
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
 # mysql.connector.errors.DatabaseError: 2014 (HY000): Commands out of sync; you can't run this command now
 # -erroriin
@@ -241,60 +238,43 @@ def event_randomizer(player):
             remove_pp(player[2], player[0])
             print(f"You have no PP.")
             if int(outcome_h[1]) > 0:
-                # Tähän lockstate
+                set_lockstate(0, player[0], outcome_h[1], "diggoo")
                 print(f"Your lockstate updates to + {outcome_h[1]}.")
                 return False
-
             else:
                 return True
         # jossei pelaajalta ryöstetä kaikkea omaisuutta ruvetaan tutkimaan erinäisiä vaihtoehtoja mitä
         # eventistä tulee
         else:
-            if rand_event[0][2] == 0:
-                print(fluff)
-                sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
-                cursor.execute(sql)
-                print(f"\nYour pp updates to {outcome_h[0]}.")
-                if int(outcome_h[1]) > 0:
-                    sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
-                    cursor.execute(sql)
-                    print(f"Your lockstate updated + {outcome_h[1]}.")
-                    return False
-                else:
-                    return True
             # jos eventissä pitää heittää noppaa heitetään sitä pelaajan avustuksella
             # sen jälkeen testataan onko nopan heitto tarpeeksi iso roll_treshold sarakkeen määräämän arvon perusteella
-            elif rand_event[0][2] > 0:
+            if rand_event[0][2] > 0:
                 print(fluff)
                 print(f"\nYou need to roll at least {rand_event[0][2]}.")
                 input("Press Enter to roll dice: ")
-                roll = dice_roll()
+            roll = dice_roll()
+            if rand_event[0][2] > 0:
                 print(f"\nYou rolled {roll}.")
-                # jos isompi tai yhtä iso, tehdään näin
-                if roll >= rand_event[0][2]:
-                    sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
-                    cursor.execute(sql)
-                    print(f"Your pp updates {outcome_h[0]}.")
-                    if int(outcome_h[1]) > 0:
-                        sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
-                        cursor.execute(sql)
-                        print(f"Your lockstate updates + {outcome_h[1]}.")
-                        return False
-                    else:
-                        return True
-                # jos pienempi tehdään näin
-                elif roll < rand_event[0][2]:
-                    sql = f"UPDATE player SET current_pp = current_pp {str(outcome_l[0])} WHERE id = '{playerid}'"
-                    cursor.execute(sql)
-                    print(f"Your pp updates {outcome_l[1]}.")
-                    if int(outcome_l[1]) > 0:
-                        sql = f"UPDATE player SET lockstate = lockstate + {str(outcome_l[1])} WHERE id = '{playerid}'"
-                        cursor.execute(sql)
-                        print(f"Your lockstate updates + {outcome_l[1]}.")
-                        return False
-                    else:
-                        return True
-                # jos suurempi tehdään näin
+            # jos isompi tai yhtä iso, tehdään näin
+            if roll >= rand_event[0][2]:
+                add_pp(outcome_h[0], int(playerid))
+                print(f"Your pp changes {outcome_h[0]}.")
+                if int(outcome_h[1]) > 0:
+                    set_lockstate(0, playerid, outcome_h[1], "diggoo")
+                    print(f"Your lockstate updates + {outcome_h[1]}.")
+                    return False
+                else:
+                    return True
+            # jos pienempi tehdään näin
+            elif roll < rand_event[0][2]:
+                add_pp(outcome_l, int(playerid))
+                print(f"Your pp updates {outcome_l[1]}.")
+                if int(outcome_l[1]) > 0:
+                    set_lockstate(0, playerid, outcome_l[1], "diggoo")
+                    print(f"Your lockstate updates + {outcome_l[1]}.")
+                    return False
+                else:
+                    return True
 
 
 def item_randomizer():
@@ -367,3 +347,13 @@ def generate_additional_bags():
     for city_id in random_cities:
         sql = f"UPDATE city SET bag_city = 1 WHERE id = '{city_id}'"
         cursor.execute(sql)
+
+def check_if_in_port(player):
+    query = f"SELECT id FROM city WHERE port_city = '1'"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    for i in result:
+        if player[8] == i:
+            return True
+        else:
+            return False
