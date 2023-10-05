@@ -94,15 +94,20 @@ def printer(player):
     print(f"Name: {player[1]}")
     print(f"Current PP: {current_pp}")
     print(f"Location: {current_location}")
+    if player[4] > 0:
+        print(f"Take your grandma's luggage back to her at Sysma!")
+    else:
+        print("Find your grandma's luggage.")
     if lock_status == 0:
         print("Lock state: not locked")
     else:
         print(f"Lock state: locked for {lock_status} turns")
+    return True
 
 
 def get_player_data_as_list():
     # SQL-kyselyllä kaikki player-taulusta
-    sql = "SELECT * FROM player;"
+    sql = "SELECT * FROM player"
     cursor.execute(sql)
     all_from_player_table = cursor.fetchall()
 #    cursor.close()
@@ -116,7 +121,7 @@ def get_player_data_as_list():
 
 
 def get_round_number():
-    sql = "SELECT counter FROM round_counter;"
+    sql = "SELECT counter FROM round_counter"
     cursor.execute(sql)
     result = cursor.fetchone()[0]
 #    cursor.close()
@@ -130,7 +135,7 @@ def add_to_round_counter():
 
 
 def get_city_data():
-    sql = "SELECT * from city;"
+    sql = "SELECT * from city"
     cursor.execute(sql)
     all_from_city = cursor.fetchall()
 #    cursor.close()
@@ -183,7 +188,6 @@ def get_cities_in_range(travel_mode, player):
     player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     if travel_mode == "boat":
         cities = get_ports(cities)
-    player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     player_pp = player[2]
     cities_in_range = []
     for city in cities:
@@ -196,9 +200,12 @@ def get_cities_in_range(travel_mode, player):
 
 
 def lock_reduce(player):
-    sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
-    cursor.execute(sql)
-    print("Player lock updated.")
+    if player[3] > 0:
+        sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
+        cursor.execute(sql)
+        print("Player lock updated.")
+    else:
+        return
 
 
 def event_randomizer(player):
@@ -227,12 +234,10 @@ def event_randomizer(player):
         # ja tyhjennetään pelaajalta kaikki pp:t
         if outcome_h[0] == "robbed":
             print(fluff)
-            sql = f"UPDATE player SET current_pp = current_pp - {player[2]} WHERE id = '{playerid}'"
-            cursor.execute(sql)
-            print(f"Your PP updates to 0.")
+            remove_pp(player[2], player[0])
+            print(f"You have no PP.")
             if int(outcome_h[1]) > 0:
-                sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
-                cursor.execute(sql)
+                # Tähän lockstate
                 print(f"Your lockstate updates to + {outcome_h[1]}.")
                 return False
 
@@ -260,7 +265,7 @@ def event_randomizer(player):
                 input("Press Enter to roll dice: ")
                 roll = dice_roll()
                 print(f"\nYou rolled {roll}.")
-                #jos isompi tai yhtäiso tehdään näin
+                # jos isompi tai yhtä iso, tehdään näin
                 if roll >= rand_event[0][2]:
                     sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
                     cursor.execute(sql)
@@ -328,8 +333,7 @@ def generate_additional_bags():
     not_visited_cities = get_not_visited_city_ids()
     playercount = len(get_player_data_as_list())
     random_cities = random.sample(not_visited_cities, playercount)
-    for id in random_cities:
-        sql = f"UPDATE city SET bag_city = 1 WHERE id = '{id}'"
+    for city_id in random_cities:
+        sql = f"UPDATE city SET bag_city = 1 WHERE id = '{city_id}'"
         cursor.execute(sql)
-
 

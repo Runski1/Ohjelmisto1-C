@@ -7,11 +7,11 @@ new_game_selection = input("Start new game (Y/N)").lower()
 if new_game_selection == "y":
     cursor = connection.cursor()
     print(format_database_for_new_game())
-    player1_name = str(input("Nickname player 1: ").strip)
+    player1_name = input("Nickname player 1: ")
     print(f"Player 1 is now known as {player1_name}.")
     sql = "INSERT INTO player SET screen_name = '" + player1_name + "'"
     cursor.execute(sql)
-    player2_name = str(input("Nickname player 2: ").strip)
+    player2_name = input("Nickname player 2: ")
     sql = "INSERT INTO player SET screen_name = '" + player2_name + "'"
     cursor.execute(sql)
     print(f"Player 2 is now known as {player2_name}")
@@ -32,7 +32,6 @@ while True:
                 # MIRON PRINTTERIÄ UUDESTAAN?
                 choice = input("\nWhat would you like to do: ")
                 turn = user_input_processor(choice, current_player)
-                # print(round_number)
 
             add_to_round_counter()
 

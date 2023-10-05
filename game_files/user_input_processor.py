@@ -41,15 +41,7 @@ def travel_sail(parameter, player):
     sorted_available_cities = sorted(available_cities, key=lambda x: x[3])  # lambda-funktio järjestää etäisyyden mukaan
     # pienimmästä etäisyydestä suorimpaan listan saavuttettavissa olevista kaupungeista
     if parameter == "?":  # Tämä tulostaa pelaajalle saavutettavissa olevat kaupungit
-        print("---Available cities where you can sail---\n")
-        for city in sorted_available_cities:
-            if city[5] == 1:  # if-else tulostaa visited tai not visited riippuen kaupungin tilasta
-                visited_status = "visited"
-            else:
-                visited_status = "not visited"
-            # printti muotoituna taulukkomaiseksi, aja funktio niin näet
-            print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} PP {visited_status:>15}")
-        print(f"You have {get_current_pp(current_player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
+        print_available_cities("boat", sorted_available_cities, current_player_id)
         return True
         # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
     elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
@@ -130,7 +122,7 @@ def hire(player):
                 print("You found grandmas luggage!")
 
             else:
-                print("Nothing found from this airport.")
+                print("Nothing found from this city.")
 
         elif player[2] < price_hire:
             print("You dont have enough pp to hire detective.")
@@ -182,6 +174,7 @@ def help_function(player):
 
 command_dictionary = {
     'help': help_function,
+    'status': printer,
     'fly': travel_fly,
     'sail': travel_sail,
     'hike': travel_hitchhike,
@@ -192,7 +185,7 @@ command_dictionary = {
     'man': manual
 }
 # Tuodaan käyttäjän kutsuttavat funktiot ajoa varten, ne on kirjoitettu eri fileen selkeyden takia.
-commands_without_parameter = ["search", "hire", "help", "exit"]
+commands_without_parameter = ["status","search", "hire", "help", "exit"]
 # Koska osa funktioista kutsutaan parametrin kanssa, tämä väistää errorin käytettäessä listattuja funktioita
 
 
