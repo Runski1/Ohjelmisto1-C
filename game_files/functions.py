@@ -78,7 +78,7 @@ def lock_check(player_id):  # Printer ei tarvitse tätä enää, tarvitseeko jok
     sql += " WHERE id = '" + player_id + "';"
     cursor.execute(sql)
     result = cursor.fetchall()
-    #    cursor.close()
+#    cursor.close()
     lock_state = int(result[0][0])
     if lock_state == 0:
         return "Not locked"
@@ -188,7 +188,6 @@ def get_cities_in_range(travel_mode, player):
     player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     if travel_mode == "boat":
         cities = get_ports(cities)
-    player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     player_pp = player[2]
     cities_in_range = []
     for city in cities:
@@ -201,12 +200,10 @@ def get_cities_in_range(travel_mode, player):
 
 
 def lock_reduce(player):
-    if player[3] > 0:
-        sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{str(player[0])}'"
-        cursor.execute(sql)
-        print("Player lock updated.")
-    else:
-        return
+    sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
+    cursor.execute(sql)
+    print("Player lock updated.")
+    return
 
 
 def event_randomizer(player):
@@ -315,6 +312,39 @@ def item_randomizer():
     result = cursor.fetchall()
     item_name, item_value = result[0]  # tuple unpacker
     return item_name, int(item_value)  # Nämä ovat n. 95% pelkkää arvotonta paskaa
+
+def determine_travel_lock_amount(distance, travel_type):
+    if travel_type == "hike":
+        if distance <= 300:
+            travel_lock_amount = 1
+            travel_lock_amount += random.randint(0, 2)
+        if distance <= 600:
+            travel_lock_amount = 1
+            travel_lock_amount += random.randint(2, 3)
+        if distance <= 1000:
+            travel_lock_amount = 2
+            travel_lock_amount += random.randint(2, 3)
+    elif travel_type == "sail":
+        if distance <= 300:
+            travel_lock_amount = random.randint(1, 2)
+        if distance <= 600:
+            travel_lock_amount = 1
+            travel_lock_amount += random.randint(1, 2)
+        if distance <= 1000:
+            travel_lock_amount = 1
+            travel_lock_amount += random.randint(2, 3)
+    return travel_lock_amount
+
+def set_lockstate(distance, player_id, counter, travel_type):
+    if distance != 0:
+        lock_amount = determine_travel_lock_amount(distance, travel_type)
+    if counter != 0:
+        lock_amount = counter
+        print(lock_amount)
+    print("lock amount: " + str(lock_amount))
+    query = f"UPDATE player SET lockstate = '{lock_amount}' WHERE id = '{player_id}'"
+    cursor.execute(query)
+    return
 
 
 def get_not_visited_city_ids():
