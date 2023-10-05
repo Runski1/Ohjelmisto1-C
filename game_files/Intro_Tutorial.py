@@ -68,14 +68,14 @@ def intro():
             "                   |*** she's carrying with her just in case. Your goal is to track down grandma's lost luggage because  ***|\n"
             "                   |***** you may have the opportunity to get your name into the testament after returning it to her.  *****|\n"
             "                   |________________________________________________________________________________________________________|\n"
-            f"                             {Fore.GREEN}This is a text based adventure game where you can make your actions by typing them.\n"
-            f"                             {Fore.GREEN}                                   More info in tutorial                           \n")
+            f"                                {Fore.GREEN}This is a text based adventure game where you can make your actions by typing them.\n"
+            f"                             {Fore.GREEN}                             More info in tutorial                           \n")
     return intro_text, intro_text2
 intro()
 
 
 
-user_input = input(f"{Fore.RED}Do you want to run tutorial for this game to get on track?(y/n)").lower()
+user_input = input(f"{Fore.RED}                                        Do you want to run tutorial for this game to get on track?(y/n)").lower()
 if user_input == "y":
     tutorial()
 
