@@ -35,6 +35,11 @@ def travel_fly(parameter, player):
 
 
 def travel_sail(parameter, player):
+    while check_if_in_port(player) == True:
+        break
+    else:
+        print("You are not in a port city, thus you cannot sail")
+        return True
     # player-muuttujassa tuodaan koko vuorossa olevan pelaajan rivi tietokannasta
     current_player_id = str(player[0])  # pelaajan id stringinä
     available_cities = get_cities_in_range("boat", player)  # boat-parametri tätä funktiota varten
@@ -50,8 +55,10 @@ def travel_sail(parameter, player):
                 remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
                 set_lockstate(city[3], player[0], 0, "sail")
                 print("You begin sailing to " + parameter + ".")  # kuittaus onnistuneesta matkasta
+                event_randomizer(player)
                 input("<Press ENTER to continue>")
-                return False # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
+                break
+        return False # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
         print("Something is wrong here")
         return True
@@ -73,6 +80,7 @@ def travel_hitchhike(parameter, player):
                 print("city dist: " + str(city[3]))
                 set_lockstate(city[3], player[0],0, "hike")
                 print("You begin your hitchhike to " + parameter + ".")  # kuittaus onnistuneesta matkasta
+                event_randomizer(player)
                 input("<Press ENTER to continue>")
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
