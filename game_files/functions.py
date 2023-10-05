@@ -235,70 +235,43 @@ def event_randomizer(player):
             remove_pp(player[2], player[0])
             print(f"You have no PP.")
             if int(outcome_h[1]) > 0:
-                # Tähän lockstate
+                set_lockstate(0, player[0], outcome_h[1], "diggoo")
                 print(f"Your lockstate updates to + {outcome_h[1]}.")
                 return False
-
-            return True
+            else:
+                return True
         # jossei pelaajalta ryöstetä kaikkea omaisuutta ruvetaan tutkimaan erinäisiä vaihtoehtoja mitä
         # eventistä tulee
         else:
-            if rand_event[0][2] == 0:
-                print(fluff)
-                sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
-                cursor.execute(sql)
-                print(f"\nYour pp updates to {outcome_h[0]}.")
-                if int(outcome_h[1]) > 0:
-                    sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
-                    cursor.execute(sql)
-                    print(f"Your lockstate updated + {outcome_h[1]}.")
-                    return False
-                else:
-                    return True
             # jos eventissä pitää heittää noppaa heitetään sitä pelaajan avustuksella
             # sen jälkeen testataan onko nopan heitto tarpeeksi iso roll_treshold sarakkeen määräämän arvon perusteella
-            elif rand_event[0][2] > 0:
+            if rand_event[0][2] > 0:
                 print(fluff)
                 print(f"\nYou need to roll at least {rand_event[0][2]}.")
                 input("Press Enter to roll dice: ")
-                roll = dice_roll()
+            roll = dice_roll()
+            if rand_event[0][2] > 0:
                 print(f"\nYou rolled {roll}.")
-                # jos isompi tai yhtä iso, tehdään näin
-                if roll >= rand_event[0][2]:
-                    sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
-                    cursor.execute(sql)
-                    print(f"Your pp updates {outcome_h[0]}.")
-                    if int(outcome_h[1]) > 0:
-                        sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
-                        cursor.execute(sql)
-                        print(f"Your lockstate updates + {outcome_h[1]}.")
-                        return False
-                    else:
-                        return True
-                # jos pienempi tehdään näin
-                elif roll < rand_event[0][2]:
-                    sql = f"UPDATE player SET current_pp = current_pp {str(outcome_l[0])} WHERE id = '{playerid}'"
-                    cursor.execute(sql)
-                    print(f"Your pp updates {outcome_l[1]}.")
-                    if int(outcome_l[1]) > 0:
-                        sql = f"UPDATE player SET lockstate = lockstate + {str(outcome_l[1])} WHERE id = '{playerid}'"
-                        cursor.execute(sql)
-                        print(f"Your lockstate updates + {outcome_l[1]}.")
-                        return False
-                    else:
-                        return True
-                # jos suurempi tehdään näin
-                elif roll > rand_event[0][2]:
-                    sql = f"UPDATE player SET current_pp = current_pp {str(outcome_h[0])} WHERE id = '{playerid}'"
-                    cursor.execute(sql)
-                    print(f"Your pp updates {outcome_h[0]}.")
-                    if int(outcome_h[1]) > 0:
-                        sql = f"UPDATE player SET lockstate = + {str(outcome_h[1])} WHERE id = '{playerid}'"
-                        cursor.execute(sql)
-                        print(f"Your lockstate updates + {outcome_h[1]}.")
-                        return False
-                    else:
-                        return True
+            # jos isompi tai yhtä iso, tehdään näin
+            if roll >= rand_event[0][2]:
+                add_pp(outcome_h[0], int(playerid))
+                print(f"Your pp changes {outcome_h[0]}.")
+                if int(outcome_h[1]) > 0:
+                    set_lockstate(0, playerid, outcome_h[1], "diggoo")
+                    print(f"Your lockstate updates + {outcome_h[1]}.")
+                    return False
+                else:
+                    return True
+            # jos pienempi tehdään näin
+            elif roll < rand_event[0][2]:
+                add_pp(outcome_l, int(playerid))
+                print(f"Your pp updates {outcome_l[1]}.")
+                if int(outcome_l[1]) > 0:
+                    set_lockstate(0, playerid, outcome_l[1], "diggoo")
+                    print(f"Your lockstate updates + {outcome_l[1]}.")
+                    return False
+                else:
+                    return True
 
 
 def item_randomizer():
@@ -309,7 +282,9 @@ def item_randomizer():
     item_name, item_value = result[0]  # tuple unpacker
     return item_name, int(item_value)  # Nämä ovat n. 95% pelkkää arvotonta paskaa
 
+
 def determine_travel_lock_amount(distance, travel_type):
+    travel_lock_amount = 0
     if travel_type == "hike":
         if distance <= 300:
             travel_lock_amount = 1
@@ -331,7 +306,9 @@ def determine_travel_lock_amount(distance, travel_type):
             travel_lock_amount += random.randint(2, 3)
     return travel_lock_amount
 
+
 def set_lockstate(distance, player_id, counter, travel_type):
+    lock_amount = 0
     if distance != 0:
         lock_amount = determine_travel_lock_amount(distance, travel_type)
     if counter != 0:

@@ -1,6 +1,7 @@
 from functions import *
 from db_connection import connection
 from config import config
+
 cursor = connection.cursor()
 
 
@@ -58,7 +59,7 @@ def travel_sail(parameter, player):
                 event_randomizer(player)
                 input("<Press ENTER to continue>")
                 break
-        return False # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
+        return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
         print("Something is wrong here")
         return True
@@ -78,7 +79,7 @@ def travel_hitchhike(parameter, player):
             if city[1].lower() == parameter:
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 print("city dist: " + str(city[3]))
-                set_lockstate(city[3], player[0],0, "hike")
+                set_lockstate(city[3], player[0], 0, "hike")
                 print("You begin your hitchhike to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 event_randomizer(player)
                 input("<Press ENTER to continue>")
@@ -104,7 +105,7 @@ def search(player):
            f"city.id = player.location and player.screen_name = '{player[1]}'")
     cursor.execute(sql)
     result = cursor.fetchall()
-    if result[0] == 1:
+    if result[0][0] == 1:
         print('Congratulation you have found grandma`s lost luggage!!! Be fast and head back to Helsinki before anyone '
               ' else does!')
     else:
@@ -155,9 +156,9 @@ def manual(parameter, player):
     manual_dictionary = {
         'help': "[help] prints all available user commands.",
         'fly': "You can fly to another city with command [fly]. To show all available\n"
-                "destinations and prices use [fly ?]. To start flying to the city of your choosing\n"
-                "type [fly 'city_name'].\n"
-                "Flying is the fastest form of travel and ",
+               "destinations and prices use [fly ?]. To start flying to the city of your choosing\n"
+               "type [fly 'city_name'].\n"
+               "Flying is the fastest form of travel and ",
         'sail': "You can sail to another city with command [sail]. To show all available\n"
                 "destinations, prices and how many turns the trip will take, type [sail ?].\n"
                 " To start sailing to the city of your choosing, type [sail 'city_name'].",
@@ -168,17 +169,17 @@ def manual(parameter, player):
         'hire': "You can [hire] a private detective to search for grandma's suitcase. Hiring a detective will cost\n"
                 "you " + config.get('config', 'HiringPrice') + " PP. If you hire one, you wont use your turn, but you "
                                                                "also cannot find any cool stuff you might \n"
-                "come by when searching yourself.",
+                                                               "come by when searching yourself.",
         'work': "This is a placeholder for work manual entry. Work has not been yet implemented to the game.",
         'search': "You can [search] for grandma's suitcase in your current location. Searching for yourself will\n"
                   "also end your turn, but you can find lots of cool stuff when searching yourself. If you dont wish\n"
                   "to use your turn to search, you can [hire] a private detective instead.",
         'exit': "[exit] will end the game running and hopefully save your progress.",
         'man': "You dirty bastard, trying to break me are you?"
-        }
+    }
     print(manual_dictionary[parameter])
     input("<Press ENTER to continue>")
-    return True     # Lisätty perään ettei vuoro vaihdu jos käyttää man toimintoa.
+    return True  # Lisätty perään ettei vuoro vaihdu jos käyttää man toimintoa.
 
 
 def help_function(player):
@@ -203,7 +204,9 @@ command_dictionary = {
     'man': manual
 }
 # Tuodaan käyttäjän kutsuttavat funktiot ajoa varten, ne on kirjoitettu eri fileen selkeyden takia.
-commands_without_parameter = ["status","search", "hire", "help", "exit"]
+commands_without_parameter = ["status", "search", "hire", "help", "exit"]
+
+
 # Koska osa funktioista kutsutaan parametrin kanssa, tämä väistää errorin käytettäessä listattuja funktioita
 
 
