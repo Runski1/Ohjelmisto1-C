@@ -176,7 +176,7 @@ def help_function(player):
     print("You can use these commands:")
     for key in command_dictionary.keys():
         print(key)
-    print("For more information about a certain command, type [man command].")
+    print("For more information about a certain command, type [man 'command'].")
     return True
 
 
@@ -200,7 +200,7 @@ commands_without_parameter = ["status","search", "hire", "help", "exit"]
 def user_input_processor(input_string, current_player):
     # Tämä funktio käsittelee käyttäjäsyötteen:
     # splittaa välilyönnistä listaksi
-    input_as_list = input_string.lower().split()
+    input_as_list = input_string.lower().strip().split()
     # etsii listan ensimmäistä alkiota vastaavaa arvoa command_dictionarysta
     selected_function = command_dictionary[input_as_list[0]]
     # Jos käyttäjä ei antanut parametria:

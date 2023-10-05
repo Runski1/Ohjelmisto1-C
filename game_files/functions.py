@@ -4,10 +4,7 @@ from db_connection import connection
 from geopy.distance import geodesic
 from math import floor
 from config import config
-
 cursor = connection.cursor()
-
-
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
 # mysql.connector.errors.DatabaseError: 2014 (HY000): Commands out of sync; you can't run this command now
 # -erroriin
@@ -113,7 +110,7 @@ def get_player_data_as_list():
     sql = "SELECT * FROM player"
     cursor.execute(sql)
     all_from_player_table = cursor.fetchall()
-    #    cursor.close()
+#    cursor.close()
     # Alustetaan lista
     all_from_player_table_as_list = []
     # Muutetaan kaikki data player-taulusta listaksi
@@ -127,15 +124,13 @@ def get_round_number():
     sql = "SELECT counter FROM round_counter"
     cursor.execute(sql)
     result = cursor.fetchone()[0]
-    #    cursor.close()
+#    cursor.close()
     return result
 
 
 def add_to_round_counter():
     sql = "UPDATE round_counter SET counter = counter + 1"
     cursor.execute(sql)
-
-
 #    cursor.close()
 
 
@@ -143,7 +138,7 @@ def get_city_data():
     sql = "SELECT * from city"
     cursor.execute(sql)
     all_from_city = cursor.fetchall()
-    #    cursor.close()
+#    cursor.close()
     all_data_from_city_as_list = []
     for i in range(len(all_from_city)):
         all_data_from_city_as_list.append((list(all_from_city[i])))
@@ -193,6 +188,7 @@ def get_cities_in_range(travel_mode, player):
     player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     if travel_mode == "boat":
         cities = get_ports(cities)
+    player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     player_pp = player[2]
     cities_in_range = []
     for city in cities:
@@ -317,3 +313,31 @@ def item_randomizer():
     result = cursor.fetchall()
     item_name, item_value = result[0]  # tuple unpacker
     return item_name, int(item_value)  # Nämä ovat n. 95% pelkkää arvotonta paskaa
+
+
+def get_not_visited_city_ids():
+    sql = "SELECT id FROM city WHERE visited = '0'"
+    cursor.execute(sql)
+    cities = cursor.fetchall()
+    result = []
+    for city in cities:
+        result.append(city[0])
+    return result
+
+
+def generate_main_bag():
+    not_visited_cities = get_not_visited_city_ids()
+    random_city = random.choice(not_visited_cities)
+    sql = f"UPDATE city SET bag_city = 1 WHERE id = '{random_city}'"
+    cursor.execute(sql)
+
+
+def generate_additional_bags():
+    not_visited_cities = get_not_visited_city_ids()
+    playercount = len(get_player_data_as_list())
+    random_cities = random.sample(not_visited_cities, playercount)
+    for id in random_cities:
+        sql = f"UPDATE city SET bag_city = 1 WHERE id = '{id}'"
+        cursor.execute(sql)
+
+

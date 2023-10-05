@@ -1,10 +1,10 @@
 from db_connection import connection
 
 #after_end_game
-def ending_check(helsinki_sysmä,player)
+def ending_check(helsinki_sysmä,player):
     cursor = connection.cursor()
-    sql = ("SELECT PLAYER.id FROM player INNER JOIN city ON player.location = city.id "
-           "WHERE city.NAME = 'Helsinki' and PLAYER.prizeholder= '1'")
+    sql = ("SELECT player.id FROM player INNER JOIN city ON player.location = city.id "
+           "WHERE city.name = 'Helsinki' and player.prizeholder= '1'")
     cursor.execute(sql)
     result = cursor.fetchall()
 
@@ -13,4 +13,5 @@ def ending_check(helsinki_sysmä,player)
         helsinki_sysmä()
     else:
         False
-def helsinki_sysmä():
+def helsinki_sysma(player_id):
+    # this article is a stub.
