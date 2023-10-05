@@ -20,8 +20,8 @@ from functions import dice_roll
 
 import sys
 import time
-def helsinki_sysma():
-    print(f"{Fore.BLUE}You have arrived in Helsinki! Your grandma lives in Sysmä, so you have to order a Dungo-driver to get there.")
+def helsinki_sysma(player):
+    print(f"{Fore.BLUE}{player} you have arrived in Helsinki! Your grandma lives in Sysmä, so you have to order a Dungo-driver to get there.")
     calling_text = [".", "..", "...", "...."]
     for _ in range(2):
         for text in calling_text:
@@ -42,9 +42,12 @@ def helsinki_sysma():
 
 
     time.sleep(1.0)
-    if num_roll == num_roll2:
+    if num_roll != num_roll2:
+        victory = (f"                                            {Fore.BLUE}!!!!!!!{Fore.LIGHTYELLOW_EX}****{Fore.RED}{player} OMG YOU MADE IT{Fore.LIGHTYELLOW_EX}**** {Fore.BLUE}!!!!!!!\n"
+                   f"                                      {Fore.BLUE}!!!!!!!{Fore.LIGHTYELLOW_EX}****{Fore.RED}Your name i$ now on te$tament {Fore.LIGHTYELLOW_EX}**** {Fore.BLUE}!!!!!!!\n")
 
-        victory =  ("  /$$$$$$                                                     /$$               /$$             /$$     /$$\n"
+        victory2 =  ("\n\n\n\n\n\n\n\n\n"
+                    "  /$$$$$$                                                     /$$               /$$             /$$     /$$\n"
                     " /$$__  $$                                                   | $$              | $$            | $$    |__/\n"                
                     "| $$  \__/  /$$$$$$  /$$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$  /$$$$$$   /$$   /$$| $$  /$$$$$$  /$$$$$$   /$$  /$$$$$$  /$$$$$$$   /$$$$$$$\n"                 
                     "| $$ /$$$$ /$$__  $$| $$__  $$ /$$__  $$ /$$__  $$|____  $$|_  $$_/  | $$  | $$| $$ |____  $$|_  $$_/  | $$ /$$__  $$| $$__  $$ /$$_____/\n"                
@@ -62,26 +65,23 @@ def helsinki_sysma():
                         "|__/|__/|__/   \  $$/| $$  \ $$| $$  | $$      | $$  \ $$  /$$$$$$$ \  $$/$$/| $$$$$$$$      | $$ | $$ | $$| $$  \ $$| $$  \ $$|__/|__/|__/\n"                 
                         "                | $$ | $$  | $$| $$  | $$      | $$  | $$ /$$__  $$  \  $$$/ | $$_____/      | $$ | $$ | $$| $$  | $$| $$  | $$\n"                 
                         " /$$ /$$ /$$    | $$ |  $$$$$$/|  $$$$$$/      | $$  | $$|  $$$$$$$   \  $/  |  $$$$$$$      |  $$$$$/$$$$/|  $$$$$$/| $$  | $$ /$$ /$$ /$$\n"                
-                        "|__/|__/|__/    |__/  \______/  \______/       |__/  |__/ \_______/    \_/    \_______/       \_____/\___/  \______/ |__/  |__/|__/|__/|__/\n")
+                        "|__/|__/|__/    |__/  \______/  \______/       |__/  |__/ \_______/    \_/    \_______/       \_____/\___/  \______/ |__/  |__/|__/|__/|__/\n\n\n\n\n\n\n")
 
         for _ in range(5):  # Toista vilkutus 5 kertaa
-            sys.stdout.write(Fore.LIGHTYELLOW_EX + victory)  # Tulosta koko teksti
-            sys.stdout.flush()
-            time.sleep(0.5)  # Odota 0.5 sekuntia
-            sys.stdout.write('\033[F' * len(victory.split('\n')))  # Siirry takaisin ylös
+            sys.stdout.write(Fore.LIGHTYELLOW_EX + victory2)  # Tulosta koko teksti
             sys.stdout.flush()
             time.sleep(0.5)  # Odota ennen seuraavaa vilkkumisen vaihetta
-
-
+        time.sleep(1.0)
+        print(victory)
 
     else:
         print(f"{Fore.BLUE}Your not so loyal Dungo-driver got lost despite of your guiding:´(\n"
         f"You have arrived to {Fore.YELLOW}{random.choice(lost_cities)}\n\n"
         f"{Fore.RED}You get angry and your driver gets you back to Helsinki!!!")
 
+player = "Ville"
 
-
-helsinki_sysma()
+helsinki_sysma(player)
 
 
 
