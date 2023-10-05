@@ -229,31 +229,35 @@ def item_randomizer():
     item_name, item_value = result[0]  # tuple unpacker
     return item_name, int(item_value)  # Nämä ovat n. 95% pelkkää arvotonta paskaa
 
+def determine_travel_lock_amount(distance, travel_type):
+    if travel_type == "hike":
+        if distance <= 300:
+            travel_lock_amount = 1
+            travel_lock_amount += random.randint(0, 2)
+        if distance <= 600:
+            travel_lock_amount = 1
+            travel_lock_amount += random.randint(2, 3)
+        if distance <= 1000:
+            travel_lock_amount = 2
+            travel_lock_amount += random.randint(2, 3)
+    elif travel_type == "sail":
+        if distance <= 300:
+            travel_lock_amount = random.randint(1, 2)
+        if distance <= 600:
+            travel_lock_amount = 1
+            travel_lock_amount += random.randint(1, 2)
+        if distance <= 1000:
+            travel_lock_amount = 1
+            travel_lock_amount += random.randint(2, 3)
+    return travel_lock_amount
+
 def set_lockstate(distance, player_id, counter, travel_type):
     if distance != 0:
-        if travel_type == "hike":
-            dice_throw = dice_roll()
-            print("dice throw: " + str(dice_throw))
-            dice_multiplier = config.get("config", "HikeDistanceMultiplier")
-            dice_total = floor(float(dice_multiplier) * distance)
-            print("dice total: " + str(dice_total))
-            lock_amount = dice_total - dice_throw
-            if lock_amount < 0:
-                lock_amount = config.get("config", "MinLockAmountHike")
-            print("lock amount: " + str(lock_amount))
-        elif travel_type == "sail":
-            dice_throw = dice_roll()
-            print("dice throw: " + str(dice_throw))
-            dice_multiplier = config.get("config", "BoatDistanceMultiplier")
-            dice_total = floor(float(dice_multiplier) * distance)
-            print("dice total: " + str(dice_total))
-            lock_amount = dice_total - dice_throw
-            if lock_amount < 0:
-                lock_amount = config.get("config", "MinLockAmountBoat")
-            print("lock amount: " + str(lock_amount))
+        lock_amount = determine_travel_lock_amount(distance, travel_type)
     if counter != 0:
         lock_amount = counter
         print(lock_amount)
+    print("lock amount: " + str(lock_amount))
     query = f"UPDATE player SET lockstate = '{lock_amount}' WHERE id = '{player_id}'"
     cursor.execute(query)
     return
