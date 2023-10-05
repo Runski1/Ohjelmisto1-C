@@ -1,4 +1,4 @@
-from db_connection import connection
+"""from db_connection import connection
 
 #after_end_game
 def ending_check(helsinki_sysmä,player):
@@ -14,4 +14,4 @@ def ending_check(helsinki_sysmä,player):
     else:
         False
 def helsinki_sysma(player_id):
-    # this article is a stub.
+    # this article is a stub. """

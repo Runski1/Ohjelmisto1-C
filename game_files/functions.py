@@ -202,7 +202,7 @@ def get_cities_in_range(travel_mode, player):
 
 def lock_reduce(player):
     if player[3] > 0:
-        sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
+        sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{str(player[0])}'"
         cursor.execute(sql)
         print("Player lock updated.")
     else:
@@ -210,20 +210,22 @@ def lock_reduce(player):
 
 
 def event_randomizer(player):
+
+    event_multiplier = float(config.get('config', 'RandomEventChance'))
+    rand_test = random.uniform(0, 1)
     # Haetaan kaikkien eventtien määrä ja kokeillaan tuleeko eventtiä vai ei
     sql = "SELECT COUNT(id) FROM random_events"
     cursor.execute(sql)
     events_sum = cursor.fetchall()
-    rand_test = random.randint(1, 12)
     playerid = str(player[0])
     # jos eventtiä ei tule tulostetaan allaoleva
-    if rand_test % 2 == 1:
+    if rand_test > event_multiplier:
         print("No events for you this time.")
         return False
     # jos eventti tulee, haetaan arpomalla eventti kaikkien eventtien joukosta ja käsitellään sitä
     # niin että outcom_high jaetaan splitillä kahteen osaan ja outcome_lower jaetaan kahteen osaan
     # sekä tallennetaan fluff teksi muuttujaksi.
-    elif rand_test % 2 == 0:
+    elif rand_test < event_multiplier:
         randomized_num = random.randint(1, events_sum[0][0])
         sql = f"SELECT * FROM random_events WHERE id = {randomized_num}"
         cursor.execute(sql)
