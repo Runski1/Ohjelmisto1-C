@@ -4,7 +4,7 @@ from db_connection import connection
 def ending_check(helsinki_sysmä,player)
     cursor = connection.cursor()
     sql = ("SELECT PLAYER.id FROM player INNER JOIN city ON player.location = city.id "
-           "WHERE city.NAME = 'Helsinki' and PLAYER.prizeholder= '1';")
+           "WHERE city.NAME = 'Helsinki' and PLAYER.prizeholder= '1'")
     cursor.execute(sql)
     result = cursor.fetchall()
 
