@@ -46,6 +46,7 @@ def travel_sail(parameter, player):
             if city[1].lower() == parameter:
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
+                set_lockstate(city[3], player[0], 0)
                 print("You begin sailing to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 input("<Press ENTER to continue>")
                 return False # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
