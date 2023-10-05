@@ -94,15 +94,20 @@ def printer(player):
     print(f"Name: {player[1]}")
     print(f"Current PP: {current_pp}")
     print(f"Location: {current_location}")
+    if player[4] > 0:
+        print(f"Take your grandma's luggage back to her at Sysma!")
+    else:
+        print("Find your grandma's luggage.")
     if lock_status == 0:
         print("Lock state: not locked")
     else:
         print(f"Lock state: locked for {lock_status} turns")
+    return True
 
 
 def get_player_data_as_list():
     # SQL-kyselyllä kaikki player-taulusta
-    sql = "SELECT * FROM player;"
+    sql = "SELECT * FROM player"
     cursor.execute(sql)
     all_from_player_table = cursor.fetchall()
 #    cursor.close()
@@ -116,7 +121,7 @@ def get_player_data_as_list():
 
 
 def get_round_number():
-    sql = "SELECT counter FROM round_counter;"
+    sql = "SELECT counter FROM round_counter"
     cursor.execute(sql)
     result = cursor.fetchone()[0]
 #    cursor.close()
@@ -130,7 +135,7 @@ def add_to_round_counter():
 
 
 def get_city_data():
-    sql = "SELECT * from city;"
+    sql = "SELECT * from city"
     cursor.execute(sql)
     all_from_city = cursor.fetchall()
 #    cursor.close()
@@ -194,31 +199,110 @@ def get_cities_in_range(travel_mode, player):
     return cities_in_range
 
 
-def lock_reduce(player_id):
-    sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player_id}'"
-    cursor.execute(sql)
-
-
-def event_randomizer():
-    sql = "SELECT COUNT(id) FROM random_events;"
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    len_events = 0
-    if cursor.rowcount > 0:
-        for row in result:
-            len_events = row[0]
-    rand_test = random.randint(1, 6)
-
-    if rand_test % 2 == 1:
-        print("No events for you m8!")
-        return
-    elif rand_test % 2 == 0:
-        randomized_num = random.randint(1, len_events)
-        sql = "SELECT fluff FROM random_events WHERE id = '" + str(randomized_num) + "';"
+def lock_reduce(player):
+    if player[3] > 0:
+        sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
         cursor.execute(sql)
-        result = cursor.fetchall()
-        if cursor.rowcount > 0:
-            return result
+        print("Player lock updated.")
+    else:
+        return
+
+
+def event_randomizer(player):
+    # Haetaan kaikkien eventtien määrä ja kokeillaan tuleeko eventtiä vai ei
+    sql = "SELECT COUNT(id) FROM random_events"
+    cursor.execute(sql)
+    events_sum = cursor.fetchall()
+    rand_test = random.randint(1, 12)
+    playerid = str(player[0])
+    # jos eventtiä ei tule tulostetaan allaoleva
+    if rand_test % 2 == 1:
+        print("No events for you this time.")
+        return False
+    # jos eventti tulee, haetaan arpomalla eventti kaikkien eventtien joukosta ja käsitellään sitä
+    # niin että outcom_high jaetaan splitillä kahteen osaan ja outcome_lower jaetaan kahteen osaan
+    # sekä tallennetaan fluff teksi muuttujaksi.
+    elif rand_test % 2 == 0:
+        randomized_num = random.randint(1, events_sum[0][0])
+        sql = f"SELECT * FROM random_events WHERE id = {randomized_num}"
+        cursor.execute(sql)
+        rand_event = cursor.fetchall()
+        outcome_h = rand_event[0][3].split(",")
+        outcome_l = rand_event[0][4].split(",")
+        fluff = rand_event[0][1]
+        # kokeillaan tuleeko pelaaja ryöstetyksi menettäen kaikki pp:nsä
+        # ja tyhjennetään pelaajalta kaikki pp:t
+        if outcome_h[0] == "robbed":
+            print(fluff)
+            sql = f"UPDATE player SET current_pp = current_pp - {player[2]} WHERE id = '{playerid}'"
+            cursor.execute(sql)
+            print(f"Your PP updates to 0.")
+            if int(outcome_h[1]) > 0:
+                sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
+                cursor.execute(sql)
+                print(f"Your lockstate updates to + {outcome_h[1]}.")
+                return False
+
+            return True
+        # jossei pelaajalta ryöstetä kaikkea omaisuutta ruvetaan tutkimaan erinäisiä vaihtoehtoja mitä
+        # eventistä tulee
+        else:
+            if rand_event[0][2] == 0:
+                print(fluff)
+                sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
+                cursor.execute(sql)
+                print(f"\nYour pp updates to {outcome_h[0]}.")
+                if int(outcome_h[1]) > 0:
+                    sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
+                    cursor.execute(sql)
+                    print(f"Your lockstate updated + {outcome_h[1]}.")
+                    return False
+                else:
+                    return True
+            # jos eventissä pitää heittää noppaa heitetään sitä pelaajan avustuksella
+            # sen jälkeen testataan onko nopan heitto tarpeeksi iso roll_treshold sarakkeen määräämän arvon perusteella
+            elif rand_event[0][2] > 0:
+                print(fluff)
+                print(f"\nYou need to roll at least {rand_event[0][2]}.")
+                input("Press Enter to roll dice: ")
+                roll = dice_roll()
+                print(f"\nYou rolled {roll}.")
+                #jos isompi tai yhtäiso tehdään näin
+                if roll >= rand_event[0][2]:
+                    sql = f"UPDATE player SET current_pp = current_pp {outcome_h[0]} WHERE id = '{playerid}'"
+                    cursor.execute(sql)
+                    print(f"Your pp updates {outcome_h[0]}.")
+                    if int(outcome_h[1]) > 0:
+                        sql = f"UPDATE player SET lockstate = lockstate + {outcome_h[1]} WHERE id = '{playerid}'"
+                        cursor.execute(sql)
+                        print(f"Your lockstate updates + {outcome_h[1]}.")
+                        return False
+                    else:
+                        return True
+                # jos pienempi tehdään näin
+                elif roll < rand_event[0][2]:
+                    sql = f"UPDATE player SET current_pp = current_pp {str(outcome_l[0])} WHERE id = '{playerid}'"
+                    cursor.execute(sql)
+                    print(f"Your pp updates {outcome_l[1]}.")
+                    if int(outcome_l[1]) > 0:
+                        sql = f"UPDATE player SET lockstate = lockstate + {str(outcome_l[1])} WHERE id = '{playerid}'"
+                        cursor.execute(sql)
+                        print(f"Your lockstate updates + {outcome_l[1]}.")
+                        return False
+                    else:
+                        return True
+                # jos suurempi tehdään näin
+                elif roll > rand_event[0][2]:
+                    sql = f"UPDATE player SET current_pp = current_pp {str(outcome_h[0])} WHERE id = '{playerid}'"
+                    cursor.execute(sql)
+                    print(f"Your pp updates {outcome_h[0]}.")
+                    if int(outcome_h[1]) > 0:
+                        sql = f"UPDATE player SET lockstate = + {str(outcome_h[1])} WHERE id = '{playerid}'"
+                        cursor.execute(sql)
+                        print(f"Your lockstate updates + {outcome_h[1]}.")
+                        return False
+                    else:
+                        return True
 
 
 def item_randomizer():
@@ -261,3 +345,31 @@ def set_lockstate(distance, player_id, counter, travel_type):
     query = f"UPDATE player SET lockstate = '{lock_amount}' WHERE id = '{player_id}'"
     cursor.execute(query)
     return
+
+
+def get_not_visited_city_ids():
+    sql = "SELECT id FROM city WHERE visited = '0'"
+    cursor.execute(sql)
+    cities = cursor.fetchall()
+    result = []
+    for city in cities:
+        result.append(city[0])
+    return result
+
+
+def generate_main_bag():
+    not_visited_cities = get_not_visited_city_ids()
+    random_city = random.choice(not_visited_cities)
+    sql = f"UPDATE city SET bag_city = 1 WHERE id = '{random_city}'"
+    cursor.execute(sql)
+
+
+def generate_additional_bags():
+    not_visited_cities = get_not_visited_city_ids()
+    playercount = len(get_player_data_as_list())
+    random_cities = random.sample(not_visited_cities, playercount)
+    for id in random_cities:
+        sql = f"UPDATE city SET bag_city = 1 WHERE id = '{id}'"
+        cursor.execute(sql)
+
+
