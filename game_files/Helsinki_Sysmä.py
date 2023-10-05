@@ -1,9 +1,10 @@
-"""from db_connection import connection
+from db_connection import connection
 
 #after_end_game
-def ending_check(helsinki_sysmä,player):
+'''def ending_check(helsinki_sysmä,player)
     cursor = connection.cursor()
-    sql = ("SELECT player.id FROM player INNER JOIN city ON player.location = city.id "
+    #tarkistaa onko nykyisellä pelaajalla laukku
+    sql = ("SELECT player.id FROM player INNER JOIN city ON player.location = city.id
            "WHERE city.name = 'Helsinki' and player.prizeholder= '1'")
     cursor.execute(sql)
     result = cursor.fetchall()
@@ -12,6 +13,25 @@ def ending_check(helsinki_sysmä,player):
         # niin loppu event käynnnistyy
         helsinki_sysmä()
     else:
-        False
-def helsinki_sysma(player_id):
-    # this article is a stub. """
+        False'''
+
+
+import sys
+import time
+def helsinki_sysmä():
+    print("You have arrived to Helsinki! Your grandma lives in Sysmä, so you have to order Dungo-driver to get there.")
+    calling_text = [".", "..", "...", "...."]
+    for _ in range(2):
+        for text in calling_text:
+
+            sys.stdout.write('\r'"Calling"+ text)
+            sys.stdout.flush()
+            time.sleep(0.5)
+            sys.stdout.write('\r' + ' ' * len(text) + '\r')  # Hide the text
+            sys.stdout.flush()
+            time.sleep(0.5)
+
+
+helsinki_sysmä()
+
+    #dice_roll()
