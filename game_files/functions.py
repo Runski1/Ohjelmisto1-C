@@ -97,6 +97,10 @@ def printer(player):
     print(f"Name: {player[1]}")
     print(f"Current PP: {current_pp}")
     print(f"Location: {current_location}")
+    if player[4] > 0:
+        print(f"You have grandma's luggage!")
+    else:
+        print("You dont have grandma's luggage.")
     if lock_status == 0:
         print("Lock state: not locked")
     else:
@@ -105,7 +109,7 @@ def printer(player):
 
 def get_player_data_as_list():
     # SQL-kyselyllä kaikki player-taulusta
-    sql = "SELECT * FROM player;"
+    sql = "SELECT * FROM player"
     cursor.execute(sql)
     all_from_player_table = cursor.fetchall()
     #    cursor.close()
@@ -119,7 +123,7 @@ def get_player_data_as_list():
 
 
 def get_round_number():
-    sql = "SELECT counter FROM round_counter;"
+    sql = "SELECT counter FROM round_counter"
     cursor.execute(sql)
     result = cursor.fetchone()[0]
     #    cursor.close()
@@ -135,7 +139,7 @@ def add_to_round_counter():
 
 
 def get_city_data():
-    sql = "SELECT * from city;"
+    sql = "SELECT * from city"
     cursor.execute(sql)
     all_from_city = cursor.fetchall()
     #    cursor.close()
@@ -200,9 +204,12 @@ def get_cities_in_range(travel_mode, player):
 
 
 def lock_reduce(player):
-    sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
-    cursor.execute(sql)
-    print("Player lock updated.")
+    if player[3] > 0:
+        sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
+        cursor.execute(sql)
+        print("Player lock updated.")
+    else:
+        return
 
 
 def event_randomizer(player):

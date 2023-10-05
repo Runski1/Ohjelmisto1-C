@@ -130,7 +130,7 @@ def hire(player):
                 print("You found grandmas luggage!")
 
             else:
-                print("Nothing found from this airport.")
+                print("Nothing found from this city.")
 
         elif player[2] < price_hire:
             print("You dont have enough pp to hire detective.")
