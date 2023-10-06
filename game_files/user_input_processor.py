@@ -86,7 +86,7 @@ def travel_hitchhike(parameter, player):
         return True
 
 
-def work(parameter, player):
+def work(parameter):
     if parameter == "?":
         print("This should list all available jobs.")
         return True
@@ -148,7 +148,7 @@ def hire(player):
     return True
 
 
-def manual(parameter, player):
+def manual(parameter):
     # manuaalia voisi laajentaa
     manual_dictionary = {
         'help': "[help] prints all available user commands.",
@@ -179,7 +179,7 @@ def manual(parameter, player):
     return True  # Lisätty perään ettei vuoro vaihdu jos käyttää man toimintoa.
 
 
-def help_function(player):
+def help_function():
     # nykyisellään oleva manual.dictionaryn arvot voisi tulostua avainten kanssa
     print("You can use these commands:")
     for key in command_dictionary.keys():
@@ -215,8 +215,10 @@ def user_input_processor(input_string, current_player):
     selected_function = command_dictionary[input_as_list[0]]
     # Jos käyttäjä ei antanut parametria:
     if len(input_as_list) < 2 and input_as_list[0] in commands_without_parameter:
-        return selected_function(current_player)
-        # Kutsuu funktion ilman parametria
+        if selected_function == hire or search:
+            return selected_function(current_player)
+        else:
+            return selected_function()
     elif len(input_as_list) == 2:
         return selected_function(input_as_list[1], current_player)
         # kutsuu funktion käyttäen listan toista alkiota parametrina
