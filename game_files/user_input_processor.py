@@ -229,10 +229,10 @@ def user_input_processor(input_string, current_player):
         elif len(input_as_list) == 2:
             return selected_function(input_as_list[1], current_player)
             # kutsuu funktion käyttäen listan toista alkiota parametrina
+        else:
+            print("Bad parameters.")
+            return True
     except ValueError or IndexError or KeyError:
-        print("Bad parameters.")
-        return True
-    else:
         print("Bad parameters.")
         return True
         # Todennäköisesti parametri puuttuu tai niitä on annettu kaksi
