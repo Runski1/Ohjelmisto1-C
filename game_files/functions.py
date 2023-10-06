@@ -246,12 +246,12 @@ def event_randomizer(player):
         else:
             # jos eventissä pitää heittää noppaa heitetään sitä pelaajan avustuksella
             # sen jälkeen testataan onko nopan heitto tarpeeksi iso roll_treshold sarakkeen määräämän arvon perusteella
-            if rand_event[0][2] > 0:
+            if rand_event[0][2] >= 0:
                 print(fluff)
-                print(f"\nYou need to roll at least {rand_event[0][2]}.")
-                input("Press Enter to roll dice: ")
             roll = dice_roll()
             if rand_event[0][2] > 0:
+                print(f"\nYou need to roll at least {rand_event[0][2]}.")
+                input("Press Enter to roll dice: ")
                 print(f"\nYou rolled {roll}.")
             # jos isompi tai yhtä iso, tehdään näin
             if roll >= rand_event[0][2]:
@@ -309,12 +309,14 @@ def determine_travel_lock_amount(distance, travel_type):
 
 
 def set_lockstate(distance, player_id, counter, travel_type):
-    lock_amount = 0
+    query = f"SELECT lockstate FROM player WHERE id = '{player_id}'"
+    cursor.execute(query)
+    result = cursor.fetchone()
+    lock_amount = result[0]
     if distance != 0:
         lock_amount = determine_travel_lock_amount(distance, travel_type)
     if counter != 0:
-        lock_amount = counter
-        print(lock_amount)
+        lock_amount = int(lock_amount) + int(counter)
     print("lock amount: " + str(lock_amount))
     query = f"UPDATE player SET lockstate = '{lock_amount}' WHERE id = '{player_id}'"
     cursor.execute(query)

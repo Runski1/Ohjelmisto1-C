@@ -1,8 +1,6 @@
 ---------KIRJOITELKAA TÄHÄN MITÄ VIKOJA/PUUTTEITA TULEE VASTAAN JA POISTAKAA ENTRYT JOS KORJAATTE/
          LUOTTE JTN PUUTTUVAA --------------------------------------------------------------------
-SAIL ? tulostaa kaupunkivaihtoehtoja, vaikka pelaaja ei ole satamakaupungissa
-HIKEn laukaisema random event ylikirjoittaa lockstaten (KAI??)
-Hitchiken "no events for you this time" - crash?
+
 
 Sail/hitchike kauheaa enterspammia. pitäisi lyhentää rajusti tai saada se rollausmekaniikka siihen?
 Toinen vaihtoehto olisi autoscroll lockstaten läpi, mikäli jokainen pelaaja on lockissa
@@ -10,8 +8,6 @@ Toinen vaihtoehto olisi autoscroll lockstaten läpi, mikäli jokainen pelaaja on
 search pitäisi estää, jos pelaaja on jo etsinyt kaupungista, tai ainakin tulostaa onko hän etsinyt current locationistaan
 vai ei. Mahdollisesti search voisi olla kokonaan automaattinen, eikä käyttäisi vuoroa. silloin hire on turha, mutta hire
 voisi mahdollisesti etsiä toisesta kaupungista? siinä pitää tehdä joku juttu, ettei toinen pelaaja yoinkaa sitä laukkua
-
-exit printtaa current_player-listan
 
 man fly: Flying is the fastest form of travel and  -- lause päättyy kesken
 pitää kokonaisuudessaan siistiä manuaali
