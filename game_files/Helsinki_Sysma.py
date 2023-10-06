@@ -20,38 +20,62 @@ from functions import dice_roll
 
 import sys
 import time
-def helsinki_sysma():
-    print(f"{Fore.BLUE}You have arrived to Helsinki! Your grandma lives in Sysmä, so you have to order Dungo-driver to get there.")
+def helsinki_sysma(player):
+    print(f"{Fore.BLUE}{player} you have arrived in Helsinki! Your grandma lives in Sysmä, so you have to order a Dungo-driver to get there.")
     calling_text = [".", "..", "...", "...."]
     for _ in range(2):
         for text in calling_text:
-
             sys.stdout.write('\r'f"{Fore.RED}Calling"+ text)
             sys.stdout.flush()
             time.sleep(0.5)
             sys.stdout.write('\r' + ' ' * len(text) + '\r')  # Hide the text
             sys.stdout.flush()
-            time.sleep(0.5)
-helsinki_sysma()
-input(f"{Fore.BLUE}You reached Dungo-driver! Roll dice while waiting him to arrive!{Fore.RED} Press enter!{Fore.BLUE}")
-num_roll = dice_roll()
-print(f"{Fore.GREEN}{num_roll}")
-input(f"{Fore.BLUE}You have to guide route for your loyal Dungo-driver. If you get same number you rolled before\n"
-            f"you will get finally back to your lovely grandma and you get your name on testament! {Fore.RED}Press enter!")
-num_roll2 = dice_roll()
-print(f"{Fore.GREEN}{num_roll2}")
-lost_cities = ("Lohja","Korso","Kerava","Jyväskylä","Pieksämäki","Mellunmäki","Itäkeskus")
+    time.sleep(0.5)
+    input(f"{Fore.BLUE}You reached the Dungo-driver! Roll the dice while waiting for him to arrive!{Fore.RED} Press enter!")
+    num_roll = dice_roll()
+    print(f"{Fore.GREEN}{num_roll}")
+    input(f"{Fore.BLUE}You have to guide the route for your loyal Dungo-driver. If you get the same number you rolled before,\n" 
+    f"you will finally get back to your lovely grandma, and you'll get your name on the testament!{Fore.RED} Press enter!")
+    num_roll2 = dice_roll()
+    print(f"{Fore.GREEN}{num_roll2}")
+    lost_cities = ("Lohja","Korso","Kerava","Jyväskylä","Pieksämäki","Mellunmäki","Itäkeskus")
 
+    if num_roll != num_roll2:
+        victory = (f"                                            {Fore.BLUE}!!!!!!!{Fore.LIGHTYELLOW_EX}****{Fore.RED}{player} OMG YOU MADE IT{Fore.LIGHTYELLOW_EX}**** {Fore.BLUE}!!!!!!!\n"
+                   f"                                      {Fore.BLUE}!!!!!!!{Fore.LIGHTYELLOW_EX}****{Fore.RED}Your name i$ on the te$tament now{Fore.LIGHTYELLOW_EX}**** {Fore.BLUE}!!!!!!!\n")
 
-time.sleep(1.0)
-if num_roll == num_roll2:
-    print("win")
-else:
-    print(f"{Fore.BLUE}Your not so loyal Dungo-driver got lost despite of your guiding:´(\n"
-          f"You have arrived to {Fore.YELLOW}{random.choice(lost_cities)}\n\n"
-          f"{Fore.RED}You get angry and your driver gets you back to Helsinki!!!")
+        victory2 =  ("\n\n\n\n\n\n\n\n\n"
+                    "  /$$$$$$                                                     /$$               /$$             /$$     /$$\n"
+                    " /$$__  $$                                                   | $$              | $$            | $$    |__/\n"                
+                    "| $$  \__/  /$$$$$$  /$$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$  /$$$$$$   /$$   /$$| $$  /$$$$$$  /$$$$$$   /$$  /$$$$$$  /$$$$$$$   /$$$$$$$\n"                 
+                    "| $$ /$$$$ /$$__  $$| $$__  $$ /$$__  $$ /$$__  $$|____  $$|_  $$_/  | $$  | $$| $$ |____  $$|_  $$_/  | $$ /$$__  $$| $$__  $$ /$$_____/\n"                
+                    "| $$|_  $$| $$  \ $$| $$  \ $$| $$  \ $$| $$  \__/ /$$$$$$$  | $$    | $$  | $$| $$  /$$$$$$$  | $$    | $$| $$  \ $$| $$  \ $$|  $$$$$$\n"                
+                    "| $$  \ $$| $$  | $$| $$  | $$| $$  | $$| $$      /$$__  $$  | $$ /$$| $$  | $$| $$ /$$__  $$  | $$ /$$| $$| $$  | $$| $$  | $$ \____  $$\n"                 
+                    "|  $$$$$$/|  $$$$$$/| $$  | $$|  $$$$$$$| $$     |  $$$$$$$  |  $$$$/|  $$$$$$/| $$|  $$$$$$$  |  $$$$/| $$|  $$$$$$/| $$  | $$ /$$$$$$$/\n"                
+                    "\______/  \______/ |__/  |__/ \____  $$|__/      \_______/   \___/   \______/ |__/ \_______/   \___/  |__/ \______/ |__/  |__/|_______/\n"                 
+                    "                              /$$  \ $$\n"                
+                    "                              |  $$$$$$/\n"                 
+                    "                               \______/\n"                
+                        " /$$ /$$ /$$ /$$     /$$                        /$$                                                                             /$$ /$$ /$$\n"                 
+                        "| $$| $$| $$|  $$   /$$/                       | $$                                                                            | $$| $$| $$\n"                
+                        "| $$| $$| $$ \  $$ /$$//$$$$$$  /$$   /$$      | $$$$$$$   /$$$$$$  /$$    /$$ /$$$$$$        /$$  /$$  /$$  /$$$$$$  /$$$$$$$ | $$| $$| $$\n"                
+                        "| $$| $$| $$  \  $$$$//$$__  $$| $$  | $$      | $$__  $$ |____  $$|  $$  /$$//$$__  $$      | $$ | $$ | $$ /$$__  $$| $$__  $$| $$| $$| $$\n"                
+                        "|__/|__/|__/   \  $$/| $$  \ $$| $$  | $$      | $$  \ $$  /$$$$$$$ \  $$/$$/| $$$$$$$$      | $$ | $$ | $$| $$  \ $$| $$  \ $$|__/|__/|__/\n"                 
+                        "                | $$ | $$  | $$| $$  | $$      | $$  | $$ /$$__  $$  \  $$$/ | $$_____/      | $$ | $$ | $$| $$  | $$| $$  | $$\n"                 
+                        " /$$ /$$ /$$    | $$ |  $$$$$$/|  $$$$$$/      | $$  | $$|  $$$$$$$   \  $/  |  $$$$$$$      |  $$$$$/$$$$/|  $$$$$$/| $$  | $$ /$$ /$$ /$$\n"                
+                        "|__/|__/|__/    |__/  \______/  \______/       |__/  |__/ \_______/    \_/    \_______/       \_____/\___/  \______/ |__/  |__/|__/|__/|__/\n\n\n\n\n\n\n")
 
+        for _ in range(5):  # Toista vilkutus 5 kertaa
+            sys.stdout.write(Fore.LIGHTYELLOW_EX + victory2)  # Tulosta koko teksti
+            sys.stdout.flush()
+            time.sleep(0.5)  # Odota ennen seuraavaa vilkkumisen vaihetta
+        time.sleep(1.0)
+        print(victory)
 
+    else:
+        print(f"{Fore.BLUE}Your not so loyal Dungo-driver got lost despite of your guiding:´(\n"
+        f"You have arrived to {Fore.YELLOW}{random.choice(lost_cities)}\n\n"
+        f"{Fore.RED}You get angry and your driver gets you back to Helsinki!!!")
 
 
 
