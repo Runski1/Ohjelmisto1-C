@@ -78,8 +78,6 @@ def helsinki_sysma(player):
         f"{Fore.RED}You get angry and your driver gets you back to Helsinki!!!")
 
 
-player = "VIlle"
-helsinki_sysma(player)
 
 
 
