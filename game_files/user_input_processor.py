@@ -212,17 +212,18 @@ def user_input_processor(input_string, current_player):
     # splittaa välilyönnistä listaksi
     input_as_list = input_string.lower().strip().split()
     # etsii listan ensimmäistä alkiota vastaavaa arvoa command_dictionarysta
-    selected_function = command_dictionary[input_as_list[0]]
-    # Jos käyttäjä ei antanut parametria:
-    if len(input_as_list) < 2 and input_as_list[0] in commands_without_parameter:
-        if selected_function == hire or search:
-            return selected_function(current_player)
-        else:
-            return selected_function()
-    elif len(input_as_list) == 2:
-        return selected_function(input_as_list[1], current_player)
-        # kutsuu funktion käyttäen listan toista alkiota parametrina
-    else:
+    try:
+        selected_function = command_dictionary[input_as_list[0]]
+        # Jos käyttäjä ei antanut parametria:
+        if len(input_as_list) < 2 and input_as_list[0] in commands_without_parameter:
+            if selected_function == hire or search:
+                return selected_function(current_player)
+            else:
+                return selected_function()
+        elif len(input_as_list) == 2:
+            return selected_function(input_as_list[1], current_player)
+            # kutsuu funktion käyttäen listan toista alkiota parametrina
+    except ValueError or IndexError:
         print("Bad parameters.")
         return True
         # Todennäköisesti parametri puuttuu tai niitä on annettu kaksi

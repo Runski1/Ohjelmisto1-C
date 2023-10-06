@@ -31,7 +31,10 @@ while True:
             while turn:  # HUOM!!!! TÄMÄ LOOP EI TULOSTA PELAAJAN TILAA UUDESTAAN, PITÄISIKÖ ANTAA PELAAJAN KUTSUA
                 # MIRON PRINTTERIÄ UUDESTAAN?
                 choice = input("\nWhat would you like to do: ")
-                turn = user_input_processor(choice, current_player)
+                if choice != "":
+                    turn = user_input_processor(choice, current_player)
+                else:
+                    turn = True
 
             add_to_round_counter()
 
