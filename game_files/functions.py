@@ -254,7 +254,7 @@ def event_randomizer(player):
                 print(f"\nYou rolled {roll}.")
             # jos isompi tai yhtä iso, tehdään näin
             if roll >= rand_event[0][2]:
-                add_pp(outcome_h[0], int(playerid))
+                add_pp(int(outcome_h[0]), int(playerid))
                 print(f"Your pp changes {outcome_h[0]}.")
                 if int(outcome_h[1]) > 0:
                     set_lockstate(0, playerid, outcome_h[1], "diggoo")
@@ -264,7 +264,7 @@ def event_randomizer(player):
                     return True
             # jos pienempi tehdään näin
             elif roll < rand_event[0][2]:
-                add_pp(outcome_l, int(playerid))
+                add_pp(int(outcome_l[0]), int(playerid))
                 print(f"Your pp updates {outcome_l[1]}.")
                 if int(outcome_l[1]) > 0:
                     set_lockstate(0, playerid, outcome_l[1], "diggoo")
