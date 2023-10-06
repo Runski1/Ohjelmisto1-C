@@ -29,13 +29,8 @@ while True:
         if is_lock == "Not locked":
             printer(current_player)  # printteri kutsu HUOM tässä voisi tuoda kaikki tiedot
             while turn:  # HUOM!!!! TÄMÄ LOOP EI TULOSTA PELAAJAN TILAA UUDESTAAN, PITÄISIKÖ ANTAA PELAAJAN KUTSUA
-                # MIRON PRINTTERIÄ UUDESTAAN?
                 choice = input("\nWhat would you like to do: ")
-                if choice != "":
-                    turn = user_input_processor(choice, current_player)
-                else:
-                    turn = True
-
+                turn = user_input_processor(choice, current_player)
             add_to_round_counter()
 
         elif is_lock > 0:
