@@ -1,10 +1,12 @@
 import random
 import os
 from db_connection import connection
+import mysql.connector
 from geopy.distance import geodesic
 from math import floor
 from config import config
 cursor = connection.cursor()
+
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
 # mysql.connector.errors.DatabaseError: 2014 (HY000): Commands out of sync; you can't run this command now
 # -erroriin
@@ -52,9 +54,8 @@ def format_database_for_new_game():
                 cursor.execute(sql_query)
         connection.commit()  # varmistuscommit, tätä suositeltiin jossain
         return "Database formatting completed."
-    except:  # Tämä on paska exception
-        return ("Something went wrong with database formatting.\n"
-                "Try to think of better exception rule")
+    except mysql.connector.Error:  # Tämä ei ole enää paska exception
+        return "Something went wrong with database formatting."
 
 
 def get_location(player_id):
@@ -345,12 +346,15 @@ def generate_additional_bags():
         sql = f"UPDATE city SET bag_city = 1 WHERE id = '{city_id}'"
         cursor.execute(sql)
 
+
 def check_if_in_port(player):
     query = f"SELECT id FROM city WHERE port_city = '1'"
     cursor.execute(query)
     result = cursor.fetchall()
-    for i in result:
-        if player[8] == i:
-            return True
-        else:
-            return False
+    lista = []
+    for city in result:
+        lista.append(city[0])
+    if player[8] in lista:
+        return True
+    else:
+        return False

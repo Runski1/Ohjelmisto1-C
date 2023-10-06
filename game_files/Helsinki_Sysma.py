@@ -21,7 +21,7 @@ from functions import dice_roll
 import sys
 import time
 def helsinki_sysma(player):
-    print(f"{Fore.BLUE}{player} you have arrived in Helsinki! Your grandma lives in Sysmä, so you have to order a Dungo-driver to get there.")
+    print(f"{Fore.BLUE}{player}, you have arrived in Helsinki! Your grandma lives in Sysmä, so you have to order a Dungo-driver to get there.")
     calling_text = [".", "..", "...", "...."]
     for _ in range(2):
         for text in calling_text:
@@ -76,8 +76,6 @@ def helsinki_sysma(player):
         print(f"{Fore.BLUE}Your not so loyal Dungo-driver got lost despite of your guiding:´(\n"
         f"You have arrived to {Fore.YELLOW}{random.choice(lost_cities)}\n\n"
         f"{Fore.RED}You get angry and your driver gets you back to Helsinki!!!")
-
-
 
 
 
