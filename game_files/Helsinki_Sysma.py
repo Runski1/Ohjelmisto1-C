@@ -1,7 +1,7 @@
 from db_connection import connection
 from colorama import Fore, Back, Style
 import random
-from functions import dice_roll
+
 #after_end_game
 '''def ending_check(helsinki_sysmä,player)
     cursor = connection.cursor()
@@ -32,17 +32,17 @@ def helsinki_sysma():
             sys.stdout.flush()
     time.sleep(0.5)
     input(f"{Fore.BLUE}You reached Dungo-driver! Roll dice while waiting him to arrive!{Fore.RED} Press enter!{Fore.BLUE}")
-    num_roll = dice_roll()
+    num_roll = random.randint(1,6)
     print(f"{Fore.GREEN}{num_roll}")
     input(f"{Fore.BLUE}You have to guide route for your loyal Dungo-driver. If you get same number you rolled before\n"
     f"you will get finally back to your lovely grandma and you get your name on testament! {Fore.RED}Press enter!")
-    num_roll2 = dice_roll()
+    num_roll2 = random.randint(1,6)
     print(f"{Fore.GREEN}{num_roll2}")
     lost_cities = ("Lohja","Korso","Kerava","Jyväskylä","Pieksämäki","Mellunmäki","Itäkeskus")
 
 
     time.sleep(1.0)
-    if num_roll != num_roll2:
+    if num_roll == num_roll2:
 
         victory = ( "  /$$$$$$                                                     /$$               /$$             /$$     /$$\n"                 
                     " /$$__  $$                                                   | $$              | $$            | $$    |__/\n"                
