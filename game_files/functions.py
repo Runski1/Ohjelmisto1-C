@@ -79,7 +79,7 @@ def lock_check(player_id):  # Printer ei tarvitse tätä enää, tarvitseeko jok
     sql += " WHERE id = '" + player_id + "';"
     cursor.execute(sql)
     result = cursor.fetchall()
-#    cursor.close()
+    #    cursor.close()
     lock_state = int(result[0][0])
     if lock_state == 0:
         return "Not locked"
@@ -111,7 +111,7 @@ def get_player_data_as_list():
     sql = "SELECT * FROM player"
     cursor.execute(sql)
     all_from_player_table = cursor.fetchall()
-#    cursor.close()
+    #    cursor.close()
     # Alustetaan lista
     all_from_player_table_as_list = []
     # Muutetaan kaikki data player-taulusta listaksi
@@ -125,7 +125,7 @@ def get_round_number():
     sql = "SELECT counter FROM round_counter"
     cursor.execute(sql)
     result = cursor.fetchone()[0]
-#    cursor.close()
+    #    cursor.close()
     return result
 
 
@@ -208,20 +208,21 @@ def lock_reduce(player):
 
 
 def event_randomizer(player):
+    event_multiplier = float(config.get('config', 'RandomEventChance'))
+    rand_test = random.uniform(0, 1)
     # Haetaan kaikkien eventtien määrä ja kokeillaan tuleeko eventtiä vai ei
     sql = "SELECT COUNT(id) FROM random_events"
     cursor.execute(sql)
     events_sum = cursor.fetchall()
-    rand_test = random.randint(1, 12)
-    playerid = str(player[0])
+    playerid = player[0]
     # jos eventtiä ei tule tulostetaan allaoleva
-    if rand_test % 2 == 1:
+    if rand_test > event_multiplier:
         print("No events for you this time.")
         return False
     # jos eventti tulee, haetaan arpomalla eventti kaikkien eventtien joukosta ja käsitellään sitä
     # niin että outcom_high jaetaan splitillä kahteen osaan ja outcome_lower jaetaan kahteen osaan
     # sekä tallennetaan fluff teksi muuttujaksi.
-    elif rand_test % 2 == 0:
+    elif rand_test < event_multiplier:
         randomized_num = random.randint(1, events_sum[0][0])
         sql = f"SELECT * FROM random_events WHERE id = {randomized_num}"
         cursor.execute(sql)
