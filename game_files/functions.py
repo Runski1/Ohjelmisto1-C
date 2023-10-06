@@ -1,10 +1,12 @@
 import random
 import os
 from db_connection import connection
+import mysql.connector
 from geopy.distance import geodesic
 from math import floor
 from config import config
 cursor = connection.cursor()
+
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
 # mysql.connector.errors.DatabaseError: 2014 (HY000): Commands out of sync; you can't run this command now
 # -erroriin
@@ -52,9 +54,8 @@ def format_database_for_new_game():
                 cursor.execute(sql_query)
         connection.commit()  # varmistuscommit, tätä suositeltiin jossain
         return "Database formatting completed."
-    except:  # Tämä on paska exception
-        return ("Something went wrong with database formatting.\n"
-                "Try to think of better exception rule")
+    except mysql.connector.Error:  # Tämä ei ole enää paska exception
+        return "Something went wrong with database formatting."
 
 
 def get_location(player_id):
@@ -131,8 +132,6 @@ def get_round_number():
 def add_to_round_counter():
     sql = "UPDATE round_counter SET counter = counter + 1"
     cursor.execute(sql)
-
-
 #    cursor.close()
 
 
@@ -140,7 +139,7 @@ def get_city_data():
     sql = "SELECT * from city"
     cursor.execute(sql)
     all_from_city = cursor.fetchall()
-    #    cursor.close()
+#    cursor.close()
     all_data_from_city_as_list = []
     for i in range(len(all_from_city)):
         all_data_from_city_as_list.append((list(all_from_city[i])))
@@ -248,16 +247,17 @@ def event_randomizer(player):
         else:
             # jos eventissä pitää heittää noppaa heitetään sitä pelaajan avustuksella
             # sen jälkeen testataan onko nopan heitto tarpeeksi iso roll_treshold sarakkeen määräämän arvon perusteella
+            if rand_event[0][2] >= 0:
+                print(fluff)
             roll = dice_roll()
             if rand_event[0][2] > 0:
-                print(fluff)
                 print(f"\nYou need to roll at least {rand_event[0][2]}.")
                 input("Press Enter to roll dice: ")
                 print(f"\nYou rolled {roll}.")
             # jos isompi tai yhtä iso, tehdään näin
             if roll >= rand_event[0][2]:
-                add_pp(int(outcome_h[0]), playerid)
-                print(f"Your pp changes are {outcome_h[0]}.")
+                add_pp(int(outcome_h[0]), int(playerid))
+                print(f"Your pp changes {outcome_h[0]}.")
                 if int(outcome_h[1]) > 0:
                     set_lockstate(0, playerid, outcome_h[1], "diggoo")
                     print(f"Your lockstate updates + {outcome_h[1]}.")
@@ -266,8 +266,8 @@ def event_randomizer(player):
                     return True
             # jos pienempi tehdään näin
             elif roll < rand_event[0][2]:
-                add_pp(int(outcome_l[0]), playerid)
-                print(f"Your pp updates are {outcome_l[1]}.")
+                add_pp(int(outcome_l[0]), int(playerid))
+                print(f"Your pp updates {outcome_l[1]}.")
                 if int(outcome_l[1]) > 0:
                     set_lockstate(0, playerid, outcome_l[1], "diggoo")
                     print(f"Your lockstate updates + {outcome_l[1]}.")
@@ -310,12 +310,14 @@ def determine_travel_lock_amount(distance, travel_type):
 
 
 def set_lockstate(distance, player_id, counter, travel_type):
-    lock_amount = 0
+    query = f"SELECT lockstate FROM player WHERE id = '{player_id}'"
+    cursor.execute(query)
+    result = cursor.fetchone()
+    lock_amount = result[0]
     if distance != 0:
         lock_amount = determine_travel_lock_amount(distance, travel_type)
     if counter != 0:
-        lock_amount = counter
-        print(lock_amount)
+        lock_amount = int(lock_amount) + int(counter)
     print("lock amount: " + str(lock_amount))
     query = f"UPDATE player SET lockstate = '{lock_amount}' WHERE id = '{player_id}'"
     cursor.execute(query)
@@ -347,12 +349,15 @@ def generate_additional_bags():
         sql = f"UPDATE city SET bag_city = 1 WHERE id = '{city_id}'"
         cursor.execute(sql)
 
+
 def check_if_in_port(player):
     query = f"SELECT id FROM city WHERE port_city = '1'"
     cursor.execute(query)
     result = cursor.fetchall()
-    for i in result:
-        if player[8] == i:
-            return True
-        else:
-            return False
+    lista = []
+    for city in result:
+        lista.append(city[0])
+    if player[8] in lista:
+        return True
+    else:
+        return False

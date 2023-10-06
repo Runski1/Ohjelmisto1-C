@@ -2,27 +2,14 @@
          LUOTTE JTN PUUTTUVAA --------------------------------------------------------------------
 
 
-Search-funktiossa sql-syntaxerror
+Sail/hitchike kauheaa enterspammia. pitäisi lyhentää rajusti tai saada se rollausmekaniikka siihen?
+Toinen vaihtoehto olisi autoscroll lockstaten läpi, mikäli jokainen pelaaja on lockissa
 
-sail-funktion list_available_cities -listan ensimmäisen alkion etäisyys ja siitä syystä myös matkan hinta on vituillaan
-Mulla oli sama ongelma fly-funktion kanssa, vika löytyy jostain listaindekseistä tms. Koska fly ja sail käyttävät samaa
-funktiota etsimään sopivat kaupungit, mutta fly ei tee sitä virhettä, vika lienee siinä funktiossa joka erittelee
-satamakaupungit.
-tämä saattaa johtua edellämainitusta bugista, mutta sailia ei tarvitsisi pystyä edes ajamaan, mikäli ei ole
-satamakaupungissa. Tilalla voisi olla joku tuloste, missä mainitaan ettei satamaa ole.
-        Name: Kille
-        Current PP: 100
-        Location: Paris
-        Lock state: not locked
+search pitäisi estää, jos pelaaja on jo etsinyt kaupungista, tai ainakin tulostaa onko hän etsinyt current locationistaan
+vai ei. Mahdollisesti search voisi olla kokonaan automaattinen, eikä käyttäisi vuoroa. silloin hire on turha, mutta hire
+voisi mahdollisesti etsiä toisesta kaupungista? siinä pitää tehdä joku juttu, ettei toinen pelaaja yoinkaa sitä laukkua
 
-        What would you like to do: sail ?
-        ---Available cities where you can sail to---
-        Oslo           :          Norway          : 0 km : cost   0    PP     not visited
-        <class 'int'>
-        You have 100 PP.
-        5
-
-    man fly: Flying is the fastest form of travel and  -- lause päättyy kesken
-        pitää kokonaisuudessaan siistiä manuaali
+man fly: Flying is the fastest form of travel and  -- lause päättyy kesken
+pitää kokonaisuudessaan siistiä manuaali
 
 Help-tuloste melko ruma.
