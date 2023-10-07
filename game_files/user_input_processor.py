@@ -236,10 +236,10 @@ def user_input_processor(input_string, current_player):
             return True
         # Jos käyttäjä ei antanut parametria:
         if len(input_as_list) < 2 and input_as_list[0] in commands_without_parameter:
-            if selected_function is hire or selected_function is search or selected_function is printer:
-                return selected_function(current_player)
-            else:
+            if selected_function is help_function or selected_function is exit:
                 return selected_function()
+            else:
+                return selected_function(current_player)
         elif len(input_as_list) == 2:
             try:
                 # kutsuu funktion käyttäen listan toista alkiota parametrina

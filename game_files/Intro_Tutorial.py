@@ -21,8 +21,6 @@ def tutorial():
     return tutorial_text
 
 
-
-
 def intro():
     import sys
     import time
@@ -78,7 +76,6 @@ intro()
 user_input = input(f"{Fore.RED}                                        Do you want to run tutorial for this game to get on track?(y/n)").lower()
 if user_input == "y":
     tutorial()
-
 
 
 
