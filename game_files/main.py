@@ -38,6 +38,6 @@ while True:
             exit_backdoor = input("\nYou are locked this round. (Press enter to continue: ")  # tätä exit-vaihtoehtoa
             if exit_backdoor == "exit":  # ei kerrota missään, asensin tämän lähinnä devaukseen.
                 exit()
-            lock_reduce(str(current_player[0]))
+            lock_reduce(current_player)
             add_to_round_counter()
             continue

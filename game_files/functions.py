@@ -13,8 +13,12 @@ cursor = connection.cursor()
 
 
 def dice_roll():
-    dice_num = random.randint(2, 12)
-    return dice_num
+    input("Press Enter to roll dice: ")
+    dice1 = random.randint(1, 6)
+    dice2 = random.randint(1, 6)
+    dice_total = dice1 + dice2
+    print(f"You rolled: [{dice1}] and [{dice2}]")
+    return dice_total
 
 
 def get_current_pp(player_id):
@@ -102,6 +106,7 @@ def printer(player):
     if lock_status == 0:
         print("Lock state: not locked")
     else:
+
         print(f"Lock state: locked for {lock_status} turns")
     return True
 
@@ -201,9 +206,21 @@ def get_cities_in_range(travel_mode, player):
 
 
 def lock_reduce(player):
-    sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
+    if int(player[7]) > 0:
+        print(f"You need to roll {player[7]} more to reach your destination.")
+        roll = dice_roll()
+        sql = f"UPDATE player SET total_dice = total_dice - {roll} WHERE id = '{player[0]}'"
+        if player[7] - roll > 0:
+            print(f"You need to roll {player[7] -  roll} more next round.")
+        else:
+            print("You reached your destination! You can do actions next turn.")
+            cursor.execute(sql)
+            sql = f"UPDATE player SET lockstate = '0' WHERE id = '{player[0]}'"
+            cursor.execute(sql)
+    else:
+        sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
+        print("Player lock updated.")
     cursor.execute(sql)
-    print("Player lock updated.")
     return
 
 
@@ -285,27 +302,21 @@ def item_randomizer():
     return item_name, int(item_value)  # Nämä ovat n. 95% pelkkää arvotonta paskaa
 
 
-def determine_travel_lock_amount(distance, travel_type):
-    travel_lock_amount = 0
+def determine_travel_lock_amount(distance, travel_type, player_id):
+    #print(travel_type)
     if travel_type == "hike":
-        if distance <= 300:
-            travel_lock_amount = 1
-            travel_lock_amount += random.randint(0, 2)
-        if distance <= 600:
-            travel_lock_amount = 1
-            travel_lock_amount += random.randint(2, 3)
-        if distance <= 1000:
-            travel_lock_amount = 2
-            travel_lock_amount += random.randint(2, 3)
-    elif travel_type == "sail":
-        if distance <= 300:
-            travel_lock_amount = random.randint(1, 2)
-        if distance <= 600:
-            travel_lock_amount = 1
-            travel_lock_amount += random.randint(1, 2)
-        if distance <= 1000:
-            travel_lock_amount = 1
-            travel_lock_amount += random.randint(2, 3)
+        #print("inside traveltype == hike")
+        travel_lock_amount = 999
+        required_dice = int(distance) * float(config.get('config', 'HikeDistanceMultiplier'))
+        #print(required_dice)
+        sql = f"UPDATE player SET total_dice = '{required_dice}' WHERE id = {int(player_id)}"
+        cursor.execute(sql)
+    else:  # travel_type == "sail":
+        #print("inside else")
+        #print(int(distance), type(distance), config.get('config', 'BoatDistanceMultiplier'),type(config.get('config', 'BoatDistanceMultiplier')))
+        # print(int(config.get('config', 'BoatDistanceMultiplier')))
+        travel_lock_amount = int(floor(int(distance) * float(config.get('config', 'BoatDistanceMultiplier'))))
+
     return travel_lock_amount
 
 
@@ -314,9 +325,11 @@ def set_lockstate(distance, player_id, counter, travel_type):
     cursor.execute(query)
     result = cursor.fetchone()
     lock_amount = result[0]
-    if distance != 0:
-        lock_amount = determine_travel_lock_amount(distance, travel_type)
+    if int(distance) != 0:
+        #print("set_lockstate_distance!=0")
+        lock_amount = determine_travel_lock_amount(distance, travel_type, player_id)
     if counter != 0:
+        #print("set_lockstate_counter!=0")
         lock_amount = int(lock_amount) + int(counter)
     print("lock amount: " + str(lock_amount))
     query = f"UPDATE player SET lockstate = '{lock_amount}' WHERE id = '{player_id}'"
@@ -361,3 +374,8 @@ def check_if_in_port(player):
         return True
     else:
         return False
+
+
+if __name__ == "__main__":
+    lock_amount_test = determine_travel_lock_amount(600, "hike", 0)
+    print(lock_amount_test, type(lock_amount_test))

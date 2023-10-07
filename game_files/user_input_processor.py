@@ -242,9 +242,11 @@ def user_input_processor(input_string, current_player):
                 return selected_function(current_player)
         elif len(input_as_list) == 2:
             try:
+                if selected_function is manual:
+                    return selected_function(input_as_list[1])
                 # kutsuu funktion käyttäen listan toista alkiota parametrina
                 return selected_function(input_as_list[1], current_player)
-            except TypeError:  # TypeError laukeaa tässä yleensä, jos syöttää parametrin liikaa
+            except TypeError or KeyError:  # TypeError laukeaa tässä yleensä, jos syöttää parametrin liikaa
                 print("Oops, looks like you might have had a parameter where it doesnt belong.")
                 return True
         else:
