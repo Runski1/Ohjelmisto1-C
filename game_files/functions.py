@@ -99,16 +99,18 @@ def printer(player):
     print("---Player status---\n")
     print(f"Name: {player[1]}")
     print(f"Current PP: {current_pp}")
-    print(f"Location: {current_location}")
+    if player[7] <= 0:
+        print(f"Location: {current_location}")
+    else:
+        print(f"You're travelling to {current_location}.")
     if player[4] > 0:
         print(f"Take your grandma's luggage back to her at Sysma!")
     else:
         print("Find your grandma's luggage.")
     if lock_status == 0:
-        print("Lock state: not locked")
-    else:
-
-        print(f"Lock state: locked for {lock_status} turns")
+        print("You are free to do actions.")
+    elif player[7] == 0:
+        print(f"You are frozen and cannot do actions for {lock_status} turns.")
     return True
 
 
@@ -235,7 +237,7 @@ def event_randomizer(player):
     playerid = player[0]
     # jos eventtiä ei tule tulostetaan allaoleva
     if rand_test > event_multiplier:
-        print("No events for you this time.")
+        # print("No events for you this time.")
         return False
     # jos eventti tulee, haetaan arpomalla eventti kaikkien eventtien joukosta ja käsitellään sitä
     # niin että outcom_high jaetaan splitillä kahteen osaan ja outcome_lower jaetaan kahteen osaan
@@ -252,11 +254,12 @@ def event_randomizer(player):
         # ja tyhjennetään pelaajalta kaikki pp:t
         if outcome_h[0] == "robbed":
             print(fluff)
+            input("<Press ENTER to continue>")
             remove_pp(player[2], player[0])
-            print(f"You have no PP.")
+            print(f"Your PP is gone.")
             if int(outcome_h[1]) > 0:
                 set_lockstate(0, player[0], outcome_h[1], "diggoo")
-                print(f"Your lockstate updates to + {outcome_h[1]}.")
+                print(f"You cannot do actions for {outcome_h[1]} turns.")
                 return False
             else:
                 return True
@@ -267,28 +270,29 @@ def event_randomizer(player):
             # sen jälkeen testataan onko nopan heitto tarpeeksi iso roll_treshold sarakkeen määräämän arvon perusteella
             if rand_event[0][2] >= 0:
                 print(fluff)
-            roll = dice_roll()
+                input("<Press ENTER to continue>")
+            roll = random.randint(2, 12)
             if rand_event[0][2] > 0:
                 print(f"\nYou need to roll at least {rand_event[0][2]}.")
-                input("Press Enter to roll dice: ")
-                print(f"\nYou rolled {roll}.")
+                roll = dice_roll()
             # jos isompi tai yhtä iso, tehdään näin
             if roll >= rand_event[0][2]:
                 add_pp(int(outcome_h[0]), int(playerid))
-                print(f"Your pp changes {outcome_h[0]}.")
+                print(f"Your PP changes {outcome_h[0]}.")
                 if int(outcome_h[1]) > 0:
                     set_lockstate(0, playerid, outcome_h[1], "diggoo")
-                    print(f"Your lockstate updates + {outcome_h[1]}.")
+                    print(f"You are frozen for {outcome_h[1]} turns.")
+                    # Pelaaja voi ylikirjoittaa tämän lockin heittämällä hitchhike-noppaa
                     return False
                 else:
                     return True
             # jos pienempi tehdään näin
             elif roll < rand_event[0][2]:
-                add_pp(int(outcome_l[0]), int(playerid))
-                print(f"Your pp updates {outcome_l[1]}.")
+                add_pp(int(outcome_l[0]), int(playerid))  # perkeleen duplicatet, en äkkiseltään keksi miten välttyisi
+                print(f"Your PP changes {outcome_l[0]}.")
                 if int(outcome_l[1]) > 0:
                     set_lockstate(0, playerid, outcome_l[1], "diggoo")
-                    print(f"Your lockstate updates + {outcome_l[1]}.")
+                    print(f"You are frozen for {outcome_l[1]} turns.")
                     return False
                 else:
                     return True
@@ -304,18 +308,12 @@ def item_randomizer():
 
 
 def determine_travel_lock_amount(distance, travel_type, player_id):
-    #print(travel_type)
     if travel_type == "hike":
-        #print("inside traveltype == hike")
         travel_lock_amount = 999
         required_dice = int(distance) * float(config.get('config', 'HikeDistanceMultiplier'))
-        #print(required_dice)
         sql = f"UPDATE player SET total_dice = '{required_dice}' WHERE id = {int(player_id)}"
         cursor.execute(sql)
     else:  # travel_type == "sail":
-        #print("inside else")
-        #print(int(distance), type(distance), config.get('config', 'BoatDistanceMultiplier'),type(config.get('config', 'BoatDistanceMultiplier')))
-        # print(int(config.get('config', 'BoatDistanceMultiplier')))
         travel_lock_amount = int(floor(int(distance) * float(config.get('config', 'BoatDistanceMultiplier'))))
 
     return travel_lock_amount
@@ -327,12 +325,10 @@ def set_lockstate(distance, player_id, counter, travel_type):
     result = cursor.fetchone()
     lock_amount = result[0]
     if int(distance) != 0:
-        #print("set_lockstate_distance!=0")
         lock_amount = determine_travel_lock_amount(distance, travel_type, player_id)
     if counter != 0:
-        #print("set_lockstate_counter!=0")
         lock_amount = int(lock_amount) + int(counter)
-    print("lock amount: " + str(lock_amount))
+    # print("lock amount: " + str(lock_amount))
     query = f"UPDATE player SET lockstate = '{lock_amount}' WHERE id = '{player_id}'"
     cursor.execute(query)
     return
@@ -357,8 +353,8 @@ def generate_main_bag():
 
 def generate_additional_bags():
     not_visited_cities = get_not_visited_city_ids()
-    playercount = len(get_player_data_as_list())
-    random_cities = random.sample(not_visited_cities, playercount)
+    player_count = len(get_player_data_as_list())
+    random_cities = random.sample(not_visited_cities, player_count - 1)
     for city_id in random_cities:
         sql = f"UPDATE city SET bag_city = 1 WHERE id = '{city_id}'"
         cursor.execute(sql)
@@ -376,15 +372,15 @@ def check_if_in_port(player):
     else:
         return False
 
+
 def main_bag_found(player):
     query = f"UPDATE player SET prizeholder = 1 WHERE id ='{player[0]}'"
     cursor.execute(query)
     query = f"UPDATE city SET bag_city = 0 WHERE id ='{player[8]}'"
     cursor.execute(query)
     generate_additional_bags()
-    return
+    end_game_email()
 
 
 if __name__ == "__main__":
-    lock_amount_test = determine_travel_lock_amount(600, "hike", 0)
-    print(lock_amount_test, type(lock_amount_test))
+    generate_additional_bags()

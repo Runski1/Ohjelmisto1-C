@@ -77,6 +77,7 @@ def helsinki_sysma(player):
             time.sleep(0.5)  # Odota ennen seuraavaa vilkkumisen vaihetta
         time.sleep(1.0)
         print(victory)
+        exit()
 
     else:
         print(f"{Fore.BLUE}Your not so loyal Dungo-driver got lost despite of your guiding:´(\n"
@@ -84,5 +85,6 @@ def helsinki_sysma(player):
               f"{Fore.RED}You get angry and your driver gets you back to Helsinki!!!")
 
 
-while True:
-    helsinki_sysma("matias")
+if __name__ == '__main__':
+    while True:
+        helsinki_sysma("TeuvoLoopMan")

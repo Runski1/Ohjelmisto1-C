@@ -25,10 +25,10 @@ def travel_fly(parameter, player):
             if city[1].lower() == parameter:
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 remove_pp(city[4], current_player_id)  # vähennetään lennon hinta pelaajan rahoista
-                print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
-                input("<Press ENTER to continue>")
+                # print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 print(f"You are now in {parameter}.\n")
-                event_randomizer(player)
+                # event_randomizer(player)
+                input("<Press ENTER to continue>")
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
     else:
         print("Something is wrong here")
@@ -77,7 +77,7 @@ def travel_hitchhike(parameter, player):
         for city in available_cities:
             if city[1].lower() == parameter:
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
-                print("city dist: " + str(city[3]))
+                # print("city dist: " + str(city[3]))
                 set_lockstate(city[3], player[0], 0, "hike")
                 print("You begin your hitchhike to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 event_randomizer(player)
@@ -107,9 +107,10 @@ def search(player):
     cursor.execute(sql)
     result = cursor.fetchall()
     if result[0][0] == 1:
-        main_bag_found(player)
         print('Congratulation you have found grandma`s lost luggage!!! Be fast and head back to Helsinki before anyone '
               ' else does!')
+        input("Press Enter to continue: ")
+        main_bag_found(player)
     else:
         item_name, item_value = item_randomizer()
         print(f'Nah! No grandma`s luggage in here! But you found {item_name} and it`s worth {item_value}')
@@ -138,11 +139,12 @@ def hire(player):
             cursor.execute(sql)
             result = list(cursor.fetchall())
             if result[0] == 1:
+                print('Congratulation you have found grandma`s lost luggage!!! Be fast and head '
+                      'back to Helsinki before anyone else does!')
+                input("Press Enter to continue: ")
                 main_bag_found(player)
-                print("You found grandmas luggage!")
             else:
                 print("Nothing found from this city.")
-
         elif player[2] < price_hire:
             print("You dont have enough pp to hire detective.")
     elif yes_no == "n":
