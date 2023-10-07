@@ -5,6 +5,7 @@ import mysql.connector
 from geopy.distance import geodesic
 from math import floor
 from config import config
+from end_game_email import end_game_email
 cursor = connection.cursor()
 
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
@@ -374,6 +375,14 @@ def check_if_in_port(player):
         return True
     else:
         return False
+
+def main_bag_found(player):
+    query = f"UPDATE player SET prizeholder = 1 WHERE id ='{player[0]}'"
+    cursor.execute(query)
+    query = f"UPDATE city SET bag_city = 0 WHERE id ='{player[8]}'"
+    cursor.execute(query)
+    generate_additional_bags()
+    return
 
 
 if __name__ == "__main__":

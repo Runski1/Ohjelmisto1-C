@@ -88,15 +88,17 @@ def travel_hitchhike(parameter, player):
         return True
 
 
-def work(parameter):
+def work(parameter, player):
     if parameter == "?":
         print("This should list all available jobs.")
         return True
-    print('You start working.')
-    print(parameter)
-    return False
-    # This function is a stub.
-    # You can contribute to the function
+    elif parameter == "do":
+        print('You start working.')
+        salary = random.randint(100, 500)
+        add_pp(salary, player[0])
+        return False
+    else:
+        return False
 
 
 def search(player):
@@ -105,6 +107,7 @@ def search(player):
     cursor.execute(sql)
     result = cursor.fetchall()
     if result[0][0] == 1:
+        main_bag_found(player)
         print('Congratulation you have found grandma`s lost luggage!!! Be fast and head back to Helsinki before anyone '
               ' else does!')
     else:
@@ -135,16 +138,13 @@ def hire(player):
             cursor.execute(sql)
             result = list(cursor.fetchall())
             if result[0] == 1:
-                sql = f"UPDATE player SET prizeholder = 1 WHERE id = '{player_id}'"
-                cursor.execute(sql)
+                main_bag_found(player)
                 print("You found grandmas luggage!")
-
             else:
                 print("Nothing found from this city.")
 
         elif player[2] < price_hire:
             print("You dont have enough pp to hire detective.")
-
     elif yes_no == "n":
         print("You didnt hire a detective.")
     return True
@@ -169,7 +169,7 @@ def manual(parameter):
                 "you " + config.get('config', 'HiringPrice') + " PP. If you hire one, you wont use your turn, but you "
                                                                "also cannot find any cool stuff you might \n"
                                                                "come by when searching yourself.",
-        'work': "This is a placeholder for work manual entry. Work has not been yet implemented to the game.",
+        'work': "To work use the command [work do]",
         'search': "You can [search] for grandma's suitcase in your current location. Searching for yourself will\n"
                   "also end your turn, but you can find lots of cool stuff when searching yourself. If you dont wish\n"
                   "to use your turn to search, you can [hire] a private detective instead.",

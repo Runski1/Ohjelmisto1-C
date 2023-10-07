@@ -15,6 +15,7 @@ if new_game_selection == "y":
     sql = "INSERT INTO player SET screen_name = '" + player2_name + "'"
     cursor.execute(sql)
     print(f"Player 2 is now known as {player2_name}")
+    generate_main_bag()
 
 while True:
     player_table = get_player_data_as_list()

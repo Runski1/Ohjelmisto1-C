@@ -37,6 +37,3 @@ def end_game_email():
         if i >= luggage_amount:
             break
         print(row[0])
-
-
-end_game_email()
