@@ -13,9 +13,9 @@ def tutorial():
     f"{Fore.GREEN}Welcome to the tutorial of this game!\n"
     f"{Fore.GREEN}If you want more info about user commands type: {Fore.RED}          help\n"
     f"{Fore.GREEN}Fly to another city type:                       {Fore.RED}          fly\n"
-    f"{Fore.GREEN}Money charge: {Fore.BLUE}"+ config.get('config','FlyPriceMultiplier') +"PP/km\n"
+    f"{Fore.GREEN}Money charge: {Fore.BLUE}"+ config.get('config','FlyPriceMultiplier') +" PP/km\n"
     f"{Fore.GREEN}Sail to another city type:                      {Fore.RED}          sail\n"
-    f"{Fore.GREEN}Money charge: {Fore.BLUE}"+ config.get('config','BoatPriceMultiplier') + "PP/km\n"
+    f"{Fore.GREEN}Money charge: {Fore.BLUE}"+ config.get('config','BoatPriceMultiplier') + " PP/km\n"
     f"{Fore.GREEN}Hike to another city type:                      {Fore.RED}          hike\n"
     f"{Fore.GREEN}Money Charge: {Fore.BLUE}0 PP/km \n"
     f"{Fore.GREEN}Hire private detective to search luggage on airport type: {Fore.RED}hire\n"
@@ -117,13 +117,23 @@ def intro():
             "                   |****************************************"+Fore.GREEN+"More info in tutorial!"+Fore.BLUE+"******************************************|\n"
             "                   |________________________________________________________________________________________________________|\n")
     return intro_text, intro_text2
-intro()
+
+user_input =input(Fore.RED+"Do you wanna skip intro?(y/n)").lower()
+if user_input == "n":
+    intro()
+elif user_input not in ["y", "n"]:
+    print("Wrong command!")
+
 
 
 
 user_input = input(f"{Fore.RED}Do you want to run tutorial for this game to get on track?(y/n)").lower()
-if user_input == "y":
+
+if user_input not in ["y", "n"]:
+    print("Wrong command!")
+elif user_input == "y":
     tutorial()
+
 
 
 
