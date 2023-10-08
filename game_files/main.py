@@ -40,11 +40,13 @@ while True:
                 while turn:  # HUOM!!!! TÄMÄ LOOP EI TULOSTA PELAAJAN TILAA UUDESTAAN, PITÄISIKÖ ANTAA PELAAJAN KUTSUA
                     choice = input("\nWhat would you like to do: ")
                     turn = user_input_processor(choice, current_player)
-            add_to_round_counter()
+                add_to_round_counter()
             if is_lock != 0:
                 printer(current_player)
                 exit_backdoor = input("\nYou are locked this round. (Press enter to continue: ")  # tätä exitiä
                 if exit_backdoor == "exit":  # ei mainita missään, asensin tämän lähinnä devaukseen.
                     exit()
                 lock_reduce(current_player)
-        add_to_round_counter()
+                add_to_round_counter()
+        if turn_skipper:
+            add_to_round_counter()
