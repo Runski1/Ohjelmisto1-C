@@ -61,13 +61,11 @@ def intro():
 
     intro_text2 = print(Fore.BLUE+
             "                   _________________________________________________________________________________________________________\n"
-            "                   |** Your grandma has returned from her trip to New-Europe and has noticed that she forgot her luggage  **|\n"
-            "                   |*** at some airport, which she cannot remember. In her luggage, there is her precious testament that ***|\n"
-            "                   |*** she's carrying with her just in case. Your goal is to track down grandma's lost luggage because  ***|\n"
-            "                   |***** you may have the opportunity to get your name into the testament after returning it to her.  *****|\n"
-            "                   |________________________________________________________________________________________________________|\n"
-            f"                                {Fore.GREEN}This is a text based adventure game where you can make your actions by typing them.\n"
-            f"                             {Fore.GREEN}                             More info in tutorial                           \n")
+            "                   |************************************"+Fore.GREEN+"Find grandma´s lost luggage"+Fore.BLUE+"*****************************************|\n"
+            "                   |**********"+Fore.GREEN+"This is a text based adventure game where you can make your actions by typing them."+Fore.BLUE+"***********|\n"
+            "                   |********************************************************************************************************|\n"
+            "                   |****************************************"+Fore.GREEN+"More info in tutorial!"+Fore.BLUE+"******************************************|\n"
+            "                   |________________________________________________________________________________________________________|\n")
     return intro_text, intro_text2
 intro()
 
