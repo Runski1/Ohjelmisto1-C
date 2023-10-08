@@ -1,11 +1,11 @@
 from colorama import Fore, Back, Style
-import os
+import sys, subprocess
 from config import config
 
 
-#def screen_clear():
-    #for _ in range(30):  # tyhjentää ruudun
-        #print("\n")
+def screen_clear():
+    subprocess.run('cls', shell=True)
+
 
 def tutorial():
 
@@ -46,21 +46,24 @@ def intro():
     sys.stdout.write('\n')
 
     input(Fore.RED+"Press Enter to continue!")
-    os.system('clr')
+
 
 
 
     for _ in range(3):
-        text = "One new email!"
+        text = Fore.RESET+"One new email!"
         sys.stdout.write('\r' + text)
         sys.stdout.flush()
         time.sleep(0.5)
         sys.stdout.write('\r' + ' ' * len(text) + '\r')  # Hide the text
         sys.stdout.flush()
         time.sleep(0.5)
-
+    sys.stdout.write('One new email!\n')
     input(Fore.RED + "Press Enter to open email!")
 
+    print(Fore.RESET+"From:  grandma < granny.betty @ hotmale.com>\n" 
+    "To     undisclosed recipients\n"
+    "Subject\n\n")
 
     for _ in range(3):
         text = "Loading... "
