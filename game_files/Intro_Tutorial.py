@@ -126,10 +126,11 @@ def intro():
     return intro_text, intro_text2
 
 #!!!!Nämä MAIN KOODIIN!!!!!
-user_input =input(Fore.RED+"Do you wanna skip intro?(y/n)").lower()#Intron skippaus
+
 while True:
+    user_input = input(Fore.RED + "Do you wanna skip intro?(y/n)").lower()  # Intron skippaus
     if user_input not in ["y", "n"]:
-    print("Wrong command!")
+        print("Wrong command!")
     elif user_input == "n":
         intro()
     elif user_input == "y":
@@ -138,13 +139,15 @@ while True:
 
 
 
-user_input = input(f"{Fore.RED}Do you want to run tutorial for this game to get on track?(y/n)").lower()#Tutoriaali
+
 while True:
+    user_input = input(
+    f"{Fore.RED}Do you want to run tutorial for this game to get on track?(y/n)").lower()  # Tutoriaali
     if user_input not in ["y", "n"]:
         print("Wrong command!")
     elif user_input == "y":
         tutorial()
-    elif user_input =="n"
+    elif user_input == "n":
         False
 
 
