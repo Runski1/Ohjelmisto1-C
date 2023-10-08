@@ -37,7 +37,7 @@ while True:
             print(f"\n{current_player[1]} it is your turn!\n")
             if is_lock == 0:
                 printer(current_player)
-                while turn:  # HUOM!!!! TÄMÄ LOOP EI TULOSTA PELAAJAN TILAA UUDESTAAN, PITÄISIKÖ ANTAA PELAAJAN KUTSUA
+                while turn:
                     choice = input("\nWhat would you like to do: ")
                     turn = user_input_processor(choice, current_player)
                 add_to_round_counter()

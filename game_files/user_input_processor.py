@@ -1,6 +1,7 @@
 from functions import *
 from db_connection import connection
 from config import config
+from colorama import Fore
 
 cursor = connection.cursor()
 
@@ -110,7 +111,7 @@ def search(player):
         print('Congratulation you have found grandma`s lost luggage!!! Be fast and head back to Helsinki before anyone '
               ' else does!')
         input("Press Enter to continue: ")
-        main_bag_found(player)
+        bag_found(player)
     else:
         item_name, item_value = item_randomizer()
         print(f'Nah! No grandma`s luggage in here! But you found {item_name} and it`s worth {item_value}')
@@ -142,7 +143,7 @@ def hire(player):
                 print('Congratulation you have found grandma`s lost luggage!!! Be fast and head '
                       'back to Helsinki before anyone else does!')
                 input("Press Enter to continue: ")
-                main_bag_found(player)
+                bag_found(player)
             else:
                 print("Nothing found from this city.")
         elif player[2] < price_hire:
@@ -199,7 +200,7 @@ def help_function():
     max_key_length = max(len(key) for key in help_dictionary.keys())
     print("Here is a list of all the available commands.")
     for key, value in help_dictionary.items():
-        print(f"{key:<{max_key_length}} : {value}")
+        print(f"{Fore.RED}{key:<{max_key_length}} : {Fore.GREEN}{value}{Fore.RESET}")
     print("For more information about a certain command, type [man 'command'].")
     return True
 

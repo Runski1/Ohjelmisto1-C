@@ -370,13 +370,17 @@ def check_if_in_port(player):
         return False
 
 
-def main_bag_found(player):
+def bag_found(player):
+    query = f"SELECT COUNT(*) FROM player WHERE prizeholder = '1'"
+    cursor.execute(query)
+    bagman = cursor.fetchone()
     query = f"UPDATE player SET prizeholder = 1 WHERE id ='{player[0]}'"
     cursor.execute(query)
     query = f"UPDATE city SET bag_city = 0 WHERE id ='{player[8]}'"
     cursor.execute(query)
-    generate_additional_bags()
-    end_game_email()
+    if bagman[0] == 0:
+        generate_additional_bags()
+        end_game_email()
 
 
 if __name__ == "__main__":
