@@ -13,8 +13,8 @@ def end_game_email():
     email_string = (f"Hey! This Jarmo from FunAir. We have found {luggage_amount} luggage(s) that matches with your "
                     f"lost one! Here is the list of airports where you can find it/them.")
     speed = 0.09  # kirjoitusnopeus
-    min_speed = 0.04  # Alin  kirjoitus nopeus
-    max_speed = 0.1   # Ylin kirjoitus nopeus
+    min_speed = 0.1  # Alin  kirjoitus nopeus
+    max_speed = 0.04   # Ylin kirjoitus nopeus
     for letter in email_string:
         sys.stdout.write(letter)
         sys.stdout.flush()  # Päivitä näyttö

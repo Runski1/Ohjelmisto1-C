@@ -3,10 +3,6 @@ import sys, subprocess
 from config import config
 
 
-def screen_clear():
-    subprocess.run('cls', shell=True)
-
-
 def tutorial():
 
     tutorial_text=print(
@@ -24,14 +20,14 @@ def tutorial():
     f"{Fore.GREEN}If you want to search luggage in current location type: {Fore.RED}  search\n"
     f"{Fore.GREEN}If you got better things to do type:            {Fore.RED}          exit\n"
     f"{Fore.GREEN}Add '{Fore.RED}?{Fore.GREEN}' after '{Fore.RED}fly{Fore.GREEN}' and '{Fore.RED}sail{Fore.GREEN}' "
-    f"command and you will get list of available cities.")
+    f"command and you will get list of available cities."+ Fore.RESET)
     return tutorial_text
 
 
 def intro():
     import sys
     import time
-    speed = 0.0000001# kirjoitusnopeus
+    speed = 0.01# kirjoitusnopeus
 
     intro_email = ("\n"+Fore.BLUE+"It's the year 2043. Climate change and a three-decade-long inflation-deflation cycle have\n"
                    "scourged Europe. At the beginning of Paavo Väyrynen's third presidential term, the European\n"
@@ -115,19 +111,16 @@ def intro():
             "                   |**********"+Fore.GREEN+"This is a text based adventure game where you can make your actions by typing them."+Fore.BLUE+"***********|\n"
             "                   |********************************************************************************************************|\n"
             "                   |****************************************"+Fore.GREEN+"More info in tutorial!"+Fore.BLUE+"******************************************|\n"
-            "                   |________________________________________________________________________________________________________|\n")
+            "                   |________________________________________________________________________________________________________|\n"+Fore.RESET)
     return intro_text, intro_text2
-intro()
 
 
 
-user_input = input(f"{Fore.RED}Do you want to run tutorial for this game to get on track?(y/n)").lower()
-if user_input == "y":
+
+
+if __name__ == "__main__":
     tutorial()
-
-
-
-
+    intro()
 
 
 

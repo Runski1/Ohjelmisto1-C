@@ -86,10 +86,7 @@ def lock_check(player_id):  # Printer ei tarvitse tätä enää, tarvitseeko jok
     result = cursor.fetchall()
     #    cursor.close()
     lock_state = int(result[0][0])
-    if lock_state == 0:
-        return "Not locked"
-    else:
-        return lock_state
+    return lock_state
 
 
 def printer(player):
