@@ -110,15 +110,23 @@ def intro():
 
 
     intro_text2 = print(Fore.BLUE+
-            "                   _________________________________________________________________________________________________________\n"
-            "                   |************************************"+Fore.GREEN+"Find grandma´s lost luggage"+Fore.BLUE+"*****************************************|\n"
-            "                   |**********"+Fore.GREEN+"This is a text based adventure game where you can make your actions by typing them."+Fore.BLUE+"***********|\n"
-            "                   |********************************************************************************************************|\n"
-            "                   |****************************************"+Fore.GREEN+"More info in tutorial!"+Fore.BLUE+"******************************************|\n"
-            "                   |________________________________________________________________________________________________________|\n")
+            "                   ______________________________________________________________________________"
+            "___________________________\n"
+            "                   |************************************"+Fore.GREEN+"Find grandma´s lost luggage"
+                        +Fore.BLUE+"*****************************************|\n"
+            "                   |**********"+Fore.GREEN+"This is a text based adventure game where you can make"
+                                                        " your actions by typing them."+Fore.BLUE+"***********|\n"
+            "                   |******************************************************************************"
+                                                                                                  "************"
+                                                                                                  "**************|\n"
+            "                   |****************************************"+Fore.GREEN+"More info in tutorial!"
+                        +Fore.BLUE+"******************************************|\n"
+            "                   |____________________________________________________________________________"
+                                   "____________________________|\n")
     return intro_text, intro_text2
 
-user_input =input(Fore.RED+"Do you wanna skip intro?(y/n)").lower()
+#!!!!Nämä MAIN KOODIIN!!!!!
+user_input =input(Fore.RED+"Do you wanna skip intro?(y/n)").lower()#Intron skippaus
 if user_input == "n":
     intro()
 elif user_input not in ["y", "n"]:
@@ -127,7 +135,7 @@ elif user_input not in ["y", "n"]:
 
 
 
-user_input = input(f"{Fore.RED}Do you want to run tutorial for this game to get on track?(y/n)").lower()
+user_input = input(f"{Fore.RED}Do you want to run tutorial for this game to get on track?(y/n)").lower()#Tutoriaali
 
 if user_input not in ["y", "n"]:
     print("Wrong command!")
