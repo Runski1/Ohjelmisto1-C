@@ -96,7 +96,7 @@ def printer(player):
     print("---Player status---\n")
     print(f"Name: {player[1]}")
     print(f"Current PP: {current_pp}")
-    if player[7] <= 0:
+    if player[3] == 0:
         print(f"Location: {current_location}")
     else:
         print(f"You're travelling to {current_location}.")
@@ -172,7 +172,7 @@ def print_available_cities(travel_mode, city_list, player_id):
         else:
             visited_status = "not visited"
         # printti muotoituna taulukkomaiseksi, aja funktio niin näet
-        print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} PP {visited_status:>15}")
+        print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} EP {visited_status:>15}")
     print(f"You have {get_current_pp(player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
 
 
@@ -200,7 +200,7 @@ def get_cities_in_range(travel_mode, player):
         distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
         price = distance_from_player * price_multiplier
         if city[0] != player_location and (distance_from_player <= max_distance and
-                                           price <= player_pp):
+                                           price <= player_pp or price == 0):
             cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
     return cities_in_range
 
@@ -253,7 +253,7 @@ def event_randomizer(player):
             print(fluff)
             input("<Press ENTER to continue>")
             remove_pp(player[2], player[0])
-            print(f"Your PP is gone.")
+            print(f"Your EP is gone.")
             if int(outcome_h[1]) > 0:
                 set_lockstate(0, player[0], outcome_h[1], "diggoo")
                 print(f"You cannot do actions for {outcome_h[1]} turns.")
@@ -275,7 +275,7 @@ def event_randomizer(player):
             # jos isompi tai yhtä iso, tehdään näin
             if roll >= rand_event[0][2]:
                 add_pp(int(outcome_h[0]), int(playerid))
-                print(f"Your PP changes {outcome_h[0]}.")
+                print(f"Your EP changes {outcome_h[0]}.")
                 if int(outcome_h[1]) > 0:
                     set_lockstate(0, playerid, outcome_h[1], "diggoo")
                     print(f"You are frozen for {outcome_h[1]} turns.")
@@ -286,7 +286,7 @@ def event_randomizer(player):
             # jos pienempi tehdään näin
             elif roll < rand_event[0][2]:
                 add_pp(int(outcome_l[0]), int(playerid))  # perkeleen duplicatet, en äkkiseltään keksi miten välttyisi
-                print(f"Your PP changes {outcome_l[0]}.")
+                print(f"Your EP changes {outcome_l[0]}.")
                 if int(outcome_l[1]) > 0:
                     set_lockstate(0, playerid, outcome_l[1], "diggoo")
                     print(f"You are frozen for {outcome_l[1]} turns.")

@@ -142,12 +142,12 @@ def hire(player):
             if result[0] == 1:
                 print('Congratulation you have found grandma`s lost luggage!!! Be fast and head '
                       'back to Helsinki before anyone else does!')
-                input("Press Enter to continue: ")
+                # input("Press Enter to continue: ")
                 bag_found(player)
             else:
                 print("Nothing found from this city.")
         elif player[2] < price_hire:
-            print("You dont have enough pp to hire detective.")
+            print("You dont have enough EP to hire detective.")
     elif yes_no == "n":
         print("You didnt hire a detective.")
     return True
@@ -160,7 +160,7 @@ def manual(parameter):
         'fly': "You can fly to another city with command [fly]. To show all available\n"
                "destinations and prices use [fly ?]. To start flying to the city of your choosing\n"
                "type [fly 'city_name'].\n"
-               "Flying is the fastest form of travel, but will cost you a lot of PP.",
+               "Flying is the fastest form of travel, but will cost you a lot of EP.",
         'sail': "You can sail to another city with command [sail]. To show all available\n"
                 "destinations, prices and how many turns the trip will take, type [sail ?].\n"
                 " To start sailing to the city of your choosing, type [sail 'city_name'].",
@@ -169,7 +169,7 @@ def manual(parameter):
                 "To start hitchhiking to the city of your choosing, type [hike 'city_name'].\n"
                 "You never know if strangers will let you in their car, so hitchhiking is luck-based.",
         'hire': "You can [hire] a private detective to search for grandma's suitcase. Hiring a detective will cost\n"
-                "you " + config.get('config', 'HiringPrice') + " PP. If you hire one, you wont use your turn, but you "
+                "you " + config.get('config', 'HiringPrice') + " EP. If you hire one, you wont use your turn, but you "
                                                                "also cannot find any cool stuff you might \n"
                                                                "come by when searching yourself.",
         'work': "To work use the command [work do]",

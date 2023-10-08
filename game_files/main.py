@@ -43,7 +43,8 @@ while True:
                 add_to_round_counter()
             if is_lock != 0:
                 printer(current_player)
-                exit_backdoor = input("\nYou are locked this round. (Press enter to continue: ")  # tätä exitiä
+                print("\nYou are locked this round.")
+                exit_backdoor = input("<Press ENTER to continue>")  # tätä exitiä
                 if exit_backdoor == "exit":  # ei mainita missään, asensin tämän lähinnä devaukseen.
                     exit()
                 lock_reduce(current_player)
