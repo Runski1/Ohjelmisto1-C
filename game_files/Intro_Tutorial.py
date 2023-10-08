@@ -63,7 +63,7 @@ def intro():
     sys.stdout.write('One new email!\n')
     input(Fore.RED + "Press Enter to open email!")
 
-    print(Fore.RESET+"From:  grandma < granny.betty @ hotmale.com>\n" 
+    print(Fore.RESET+"From:  grandma <granny.betty@hotmale.com>\n" 
     "To     undisclosed recipients\n"
     "Subject\n\n")
     print("I'm finally back home from my adventure across NEU! It was quite a journey, and I'm grateful for\n"
