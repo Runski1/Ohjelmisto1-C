@@ -1,10 +1,9 @@
 from colorama import Fore, Back, Style
-import sys, subprocess
+
 from config import config
 
 
-def screen_clear():
-    subprocess.run('cls', shell=True)
+
 
 
 def tutorial():
