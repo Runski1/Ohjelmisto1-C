@@ -47,4 +47,4 @@ tulostaa laukkujen lkm ja sijainnit kuten alunperin, mutta ei luo laukkuja eikä
 
 useampi press enter to continue-rivi **ctrl+shift+F** tarkemmat sijainnit
 
-
+asdfasdf
