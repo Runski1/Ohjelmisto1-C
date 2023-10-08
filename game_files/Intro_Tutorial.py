@@ -22,7 +22,9 @@ def tutorial():
     f"{Fore.GREEN}Money charge: {Fore.BLUE}"+ config.get('config','HiringPrice') +" PP\n"
     "\n"
     f"{Fore.GREEN}If you want to search luggage in current location type: {Fore.RED}  search\n"
-    f"{Fore.GREEN}If you got better things to do type:            {Fore.RED}          exit\n")
+    f"{Fore.GREEN}If you got better things to do type:            {Fore.RED}          exit\n"
+    f"{Fore.GREEN}Add '{Fore.RED}?{Fore.GREEN}' after '{Fore.RED}fly{Fore.GREEN}' and '{Fore.RED}sail{Fore.GREEN}' "
+    f"command and you will get list of available cities.")
     return tutorial_text
 
 
