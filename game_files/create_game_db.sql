@@ -12,9 +12,7 @@ create table city
     longitude_deg float                null,
     bag_city      tinyint(1) default 0 null,
     visited       tinyint(1) default 0 null,
-    port_city     tinyint(1)           null,
-    constraint name
-        unique (name)
+    port_city     tinyint(1)           null
 );
 
 create table player
