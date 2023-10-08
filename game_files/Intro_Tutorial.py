@@ -64,6 +64,18 @@ def intro():
     print(Fore.RESET+"From:  grandma < granny.betty @ hotmale.com>\n" 
     "To     undisclosed recipients\n"
     "Subject\n\n")
+    print("I'm finally back home from my adventure across NEU! It was quite a journey, and I'm grateful for\n"
+    "the memories I've collected. Can't wait to catch up with you and share all the details.  It's nice to be\n"
+    "back and sleep in my own bed and finally eat normal food. You know me, all those spices give me a headache\n"
+    "and make my stomach upset.\n"
+    "Oh, almost forgot! I cannot find my luggage anywhere! Im sure I had  it when I got to the airport in Prague.\n" 
+    "Or was it Berlin? Or Casablanca? Anyway, it’s nothing too important, but my testament is there too.\n"
+    "You know I like to keep it on me at all times, just in case.\n"
+    "Love,\n"
+    "Grandma\n")
+
+
+    input(Fore.RED+"Press Enter to start the game!"+Fore.RESET)
 
     for _ in range(3):
         text = "Loading... "
