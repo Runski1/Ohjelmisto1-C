@@ -79,10 +79,5 @@ if user_input == "y":
 
 
 
-
-
-
-
-
-
-
+if __name__ == "__main__":
+    intro()
