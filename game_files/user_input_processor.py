@@ -162,29 +162,42 @@ def hire(player):
 def manual(parameter):
     # manuaalia voisi laajentaa
     manual_dictionary = {
-        'help': "[help] prints all available user commands.",
-        'fly': "You can fly to another city with command [fly]. To show all available\n"
-               "destinations and prices use [fly ?]. To start flying to the city of your choosing\n"
-               "type [fly 'city_name'].\n"
-               "Flying is the fastest form of travel, but will cost you a lot of EP.",
-        'sail': "You can sail to another city with command [sail]. To show all available\n"
-                "destinations, prices and how many turns the trip will take, type [sail ?].\n"
-                " To start sailing to the city of your choosing, type [sail 'city_name'].",
-        'hike': "You can hitchhike to another city with command [hike]. Show all available destinations and \n"
-                "an approximation on how many turns the trip will take with command [hike ?].\n"
-                "To start hitchhiking to the city of your choosing, type [hike 'city_name'].\n"
-                "You never know if strangers will let you in their car, so hitchhiking is luck-based.",
-        'hire': "You can [hire] a private detective to search for grandma's suitcase. Hiring a detective will cost\n"
-                "you " + config.get('config', 'HiringPrice') + " EP. If you hire one, you wont use your turn, but you "
-                                                               "also cannot find any cool stuff you might \n"
-                                                               "come by when searching yourself.",
-        'work': "To work use the command [work do]",
-        'search': "You can [search] for grandma's suitcase in your current location. Searching for yourself will\n"
-                  "also end your turn, but you can find lots of cool stuff when searching yourself. If you dont wish\n"
-                  "to use your turn to search, you can [hire] a private detective instead.",
-        'exit': "[exit] will end the game running and TOTALLY save your progress. ..For sure. I dare you to try.",
-        'man': "You dirty bastard, trying to break me are you?"
-    }
+        'help': f"{Fore.RED}help{Fore.GREEN} prints all available user commands.{Fore.RESET}",
+        'fly': f"You can fly to another city with command{Fore.RED} fly{Fore.GREEN}. To show all available\n"
+               f"destinations and prices use {Fore.RED}fly ?{Fore.GREEN}. To start flying to the city of your choosing\n"
+               f"type {Fore.RED}fly '{Fore.GREEN}city_name{Fore.RED}'{Fore.GREEN}.\n"
+               f"Flying is the fastest form of travel, but will cost you a lot of {Fore.BLUE}EP{Fore.GREEN}.{Fore.RESET}",
+        'sail': f"{Fore.GREEN}You can sail to another city with command {Fore.RED}sail{Fore.GREEN}. To show all available\n"
+                f"destinations, prices and how many turns the trip will take, type{Fore.RED} sail ?{Fore.GREEN}.\n"
+                f" To start sailing to the city of your choosing, type{Fore.RED} sail '{Fore.GREEN}"
+                f"city_name{Fore.RED}'{Fore.GREEN}.{Fore.RESET}",
+        'hike': f"You can hitchhike to another city with command {Fore.RED}hike{Fore.GREEN}. Show all available "
+                f"destinations and \n"
+                f"an approximation on how many turns the trip will take with command{Fore.RED} hike ?{Fore.GREEN}.\n"
+                f"To start hitchhiking to the city of your choosing, type {Fore.RED}hike '{Fore.GREEN}"
+                f"city_name{Fore.RED}'{Fore.GREEN}.\n"
+                f"You never know if strangers will let you in their car, so hitchhiking is luck-based.{Fore.RESET}",
+        'hire': f"You can {Fore.RED}hire{Fore.GREEN} a private detective to search for grandma's suitcase"
+                f". Hiring a detective will cost\n"
+                f"you {Fore.BLUE}{config.get('config', 'HiringPrice')} "
+                f"EP{Fore.GREEN}. If you hire one, you wont use your turn, but you "
+                f"also cannot find any cool stuff you might \n"
+                f"come by when searching yourself.{Fore.RESET}",
+        'work': f"{Fore.GREEN}To work use the command {Fore.RED}work do {Fore.RESET}",
+        'search': f"{Fore.GREEN}You can {Fore.RED}search{Fore.GREEN} for grandma's suitcase in your current location. Searching"
+                  f" for yourself will\n"
+                  f"also end your turn, but you can find lots of cool stuff when searching yourself. If you dont wish\n"
+                  f"to use your turn to search, you can {Fore.RED}hire{Fore.GREEN} a private detective instead.{Fore.RESET}",
+        'exit': f"{Fore.RED}exit{Fore.GREEN} will end the game running and TOTALLY save your progress."
+                f" ..For sure. I dare you to try.{Fore.RESET}",
+        'man': f"{Fore.GREEN}Y{Fore.YELLOW}0{Fore.WHITE}u {Fore.RED}3{Fore.BLUE}1{Fore.GREEN}r{Fore.CYAN}7"
+               f"{Fore.LIGHTYELLOW_EX}y {Fore.WHITE} {Fore.GREEN}4{Fore.RED}5{Fore.MAGENTA}7{Fore.LIGHTRED_EX}a"
+               f"{Fore.WHITE}R{Fore.LIGHTGREEN_EX}d{Fore.RED}, {Fore.GREEN}7{Fore.BLUE}r{Fore.RESET}Y{Fore.RED}1"
+               f"{Fore.YELLOW}n{Fore.WHITE}g {Fore.RED}t{Fore.YELLOW}0 {Fore.RED}B{Fore.GREEN}r{Fore.BLUE}E"
+               f"{Fore.WHITE}4{Fore.YELLOW}k {Fore.WHITE}m{Fore.RESET}E"f" {Fore.BLUE}4{Fore.YELLOW}r{Fore.RED}E "
+               f"{Fore.GREEN}y{Fore.BLUE}0{Fore.WHITE}u{Fore.GREEN}?{Fore.RESET}"}
+
+
     print(manual_dictionary[parameter])
     input("<Press ENTER to continue>")
     return True  # Lisätty perään ettei vuoro vaihdu jos käyttää man toimintoa.
@@ -193,7 +206,8 @@ def manual(parameter):
 def help_function():
     help_dictionary = {
         'help': "shows you all commands you can use",
-        'man': "[man 'command'] prints you the manual entry for certain command.",
+        'man': f"[man {Fore.RED}'{Fore.GREEN}command{Fore.RED}'{Fore.GREEN}] prints you the manual entry for "
+               f"certain command.",
         'status': "prints your player status",
         'fly': "travel with an airplane, (or fly yourself, however you want to imagine it)",
         'sail': "it might seem slow, but trust me, you'll travel with a cruise ship and not an actual sailboat",
@@ -207,7 +221,9 @@ def help_function():
     print("Here is a list of all the available commands.")
     for key, value in help_dictionary.items():
         print(f"{Fore.RED}{key:<{max_key_length}} : {Fore.GREEN}{value}{Fore.RESET}")
-    print("For more information about a certain command, type [man 'command'].")
+    print(f"For more information about a certain command, type {Fore.RED}man "
+          f"'{Fore.RESET}command{Fore.RED}'{Fore.RESET}.")
+    input("<Press ENTER to continue>")
     return True
 
 
