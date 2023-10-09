@@ -178,6 +178,8 @@ def manual(parameter):
                   f" for yourself will\n"
                   f"also end your turn, but you can find lots of cool stuff when searching yourself. If you dont wish\n"
                   f"to use your turn to search, you can {Fore.RED}hire{Fore.GREEN} a private detective instead.{Fore.RESET}",
+        'status': f"{Fore.GREEN}Prints you player status, it might be useful for ordinary human (it means you).{Fore.RESET}",
+        'map':  f"{Fore.GREEN}Prints all cities, their visited status and distance from your sitting point to them.{Fore.RESET}",
         'exit': f"{Fore.RED}exit{Fore.GREEN} will end the game running and TOTALLY save your progress."
                 f" ..For sure. I dare you to try.{Fore.RESET}",
         'man': f"{Fore.GREEN}Y{Fore.YELLOW}0{Fore.WHITE}u {Fore.RED}3{Fore.BLUE}1{Fore.GREEN}r{Fore.CYAN}7"
@@ -198,7 +200,8 @@ def help_function():
         'help': "shows you all commands you can use",
         'man': f"[man {Fore.RED}'{Fore.GREEN}command{Fore.RED}'{Fore.GREEN}] prints you the manual entry for "
                f"certain command.",
-        'status': "prints your player status",
+        'status': "Prints your player status",
+        'map': "Prints distance to all cities and if they have been visited or not.",
         'fly': "travel with an airplane, (or fly yourself, however you want to imagine it)",
         'sail': "it might seem slow, but trust me, you'll travel with a cruise ship and not an actual sailboat",
         'hike': "hitchhike your way around the NEU. Devs tell its safe, don't worry.",
@@ -221,6 +224,7 @@ command_dictionary = {  # pelaajan komennot
     'help': help_function,
     'man': manual,
     'status': printer,
+    'map': print_city_status,
     'fly': travel_fly,
     'sail': travel_sail,
     'hike': travel_hitchhike,
@@ -229,8 +233,7 @@ command_dictionary = {  # pelaajan komennot
     'hire': hire,
     'exit': exit
 }
-
-commands_without_parameter = ["status", "search", "hire", "help", "exit"]  # syötteenkäsittelyä varten
+commands_without_parameter = ["status", "map", "search", "hire", "help", "exit"]
 
 
 def user_input_processor(input_string, current_player):
