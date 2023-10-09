@@ -395,7 +395,6 @@ def bag_found(player):
 
 
 def print_city_status(player):
-    player = player[1]
     cities = get_city_data()
     player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
     print(player_coords)
