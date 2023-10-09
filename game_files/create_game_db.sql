@@ -79,7 +79,7 @@ INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitud
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (13, 'Cairo', 'Egypt', 30.1219, 31.4056, 0, 0, 1);
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (14, 'Gran-Canaria', 'Canary islands', 27.9319, -15.3866, 0, 0, 1);
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (15, 'Madrid', 'Spain', 40.4719, -3.56264, 0, 0, 0);
-INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (16, 'Helsinki', 'Finland', 60.3172, 24.9633, 0, 1, 1);
+INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (16, 'Helsinki', 'Finland', 60.3172, 24.9633, 0, 0, 1);
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (17, 'Paris', 'France', 49.0128, 2.55, 0, 0, 0);
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (18, 'London', 'United Kingdom', 51.4706, -0.461941, 0, 0, 1);
 INSERT INTO kadonnut_testamentti.city (id, name, country, latitude_deg, longitude_deg, bag_city, visited, port_city) VALUES (19, 'Mestia', 'Georgia', 43.0536, 42.749, 0, 0, 0);

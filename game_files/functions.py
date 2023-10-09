@@ -210,8 +210,7 @@ def get_cities_in_range(travel_mode, player):
     for city in cities:
         distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
         price = distance_from_player * price_multiplier
-        if city[0] != player_location and (distance_from_player <= max_distance and
-                                           price <= player_pp or price == 0):
+        if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
             cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
     return cities_in_range
 
