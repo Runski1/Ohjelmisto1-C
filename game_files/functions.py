@@ -33,8 +33,13 @@ def get_current_pp(player_id):
 def add_pp(change_amount, player_id):
     current_pp = get_current_pp(player_id)  # int
     new_pp = current_pp + change_amount  # int
-    query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}'"  # f-string koska int
-    cursor.execute(query)
+    if new_pp > 0:  # tarkistus ettei eventti voi viedä poletteja nollan alapuolelle
+        query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}'"  # f-string koska int
+        cursor.execute(query)
+
+    else:
+        sql = f"UPDATE player SET current_pp = 0 WHERE id = '{player_id}'"
+        cursor.execute(sql)
     return
 
 
