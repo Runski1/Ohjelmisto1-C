@@ -84,7 +84,7 @@ def set_location(new_location, player_id):  # new location, player id tulee stri
 
 
 def set_searched(location):
-    sql = "UPDATE city SET visited = 1 WHERE city.id = '" + location + "'"
+    sql = f"UPDATE city SET visited = 1 WHERE city.id = '{location}'"
     cursor.execute(sql)
 
 
