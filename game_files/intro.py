@@ -46,7 +46,6 @@ def intro():
     "Love,\n"
     "Grandma\n")
 
-
     input(Fore.RED+"Press Enter to start the game!"+Fore.RESET)
 
     for _ in range(3):
@@ -68,7 +67,6 @@ def intro():
     "         ▀        █  ▀███▀           ▀                   ▀            ▀      ▀███▀               ▀         █    █  ▀███▀   █  █ █  ▀\n"
     "                 ▀                                                                                        █    ▀           █   ██\n"
     "                                                                                                         ▀\n")
-
 
     # min_speed = 0.04  # Alin  kirjoitus nopeus
     # max_speed = 0.1   # Ylin kirjoitus nopeus

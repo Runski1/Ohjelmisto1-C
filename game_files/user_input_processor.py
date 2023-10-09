@@ -46,7 +46,6 @@ def travel_sail(parameter, player):
         print_available_cities("boat", sorted_available_cities, current_player_id)
         return True  # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
     elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
-        city_found = False
         for city in available_cities:
             if city[1].lower() == parameter:
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
@@ -125,7 +124,6 @@ def hire(player):
         "hire": config.get('config', 'HiringPrice')
     }
     price_hire = int(price_multiplier_dict["hire"])
-    player_id = str(player[0])
     print(f"You hire a local detective to look for your grandma's suitcase. Cost is {price_hire}.")
     yes_no = input("Do you want to hire a detective? y/n: ")
     if yes_no == "y":
@@ -188,7 +186,6 @@ def manual(parameter):
                f"{Fore.YELLOW}n{Fore.WHITE}g {Fore.RED}t{Fore.YELLOW}0 {Fore.RED}B{Fore.GREEN}r{Fore.BLUE}E"
                f"{Fore.WHITE}4{Fore.YELLOW}k {Fore.WHITE}m{Fore.RESET}E"f" {Fore.BLUE}4{Fore.YELLOW}r{Fore.RED}E "
                f"{Fore.GREEN}y{Fore.BLUE}0{Fore.WHITE}u{Fore.GREEN}?{Fore.RESET}"}  # have fun
-
 
     print(manual_dictionary[parameter])
     input("<Press ENTER to continue>")

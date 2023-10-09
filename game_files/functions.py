@@ -230,6 +230,7 @@ def lock_reduce(player):
             cursor.execute(sql)
             sql = f"UPDATE player SET lockstate = '0' WHERE id = '{player[0]}'"
             cursor.execute(sql)
+            input("<Press ENTER to continue>")
     else:
         sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
         print("Player lock updated.")
