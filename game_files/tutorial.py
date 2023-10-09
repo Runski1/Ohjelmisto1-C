@@ -69,9 +69,10 @@ Remember:
 {Fore.RED}help{Fore.BLUE} to show all commands
 {Fore.RED}man command{Fore.BLUE}for manual entry of {Fore.RED}command{Fore.BLUE}
 {Fore.RED}fly ?{Fore.BLUE}parameter "?" will show you a list of cities where you can travel to.
-{Fore.RED}search{Fore.BLUE} to search for luggage. DONT FORGET TO SEARCH! It can be real pain in the ass to find the
-luggage, if you visit a city but don't {Fore.RED}search{Fore.BLUE} there.
+{Fore.RED}search{Fore.BLUE} to search for luggage.
 
+Btw, command {Fore.RED} map {Fore.BLUE} shows you all the cities in Lost Testament. Be aware, that it will print a list
+of 48 rows total.
 
 It's not dangerous to go alone in Lost Testament, so I will not give you anything.
 Good luck!{Fore.RESET}

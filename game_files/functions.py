@@ -81,7 +81,10 @@ def get_location(player_id):
 def set_location(new_location, player_id):  # new location, player id tulee stringinä!
     sql = "UPDATE player SET location = '" + new_location + "' WHERE player.id = '" + player_id + "'"
     cursor.execute(sql)
-    sql = "UPDATE city SET visited = 1 WHERE city.id = '" + new_location + "'"
+
+
+def set_searched(location):
+    sql = "UPDATE city SET visited = 1 WHERE city.id = '" + location + "'"
     cursor.execute(sql)
 
 
@@ -174,11 +177,11 @@ def print_available_cities(travel_mode, city_list, player_id):
         print("---Available cities where you can hitchhike to---")
     for city in city_list:
         if city[5] == 1:  # if-else tulostaa visited tai not visited riippuen kaupungin tilasta
-            visited_status = "visited"
+            visited_status = "searched"
         else:
-            visited_status = "not visited"
+            visited_status = "not searched"
         # printti muotoituna taulukkomaiseksi, aja funktio niin näet
-        if visited_status == "visited":
+        if visited_status == "searched":
             print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {Fore.BLUE}{city[3]:^7} km{Fore.GREEN} : cost "
                   f"{Fore.BLUE}{city[4]:^6.0f} EP {Fore.RED}{visited_status:>15}{Fore.RESET}")
         else:
@@ -210,8 +213,7 @@ def get_cities_in_range(travel_mode, player):
     for city in cities:
         distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
         price = distance_from_player * price_multiplier
-        if city[0] != player_location and (distance_from_player <= max_distance and
-                                           price <= player_pp or price == 0):
+        if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
             cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
     return cities_in_range
 
@@ -394,22 +396,31 @@ def bag_found(player):
         end_game_email()
 
 
+def is_city_bag_city(player):
+    sql = (f"SELECT bag_city FROM city inner join player on "
+           f"city.id = player.location and player.screen_name = '{player[1]}'")
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    if result[0][0] == 1:
+        return True
+    else:
+        return False
+
+
 def print_city_status(player):
-    player = player[1]
     cities = get_city_data()
     player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
-    print(player_coords)
     for city in cities:
         distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
         city.append(distance_from_player)
     sorted_city = sorted(cities, key=lambda x: x[8])
     for city in sorted_city:
-        if city[5] == 1:
-            visited_status = "visited"
+        if city[6] == 1:
+            visited_status = "searched"
         else:
-            visited_status = "not visited"
+            visited_status = "not searched"
         # printti muotoituna taulukkomaiseksi, aja funktio niin näet
-        if visited_status == "visited":
+        if visited_status == "searched":
             print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {Fore.BLUE}{city[8]:^7} km{Fore.GREEN} : cost "
                   f"{Fore.BLUE}{city[4]:^6.0f} EP {Fore.RED}{visited_status:>15}{Fore.RESET}")
         else:
@@ -418,4 +429,4 @@ def print_city_status(player):
 
 
 if __name__ == "__main__":
-    print_city_status(get_player_data_as_list())
+    pass

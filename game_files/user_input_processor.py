@@ -3,13 +3,7 @@ from db_connection import connection
 from config import config
 from colorama import Fore
 
-cursor = connection.cursor()
-
-
-def find_city_index(city_name, city_list):
-    for index, city_data in enumerate(city_list):
-        if city_data[1] == city_name:
-            return index
+cursor = connection.cursor()  # Voi jos osaisimme luokkia ja olioita, tätä ei tarvittaisi täällä
 
 
 def travel_fly(parameter, player):
@@ -31,7 +25,7 @@ def travel_fly(parameter, player):
                 # event_randomizer(player)
                 input("<Press ENTER to continue>")
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
-        print("City doesn't exist or it is out of range.")
+        print("City doesn't exist or it is out of range.")  # tämä fix, ettei pelaaja menetä vuoroaan typolla
         return True
     else:
         print("Something is wrong here")
@@ -62,7 +56,7 @@ def travel_sail(parameter, player):
                 event_randomizer(player)
                 input("<Press ENTER to continue>")
                 return False
-        print("City doesn't exist or it is out of range.")
+        print("City doesn't exist or it is out of range.")  # tämä fix, ettei pelaaja menetä vuoroaan typolla
         return True
     else:
         print("Something is wrong here")
@@ -88,14 +82,14 @@ def travel_hitchhike(parameter, player):
                 event_randomizer(player)
                 input("<Press ENTER to continue>")
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
-        print("City doesn't exist or it is out of range.")
+        print("City doesn't exist or it is out of range.")  # tämä fix, ettei pelaaja menetä vuoroaan typolla
         return True
     else:
         print("Something is wrong here")
         return True
 
 
-def work(parameter, player):
+def work(parameter, player):  # Tämä on oikeastaan vain placeholder-funktio, jolla voi generoida rahaa
     if parameter == "?":
         print("This should list all available jobs.")
         return True
@@ -109,11 +103,8 @@ def work(parameter, player):
 
 
 def search(player):
-    sql = (f"SELECT bag_city FROM city inner join player on "
-           f"city.id = player.location and player.screen_name = '{player[1]}'")
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    if result[0][0] == 1:
+    set_searched(player[8])
+    if is_city_bag_city(player):
         print('Congratulation you have found grandma`s lost luggage!!! Be fast and head back to Helsinki before anyone '
               ' else does!')
         input("Press Enter to continue: ")
@@ -160,8 +151,7 @@ def hire(player):
 
 
 def manual(parameter):
-    # manuaalia voisi laajentaa
-    manual_dictionary = {
+    manual_dictionary = {  # Manuaalientryt
         'help': f"{Fore.RED}help{Fore.GREEN} prints all available user commands.{Fore.RESET}",
         'fly': f"You can fly to another city with command{Fore.RED} fly{Fore.GREEN}. To show all available\n"
                f"destinations and prices use {Fore.RED}fly ?{Fore.GREEN}. To start flying to the city of your choosing\n"
@@ -195,7 +185,7 @@ def manual(parameter):
                f"{Fore.WHITE}R{Fore.LIGHTGREEN_EX}d{Fore.RED}, {Fore.GREEN}7{Fore.BLUE}r{Fore.RESET}Y{Fore.RED}1"
                f"{Fore.YELLOW}n{Fore.WHITE}g {Fore.RED}t{Fore.YELLOW}0 {Fore.RED}B{Fore.GREEN}r{Fore.BLUE}E"
                f"{Fore.WHITE}4{Fore.YELLOW}k {Fore.WHITE}m{Fore.RESET}E"f" {Fore.BLUE}4{Fore.YELLOW}r{Fore.RED}E "
-               f"{Fore.GREEN}y{Fore.BLUE}0{Fore.WHITE}u{Fore.GREEN}?{Fore.RESET}"}
+               f"{Fore.GREEN}y{Fore.BLUE}0{Fore.WHITE}u{Fore.GREEN}?{Fore.RESET}"}  # have fun
 
 
     print(manual_dictionary[parameter])
@@ -224,10 +214,10 @@ def help_function():
     print(f"For more information about a certain command, type {Fore.RED}man "
           f"'{Fore.RESET}command{Fore.RED}'{Fore.RESET}.")
     input("<Press ENTER to continue>")
-    return True
+    return True  # nämä pitävät pelaajan vuoron päällä main loopissa
 
 
-command_dictionary = {
+command_dictionary = {  # pelaajan komennot
     'help': help_function,
     'man': manual,
     'status': printer,
@@ -239,11 +229,8 @@ command_dictionary = {
     'hire': hire,
     'exit': exit
 }
-# Tuodaan käyttäjän kutsuttavat funktiot ajoa varten, ne on kirjoitettu eri fileen selkeyden takia.
-commands_without_parameter = ["status", "search", "hire", "help", "exit"]
 
-
-# Koska osa funktioista kutsutaan parametrin kanssa, tämä väistää errorin käytettäessä listattuja funktioita
+commands_without_parameter = ["status", "search", "hire", "help", "exit"]  # syötteenkäsittelyä varten
 
 
 def user_input_processor(input_string, current_player):
@@ -277,7 +264,7 @@ def user_input_processor(input_string, current_player):
         else:
             print("Didn't pay any attention to tutorial did you? Use only one parameter for command of your choice.")
             return True
-    except ValueError or IndexError or KeyError or TypeError:
+    except ValueError or IndexError or KeyError or TypeError:  # eipä ole ainakaan bare except :)
         print("I cant be bothered to explain exactly HOW things went wrong here. It might have been ValueError, might\n"
               "have been TypeError. Most likely it wasn't KeyError, but who knows? Only thing I know for sure is that\n"
               "you somehow managed to avoid ALL of my exception rules. Just type what you're asked, please...")
