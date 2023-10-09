@@ -6,6 +6,7 @@ from geopy.distance import geodesic
 from math import floor
 from config import config
 from end_game_email import end_game_email
+from colorama import Fore
 cursor = connection.cursor()
 
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
@@ -172,7 +173,7 @@ def print_available_cities(travel_mode, city_list, player_id):
         else:
             visited_status = "not visited"
         # printti muotoituna taulukkomaiseksi, aja funktio niin näet
-        print(f"{city[1]:<15}: {city[2]:^25}: {city[3]} km : cost {city[4]:^6.0f} EP {visited_status:>15}")
+        print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {city[3]:^7} km : cost {city[4]:^6.0f} EP {visited_status:>15}")
     print(f"You have {get_current_pp(player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
 
 

@@ -23,7 +23,7 @@ def travel_fly(parameter, player):
         return True  # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
     elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
         for city in available_cities:
-            if city[1].lower() == parameter:
+            if city[1].lower() == parameter.lower():
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 remove_pp(city[4], current_player_id)  # vähennetään lennon hinta pelaajan rahoista
                 # print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
@@ -31,6 +31,8 @@ def travel_fly(parameter, player):
                 # event_randomizer(player)
                 input("<Press ENTER to continue>")
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
+        print("City doesn't exist or it is out of range.")
+        return True
     else:
         print("Something is wrong here")
         return True
@@ -50,6 +52,7 @@ def travel_sail(parameter, player):
         print_available_cities("boat", sorted_available_cities, current_player_id)
         return True  # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
     elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
+        city_found = False
         for city in available_cities:
             if city[1].lower() == parameter:
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
@@ -58,8 +61,9 @@ def travel_sail(parameter, player):
                 print("You begin sailing to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 event_randomizer(player)
                 input("<Press ENTER to continue>")
-                break
-        return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
+                return False
+        print("City doesn't exist or it is out of range.")
+        return True
     else:
         print("Something is wrong here")
         return True
@@ -76,7 +80,7 @@ def travel_hitchhike(parameter, player):
         return True  # koska tämän jälkeen pelaaja voi valita mihin lentää, tai tehdä muun toiminnon
     elif parameter != "?":  # käsittelee kohdekaupungiksi syötetyn parametrin
         for city in available_cities:
-            if city[1].lower() == parameter:
+            if city[1].lower() == parameter.lower():
                 set_location(str(city[0]), current_player_id)  # vaihdetaan pelaajan sijainti
                 # print("city dist: " + str(city[3]))
                 set_lockstate(city[3], player[0], 0, "hike")
@@ -84,6 +88,8 @@ def travel_hitchhike(parameter, player):
                 event_randomizer(player)
                 input("<Press ENTER to continue>")
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
+        print("City doesn't exist or it is out of range.")
+        return True
     else:
         print("Something is wrong here")
         return True
