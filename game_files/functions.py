@@ -394,5 +394,28 @@ def bag_found(player):
         end_game_email()
 
 
+
+
+def print_city_status(player):
+    player = player[1]
+    cities = get_city_data()
+    player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
+    print(player_coords)
+
+    for city in cities:
+        distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
+        if city[5] == 1:  # if-else tulostaa visited tai not visited riippuen kaupungin tilasta
+            visited_status = "visited"
+        else:
+            visited_status = "not visited"
+        # printti muotoituna taulukkomaiseksi, aja funktio niin näet
+        if visited_status == "visited":
+            print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {Fore.BLUE}{city[3]:^7} km{Fore.GREEN} : cost "
+                  f"{Fore.BLUE}{city[4]:^6.0f} EP {Fore.RED}{visited_status:>15}{Fore.RESET}")
+        else:
+            print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {Fore.BLUE}{city[3]:^7} km{Fore.GREEN} : cost "
+                  f"{Fore.BLUE}{city[4]:^6.0f} EP {Fore.GREEN}{visited_status:>15}{Fore.RESET}")
+
+
 if __name__ == "__main__":
-    generate_additional_bags()
+    print_city_status(get_player_data_as_list())
