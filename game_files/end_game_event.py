@@ -75,14 +75,13 @@ def helsinki_sysma(player):
             sys.stdout.write(Fore.LIGHTYELLOW_EX + victory2)  # Tulosta koko teksti
             sys.stdout.flush()
             time.sleep(0.5)  # Odota ennen seuraavaa vilkkumisen vaihetta
-        time.sleep(1.0)
         print(victory)
         exit()
 
     else:
-        print(f"{Fore.BLUE}Your not so loyal Dungo-driver got lost despite of your guiding:´(\n"
+        print(f"{Fore.BLUE}Your not so loyal Dungo-driver got lost despite of your guidance:´(\n"
               f"You have arrived to {Fore.YELLOW}{random.choice(lost_cities)}\n\n"
-              f"{Fore.RED}You get angry and your driver gets you back to Helsinki!!!")
+              f"{Fore.RED}You get angry and you find your own way back to Helsinki!!!{Fore.RESET}")
 
 
 if __name__ == '__main__':

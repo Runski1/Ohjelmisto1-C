@@ -1,8 +1,9 @@
 from functions import *
 from user_input_processor import user_input_processor
 from db_connection import connection
-from Helsinki_Sysma import helsinki_sysma
-from Intro_Tutorial import *
+from end_game_event import helsinki_sysma
+from intro import *
+from tutorial import tutorial
 
 new_game_selection = input("Start new game (Y/N)").lower()
 if new_game_selection == "y":
@@ -19,7 +20,7 @@ if new_game_selection == "y":
     generate_main_bag()
     if input("Do you wish to skip the intro? (Y/N): ").lower() == "n":
         intro()
-        if input(f"{Fore.RED}Do you want to run tutorial for this game to get on track?(y/n)").lower() == "y":
+        if input(f"Do you want to run tutorial for this game to get on track?(y/n)").lower() == "y":
             tutorial()
 
 while True:

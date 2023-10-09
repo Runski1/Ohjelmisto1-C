@@ -5,7 +5,7 @@ import mysql.connector
 from geopy.distance import geodesic
 from math import floor
 from config import config
-from end_game_email import end_game_email
+from prize_found_event import end_game_email
 from colorama import Fore
 cursor = connection.cursor()
 
