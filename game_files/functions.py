@@ -397,23 +397,22 @@ def bag_found(player):
 def print_city_status(player):
     cities = get_city_data()
     player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
-    print(player_coords)
     for city in cities:
         distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
         city.append(distance_from_player)
     sorted_city = sorted(cities, key=lambda x: x[8])
     for city in sorted_city:
-        if city[5] == 1:
+        if city[6] == 1:
             visited_status = "visited"
         else:
             visited_status = "not visited"
         # printti muotoituna taulukkomaiseksi, aja funktio niin näet
         if visited_status == "visited":
-            print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {Fore.BLUE}{city[8]:^7} km{Fore.GREEN} : cost "
-                  f"{Fore.BLUE}{city[4]:^6.0f} EP {Fore.RED}{visited_status:>15}{Fore.RESET}")
+            print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {Fore.BLUE}{city[8]:^7} km{Fore.GREEN} : "
+                  f"{Fore.RED}{visited_status:>15}{Fore.RESET}")
         else:
-            print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {Fore.BLUE}{city[8]:^7} km{Fore.GREEN} : cost "
-                  f"{Fore.BLUE}{city[4]:^6.0f} EP {Fore.GREEN}{visited_status:>15}{Fore.RESET}")
+            print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {Fore.BLUE}{city[8]:^7} km{Fore.GREEN} : "
+                  f"{visited_status:>15}{Fore.RESET}")
 
 
 if __name__ == "__main__":

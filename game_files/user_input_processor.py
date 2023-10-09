@@ -188,8 +188,8 @@ def manual(parameter):
                   f" for yourself will\n"
                   f"also end your turn, but you can find lots of cool stuff when searching yourself. If you dont wish\n"
                   f"to use your turn to search, you can {Fore.RED}hire{Fore.GREEN} a private detective instead.{Fore.RESET}",
-        'status': f"Prints you player status, it might be useful for ordinary human (it means you).",
-        'map':  f"Prints all cities, their visited status and distance from your sitting point to them.",
+        'status': f"{Fore.GREEN}Prints you player status, it might be useful for ordinary human (it means you).{Fore.RESET}",
+        'map':  f"{Fore.GREEN}Prints all cities, their visited status and distance from your sitting point to them.{Fore.RESET}",
         'exit': f"{Fore.RED}exit{Fore.GREEN} will end the game running and TOTALLY save your progress."
                 f" ..For sure. I dare you to try.{Fore.RESET}",
         'man': f"{Fore.GREEN}Y{Fore.YELLOW}0{Fore.WHITE}u {Fore.RED}3{Fore.BLUE}1{Fore.GREEN}r{Fore.CYAN}7"
