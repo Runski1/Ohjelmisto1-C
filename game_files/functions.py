@@ -178,7 +178,12 @@ def print_available_cities(travel_mode, city_list, player_id):
         else:
             visited_status = "not visited"
         # printti muotoituna taulukkomaiseksi, aja funktio niin näet
-        print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {city[3]:^7} km : cost {city[4]:^6.0f} EP {visited_status:>15}")
+        if visited_status == "visited":
+            print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {Fore.BLUE}{city[3]:^7} km{Fore.GREEN} : cost "
+                  f"{Fore.BLUE}{city[4]:^6.0f} EP {Fore.RED}{visited_status:>15}{Fore.RESET}")
+        else:
+            print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {Fore.BLUE}{city[3]:^7} km{Fore.GREEN} : cost "
+                  f"{Fore.BLUE}{city[4]:^6.0f} EP {Fore.GREEN}{visited_status:>15}{Fore.RESET}")
     print(f"You have {get_current_pp(player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
 
 

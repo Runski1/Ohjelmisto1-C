@@ -1,5 +1,7 @@
 # READ ME (FOR REAL)
 
+ASENNUSOHJEET READMEEN
+
 ## Nämä sitten seuraavassa kurssissa
 
 search pitäisi estää, jos pelaaja on jo etsinyt kaupungista, tai ainakin tulostaa onko hän etsinyt current locationistaan vai ei. Mahdollisesti search voisi olla kokonaan automaattinen, eikä käyttäisi vuoroa. silloin hire on turha, mutta hire voisi mahdollisesti etsiä toisesta kaupungista? siinä pitää tehdä joku juttu, ettei toinen pelaaja yoinkaa sitä laukkua
