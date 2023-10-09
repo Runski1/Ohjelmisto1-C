@@ -426,6 +426,7 @@ def print_city_status(player):
         else:
             print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {Fore.BLUE}{city[8]:^7} km{Fore.GREEN} : "
                   f"{visited_status:>15}{Fore.RESET}")
+    return True
 
 
 if __name__ == "__main__":
