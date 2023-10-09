@@ -191,7 +191,7 @@ def manual(parameter):
         'exit': f"{Fore.RED}exit{Fore.GREEN} will end the game running and TOTALLY save your progress."
                 f" ..For sure. I dare you to try.{Fore.RESET}",
         'man': f"{Fore.GREEN}Y{Fore.YELLOW}0{Fore.WHITE}u {Fore.RED}3{Fore.BLUE}1{Fore.GREEN}r{Fore.CYAN}7"
-               f"{Fore.LIGHTYELLOW_EX}y {Fore.WHITE} {Fore.GREEN}4{Fore.RED}5{Fore.MAGENTA}7{Fore.LIGHTRED_EX}a"
+               f"{Fore.LIGHTYELLOW_EX}y {Fore.WHITE}B{Fore.GREEN}4{Fore.RED}5{Fore.MAGENTA}7{Fore.LIGHTRED_EX}a"
                f"{Fore.WHITE}R{Fore.LIGHTGREEN_EX}d{Fore.RED}, {Fore.GREEN}7{Fore.BLUE}r{Fore.RESET}Y{Fore.RED}1"
                f"{Fore.YELLOW}n{Fore.WHITE}g {Fore.RED}t{Fore.YELLOW}0 {Fore.RED}B{Fore.GREEN}r{Fore.BLUE}E"
                f"{Fore.WHITE}4{Fore.YELLOW}k {Fore.WHITE}m{Fore.RESET}E"f" {Fore.BLUE}4{Fore.YELLOW}r{Fore.RED}E "
