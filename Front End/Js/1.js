@@ -36,11 +36,15 @@ function startScreen() {
         enterGameButton.classList.add("show");
     });
 }
-
+function SelectGame() {
+    setTimeout(() => {
+        document.body.innerHTML = '';
+    }, 300);
+}
 // Call the startScreen function to initialize the start screen
 startScreen();
-document.addEventListener()
 
+document.getElementById("enterGameButton").addEventListener("click",SelectGame);
 
 //**const video_Background = document.createElement('video');
 // video_Background.id = 'background-video';
