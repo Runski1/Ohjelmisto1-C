@@ -14,6 +14,7 @@ enterGame.innerText = 'Enter the game'
 enterGame.id = 'enterGameButton';
 enterGame.classList.add('button')
 enterCont.appendChild(enterGame,)
+
 enterGame.classList.add("show");
 //**const video_Background = document.createElement('video');
 // video_Background.id = 'background-video';
