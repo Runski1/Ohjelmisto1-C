@@ -17,6 +17,7 @@ body {
 .container{
     flex-direction: column;
     padding: 1rem;
+    margin: 1rem;
 }
 
 img {
@@ -25,6 +26,7 @@ img {
     max-height: 100%; /* Ensure the image doesn't exceed the viewport height */
 }
 .enterGame{
-    margin: 1rem;
-    padding: 1rem;
+    height: 1vh;
+    margin: 5rem;
+
 }
