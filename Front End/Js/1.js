@@ -1,4 +1,5 @@
 'use strict';
+
 function startScreen() {
     const targetElem = document.body;
 
@@ -36,15 +37,35 @@ function startScreen() {
         enterGameButton.classList.add("show");
     });
 }
-function SelectGame() {
+
+
+function selectGame() {
+    // Function to transition to the new game screen
+
     setTimeout(() => {
-        document.body.innerHTML = '';
+        document.body.innerHTML = ''; // Clear the body content
+        const targetElem = document.body;
+
+        // Create and add the "New game" button
+        const newGame = document.createElement('button');
+        newGame.innerText = 'New game';
+        newGame.classList.add('button');
+        newGame.style.width = '40rem';
+        newGame.style.height = '6rem';
+        newGame.style.fontSize = '2rem';
+        targetElem.appendChild(newGame);
+        // Add the 'show' class with a transition
+        setTimeout(() => {
+            newGame.classList.add('show');
+        }, 0); // Use 0 for the next available frame
     }, 600);
 }
+
+
 // Call the startScreen function to initialize the start screen
 startScreen();
 
-document.getElementById("enterGameButton").addEventListener("click",SelectGame);
+document.getElementById("enterGameButton").addEventListener("click", selectGame);
 
 //**const video_Background = document.createElement('video');
 // video_Background.id = 'background-video';
