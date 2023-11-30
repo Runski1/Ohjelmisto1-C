@@ -36,8 +36,8 @@ body {
 }
 
 #logo {
-    -webkit-filter: drop-shadow(12px 12px 7px rgba(25, 202, 202, 100));
-         filter: drop-shadow(12px 12px 7px rgba(253, 45, 231, 0.5));
+  -webkit-filter: drop-shadow(0px 0px 100px rgb(0, 255, 255));
+
 
 
     max-width: 99%; /* Ensure the image doesn't exceed the viewport width */
