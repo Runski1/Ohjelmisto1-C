@@ -6,18 +6,19 @@ container.id = 'container'
 targetElem.appendChild(container);
 const logo = document.createElement('img');
 logo.src = '../img/logo.png';
+logo.id = 'logo';
 //Add LOST TESTAMENT
-container.appendChild(logo)
-const enterCont = document.createElement('div')
-enterCont.id='enterGame'
+container.appendChild(logo);
+const enterCont = document.createElement('div');
+enterCont.id='enterGame';
 //add enter game buttons container
-targetElem.appendChild(enterCont)
-const enterGame = document.createElement('button')
-enterGame.innerText = 'Enter the game'
+targetElem.appendChild(enterCont);
+const enterGame = document.createElement('button');
+enterGame.innerText = 'Enter the game';
 enterGame.id = 'enterGameButton';
-enterGame.classList.add('button')
+enterGame.classList.add('button');
 //adds enter game  button
-enterCont.appendChild(enterGame,)
+enterCont.appendChild(enterGame);
 
 
 document.addEventListener("DOMContentLoaded", function () {
