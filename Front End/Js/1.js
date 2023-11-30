@@ -13,6 +13,7 @@ targetElem.appendChild(enterCont)
 const enterGame = document.createElement('button')
 enterGame.innerText = 'Enter the game'
 enterGame.id = 'enterGameButton';
+enterGame.classList.add('button')
 setTimeout(() => {
     enterCont.appendChild(enterGame);
 }, 1000);

@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
 
@@ -14,7 +14,8 @@ body {
     background: rgb(42, 40, 40);
 
 }
-.container{
+
+#container {
     flex-direction: column;
     padding: 1rem;
     margin: 1rem;
@@ -25,8 +26,46 @@ img {
     max-width: 99%; /* Ensure the image doesn't exceed the viewport width */
     max-height: 100%; /* Ensure the image doesn't exceed the viewport height */
 }
-.enterGame{
-    height: 1vh;
-    margin: 5rem;
 
-}
+#enterGame {
+    height: 1vh;
+    margin: 1rem;
+
+    .button {
+        position: relative;
+        background-color: rgb(42, 40, 40);
+
+        font-size: 1rem;
+        color: #19caca;
+        padding: 20px;
+        width: 200px;
+        text-align: center;
+        transition-duration: 0.4s;
+        text-decoration: none;
+        overflow: hidden;
+        cursor: pointer;
+
+
+  border: 2px solid #19caca;
+    }
+
+    .button:after {
+        content: "";
+        background: #fd2de7;
+        display: block;
+        position: absolute;
+        padding-top: 300%;
+        padding-left: 350%;
+        margin-left: -20px !important;
+        margin-top: -120%;
+        opacity: 0;
+        transition: all 0.8s
+    }
+
+    .button:active:after {
+        padding: 0;
+        margin: 0;
+        opacity: 1;
+        transition: 0s
+
+    }
