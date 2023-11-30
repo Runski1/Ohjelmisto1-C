@@ -5,7 +5,7 @@ container.id = 'container'
 targetElem.appendChild(container);
 
 const logo = document.createElement('img');
-container.appendChild(logo);
+
 logo.src = '../img/logo.png';
 const enterCont = document.createElement('div')
 enterCont.id='enterGame'
@@ -15,7 +15,7 @@ enterGame.innerText = 'Enter the game'
 enterGame.id = 'enterGameButton';
 enterGame.classList.add('button')
 setTimeout(() => {
-    enterCont.appendChild(enterGame);
+    enterCont.appendChild(enterGame,container.appendChild(logo));
 }, 1000);
 
 
