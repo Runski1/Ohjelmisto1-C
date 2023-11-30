@@ -1,7 +1,30 @@
-html {
-    background: rgb(42, 40, 40);
-}
-body{
-        background: linear-gradient(133deg, rgba(25,202,202,0.89) 0%, rgba(82,79,89,0.5323704481792717) 51%, rgba(253,45,231,0.89) 100%);
+*{
+    margin: 0;
+    padding: 0;
 
+}
+
+body {
+    width: 100%;
+    height: 50vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: rgb(42, 40, 40);
+
+}
+.container{
+    flex-direction: column;
+    padding: 1rem;
+}
+
+img {
+
+    max-width: 99%; /* Ensure the image doesn't exceed the viewport width */
+    max-height: 100%; /* Ensure the image doesn't exceed the viewport height */
+}
+.enterGame{
+    margin: 1rem;
+    padding: 1rem;
 }
