@@ -39,7 +39,7 @@ function startScreen() {
 function SelectGame() {
     setTimeout(() => {
         document.body.innerHTML = '';
-    }, 300);
+    }, 600);
 }
 // Call the startScreen function to initialize the start screen
 startScreen();
