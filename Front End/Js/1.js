@@ -1,35 +1,45 @@
 'use strict';
-const targetElem = document.body;
-const container = document.createElement('div');
-container.id = 'container'
-//add containerin
-targetElem.appendChild(container);
-const logo = document.createElement('img');
-logo.src = '../img/logo.png';
-logo.id = 'logo';
-//Add LOST TESTAMENT
-container.appendChild(logo);
-const enterCont = document.createElement('div');
-enterCont.id='enterGame';
-//add enter game buttons container
-targetElem.appendChild(enterCont);
-const enterGame = document.createElement('button');
-enterGame.innerText = 'Enter the game';
-enterGame.id = 'enterGameButton';
-enterGame.classList.add('button');
-//adds enter game  button
-enterCont.appendChild(enterGame);
+function startScreen() {
+    const targetElem = document.body;
 
+    // Create container for the start screen
+    const container = document.createElement('div');
+    container.id = 'container';
+    targetElem.appendChild(container);
 
-document.addEventListener("DOMContentLoaded", function () {
-    let enterGameButton = document.getElementById("enterGameButton");
+    // Create and add the logo
+    const logo = document.createElement('img');
+    logo.src = '../img/logo.png';
+    logo.id = 'logo';
+    container.appendChild(logo);
 
-    // Triggering the reflow/repaint before adding the 'show' class
-    enterGameButton.offsetHeight;
+    // Create container for the "Enter the game" button
+    const enterCont = document.createElement('div');
+    enterCont.id = 'enterGame';
+    targetElem.appendChild(enterCont);
 
-    // Add a class to the button to trigger the transition
-    enterGameButton.classList.add("show");
-});
+    // Create and add the "Enter the game" button
+    const enterGame = document.createElement('button');
+    enterGame.innerText = 'Enter the game';
+    enterGame.id = 'enterGameButton';
+    enterGame.classList.add('button');
+    enterCont.appendChild(enterGame);
+
+    // Add the 'show' class with a transition when the DOM is loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        let enterGameButton = document.getElementById("enterGameButton");
+
+        // Triggering the reflow/repaint before adding the 'show' class
+        enterGameButton.offsetHeight;
+
+        // Add a class to the button to trigger the transition
+        enterGameButton.classList.add("show");
+    });
+}
+
+// Call the startScreen function to initialize the start screen
+startScreen();
+
 
 //**const video_Background = document.createElement('video');
 // video_Background.id = 'background-video';
