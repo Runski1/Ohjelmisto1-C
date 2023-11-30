@@ -6,3 +6,5 @@ targetElem.createElement('img') ;
 targetElem.appendChild(logo);
 logo.src('./img/logo.png');
 
+
+
