@@ -15,7 +15,6 @@ enterGame.id = 'enterGameButton';
 enterGame.classList.add('button')
 enterCont.appendChild(enterGame,)
 
-enterGame.classList.add("show");
 //**const video_Background = document.createElement('video');
 // video_Background.id = 'background-video';
 // video_Background.autoplay.
@@ -35,3 +34,13 @@ enterGame.classList.add("show");
 //         // Append video to the body
 //         document.body.appendChild(video);
 //     });
+
+document.addEventListener("DOMContentLoaded", function () {
+    var enterGameButton = document.getElementById("enterGameButton");
+
+    // Triggering the reflow/repaint before adding the 'show' class
+    enterGameButton.offsetHeight;
+
+    // Add a class to the button to trigger the transition
+    enterGameButton.classList.add("show");
+});

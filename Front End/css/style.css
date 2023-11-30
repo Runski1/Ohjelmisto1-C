@@ -42,14 +42,12 @@ img {
 }
 
 .button {
-    position: relative;
     background-color: rgb(0, 0, 0);
     font-size: 1rem;
     color: #19caca;
     padding: 20px;
     width: 200px;
     text-align: center;
-    transition-duration: 0.4s;
     text-decoration: none;
     overflow: hidden;
     cursor: pointer;
@@ -58,26 +56,6 @@ img {
     transition: opacity 2s ease-in-out;
 }
 
-.button.show {
+#enterGameButton.show {
     opacity: 1;
-}
-
-.button:after {
-    content: "";
-    background: #fd2de7;
-    display: block;
-    position: absolute;
-    padding-top: 300%;
-    padding-left: 350%;
-    margin-left: -20px !important;
-    margin-top: -120%;
-    opacity: 0;
-    transition: all 0.8s;
-}
-
-.button:active:after {
-    padding: 0;
-    margin: 0;
-    opacity: 1;
-    transition: 0s;
 }
