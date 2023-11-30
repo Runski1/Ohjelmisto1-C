@@ -19,3 +19,23 @@ setTimeout(() => {
 }, 1000);
 
 
+
+//**const video_Background = document.createElement('video');
+// video_Background.id = 'background-video';
+// video_Background.autoplay.
+// document.addEventListener("DOMContentLoaded", function () {
+//         // Create video element
+//         let video = document.createElement("video");
+//         video.id = "background-video";
+//         video.autoplay = true;
+//         video.loop = true;
+//         video.muted = true;
+//         video.src = "https://assets.codepen.io/6093409/river.mp4";
+//         video.type = "video/mp4";
+//
+//         // Set poster attribute
+//         video.poster = "https://assets.codepen.io/6093409/river.jpg";
+//
+//         // Append video to the body
+//         document.body.appendChild(video);
+//     });
