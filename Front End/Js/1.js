@@ -2,18 +2,33 @@
 const targetElem = document.body;
 const container = document.createElement('div');
 container.id = 'container'
+//add containerin
 targetElem.appendChild(container);
 const logo = document.createElement('img');
 logo.src = '../img/logo.png';
+//Add LOST TESTAMENT
 container.appendChild(logo)
 const enterCont = document.createElement('div')
 enterCont.id='enterGame'
+//add enter game buttons container
 targetElem.appendChild(enterCont)
 const enterGame = document.createElement('button')
 enterGame.innerText = 'Enter the game'
 enterGame.id = 'enterGameButton';
 enterGame.classList.add('button')
+//adds enter game  button
 enterCont.appendChild(enterGame,)
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    let enterGameButton = document.getElementById("enterGameButton");
+
+    // Triggering the reflow/repaint before adding the 'show' class
+    enterGameButton.offsetHeight;
+
+    // Add a class to the button to trigger the transition
+    enterGameButton.classList.add("show");
+});
 
 //**const video_Background = document.createElement('video');
 // video_Background.id = 'background-video';
@@ -34,13 +49,3 @@ enterCont.appendChild(enterGame,)
 //         // Append video to the body
 //         document.body.appendChild(video);
 //     });
-
-document.addEventListener("DOMContentLoaded", function () {
-    var enterGameButton = document.getElementById("enterGameButton");
-
-    // Triggering the reflow/repaint before adding the 'show' class
-    enterGameButton.offsetHeight;
-
-    // Add a class to the button to trigger the transition
-    enterGameButton.classList.add("show");
-});
