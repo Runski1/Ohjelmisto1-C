@@ -39,6 +39,7 @@ function startScreen() {
 
 // Call the startScreen function to initialize the start screen
 startScreen();
+document.addEventListener()
 
 
 //**const video_Background = document.createElement('video');
