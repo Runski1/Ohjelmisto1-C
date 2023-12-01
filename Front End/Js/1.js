@@ -23,7 +23,7 @@ function startScreen() {
     const enterGame = document.createElement('button');
     enterGame.innerText = 'Start The Game';
     enterGame.id = 'enterGameButton';
-    enterGame.classList.add('button');
+
     enterCont.appendChild(enterGame);
 
     // Add the 'show' class with a transition when the DOM is loaded
@@ -40,19 +40,13 @@ function startScreen() {
 
 
 function selectGame() {
-    // Function to transition to the new game screen
-
     setTimeout(() => {
-
         const targetElem = document.getElementById('enterGame');
-        // Clear the button content
         targetElem.innerHTML = '';
 
         // Create and add the "New game" Form
         const newGameForm = document.createElement('form');
-
         targetElem.appendChild(newGameForm);
-
 
         // Create input field
         const inputNewGame = document.createElement('input');
@@ -61,72 +55,60 @@ function selectGame() {
         inputNewGame.setAttribute('name', 'gameName');
         inputNewGame.classList.add('form');
         inputNewGame.placeholder = 'Enter New/Saved Game Name';
+
+        // Add input to form
         newGameForm.appendChild(inputNewGame);
-        // Create label name
 
-
-
-        newGameForm.style.width = '40rem';
-        newGameForm.style.height = '6rem';
-        newGameForm.style.fontSize = '2rem';
-
+        // Create submit button
+        const inputButton = document.createElement("button");
+        targetElem.appendChild(inputButton);
+        inputButton.classList.add('submit');
+        inputButton.id = 'submitNewGame';
+        inputButton.style.width = '2rem';
+        inputButton.style.height = '4rem';
+        inputButton.style.fontSize = '2rem';
+        inputButton.innerText = '>';
 
         // Add the 'show' class with a transition
         setTimeout(() => {
+            inputButton.classList.add('show');
             inputNewGame.classList.add('show');
+
+            // Now that the button is created, add the event listener
+            document.getElementById('submitNewGame').addEventListener('click', mainGame);
         }, 0); // Use 0 for the next available frame
     }, 600);
 }
+function mainGame() {
+    const targetElem = document.getElementById('enterGame');
+    targetElem.innerHTML = '';
+    document.body.style.height = '100%';
+}
+
 
 // Call the startScreen function to initialize the start screen
 startScreen();
 
-document.getElementById("enterGameButton").addEventListener("click", selectGame);
+document.getElementById("enterGameButton").addEventListener('click', selectGame);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- //**const video_Background = document.createElement('video');
- // video_Background.id = 'background-video';
- // video_Background.autoplay.
- // document.addEventListener("DOMContentLoaded", function () {
- //         // Create video element
- //         let video = document.createElement("video");
- //         video.id = "background-video";
- //         video.autoplay = true;
- //         video.loop = true;
- //         video.muted = true;
- //         video.src = "https://assets.codepen.io/6093409/river.mp4";
- //         video.type = "video/mp4";
- //
- //         // Set poster attribute
- //         video.poster = "https://assets.codepen.io/6093409/river.jpg";
- //
- //         // Append video to the body
- //         document.body.appendChild(video);
- //     });
- */
+//**const video_Background = document.createElement('video');
+// video_Background.id = 'background-video';
+// video_Background.autoplay.
+// document.addEventListener("DOMContentLoaded", function () {
+//         // Create video element
+//         let video = document.createElement("video");
+//         video.id = "background-video";
+//         video.autoplay = true;
+//         video.loop = true;
+//         video.muted = true;
+//         video.src = "https://assets.codepen.io/6093409/river.mp4";
+//         video.type = "video/mp4";
+//
+//         // Set poster attribute
+//         video.poster = "https://assets.codepen.io/6093409/river.jpg";
+//
+//         // Append video to the body
+//         document.body.appendChild(video);
+//     });
