@@ -43,7 +43,6 @@ function selectGame() {
     setTimeout(() => {
         const targetElem = document.getElementById('enterGame');
         targetElem.innerHTML = '';
-
         // Create and add the "New game" Form
         const newGameForm = document.createElement('form');
         targetElem.appendChild(newGameForm);
@@ -79,18 +78,27 @@ function selectGame() {
         }, 0); // Use 0 for the next available frame
     }, 600);
 }
+
 function mainGame() {
-    const targetElem = document.getElementById('enterGame');
-    targetElem.innerHTML = '';
+    const targetELem = document.getElementById('enterGame');
+    targetELem.classList.add('mainGameContainer');
+    // Clear the body content
+    targetELem.innerHTML = '';
+    // Set the body height to 100%
     document.body.style.height = '100%';
+    targetELem.style.width = '800px';
+    targetELem.style.height = '600px';
+    targetELem.style.border = '1px solid #19caca';
+    setTimeout(() => {
+        targetELem.classList.add("show");
+    }, 600);
+
+
 }
-
-
 // Call the startScreen function to initialize the start screen
 startScreen();
 
 document.getElementById("enterGameButton").addEventListener('click', selectGame);
-
 
 
 //**const video_Background = document.createElement('video');
