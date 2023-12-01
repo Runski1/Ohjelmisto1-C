@@ -99,7 +99,7 @@ function mainGame() {
  }, 600);
 
 }
-// Call the startScreen function to initialize the start screen
+/*********************** PROGRAM STARTS FROM HERE**********************/
 startScreen();
 
 document.getElementById("enterGameButton").addEventListener('click', selectGame);
