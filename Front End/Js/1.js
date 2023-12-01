@@ -80,19 +80,23 @@ function selectGame() {
 }
 
 function mainGame() {
+    setTimeout(() => {
+
     const targetELem = document.getElementById('enterGame');
     targetELem.classList.add('mainGameContainer');
     // Clear the body content
     targetELem.innerHTML = '';
+
     // Set the body height to 100%
     document.body.style.height = '100%';
     targetELem.style.width = '800px';
     targetELem.style.height = '600px';
     targetELem.style.border = '1px solid #19caca';
+
     setTimeout(() => {
         targetELem.classList.add("show");
     }, 600);
-
+ }, 600);
 
 }
 // Call the startScreen function to initialize the start screen
