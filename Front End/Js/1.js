@@ -50,6 +50,7 @@ function selectGame() {
 
         // Create and add the "New game" Form
         const newGameForm = document.createElement('form');
+
         targetElem.appendChild(newGameForm);
 
 
@@ -81,12 +82,32 @@ function selectGame() {
 startScreen();
 
 document.getElementById("enterGameButton").addEventListener("click", selectGame);
-/**<form>
- <label For="fname">First name:</label><br>
- <input type="text" id="fname" name="fname"><br>
- <label For="lname">Last name:</label><br>
- <input type="text" id="lname" name="lname">
- </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
  //**const video_Background = document.createElement('video');
