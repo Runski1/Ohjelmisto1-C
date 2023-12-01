@@ -69,8 +69,6 @@ function selectGame() {
         inputButton.classList.add('submit');
         inputButton.id = 'submitNewGame';
         inputButton.style.width = '2rem';
-        inputButton.style.height = '4.1rem';
-        inputButton.style.fontSize = '2rem';
         inputButton.innerText = '>';
 
         // Add the 'show' class with a transition
