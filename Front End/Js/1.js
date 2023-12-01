@@ -89,8 +89,8 @@ function mainGame() {
 
     // Set the body height to 100%
     document.body.style.height = '100%';
-    targetELem.style.width = '800px';
-    targetELem.style.height = '600px';
+    targetELem.style.width = '50rem';
+    targetELem.style.height = '37.5rem';
     targetELem.style.border = '1px solid #19caca';
 
     setTimeout(() => {

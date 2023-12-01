@@ -47,7 +47,7 @@ body {
 
 
 #logo {
-    -webkit-filter: drop-shadow(0px 0px 100px rgb(0, 255, 255));
+    -webkit-filter: drop-shadow(0px 0px 6.25rem rgb(0, 255, 255));
     max-width: 99%; /* Ensure the image doesn't exceed the viewport width */
     max-height: 100%; /* Ensure the image doesn't exceed the viewport height */
 
@@ -70,8 +70,8 @@ button {
     opacity: 0;
     font-size: 1rem;
     color: rgb(0, 255, 255);
-    padding: 20px;
-    width: 200px;
+    padding: 1.25rem;
+    width: 12.5rem;
     text-align: center;
     transition-duration: 0.4s;
     text-decoration: none;
@@ -79,23 +79,23 @@ button {
     cursor: pointer;
     transition: opacity 2s ease-in-out;
 
-    border: 2px solid #19caca;
+    border: 0.125rem solid #19caca;
 }
 
 button.show {
     opacity: 1;
-    box-shadow: 0 0 100px rgb(255, 62, 227);
+    box-shadow: 0 0 6.25rem rgb(255, 62, 227);
 }
 
 button:after {
-    -webkit-filter: drop-shadow(0px 0px 100px rgb(255, 0, 225));
+    -webkit-filter: drop-shadow(0px 0px 6.25rem rgb(255, 0, 225));
     content: "";
     background: rgb(253, 45, 231);
     display: block;
     position: absolute;
     padding-top: 300%;
     padding-left: 350%;
-    margin-left: -20px !important;
+    margin-left: -1.25rem !important;
     margin-top: -120%;
     opacity: 0;
     transition: all 0.8s
@@ -110,7 +110,7 @@ button:active:after {
 }
 
 button:active {
-    -webkit-filter: drop-shadow(0px 0px 100px rgb(255, 0, 225));
+    -webkit-filter: drop-shadow(0 0 6.25rem rgb(255, 0, 225));
 }
 
 .form {
@@ -119,15 +119,15 @@ button:active {
     opacity: 0;
     font-size: 1rem;
     color: rgb(0, 255, 255);
-    padding: 20px;
-    width: 220px;
+    padding: 1.25rem;
+    width: 13.75rem;
     text-align: center;
     transition-duration: 0.4s;
     text-decoration: none;
     overflow: hidden;
     cursor: pointer;
     transition: opacity 2s ease-in-out;
-    border: 2px solid #19caca;
+    border: 0.125rem solid #19caca;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -136,7 +136,7 @@ button:active {
 
 .form.show {
     opacity: 1;
-    box-shadow: 0 0 100px rgb(255, 62, 227);
+    box-shadow: 0 0 6.25rem rgb(255, 62, 227);
 
 }
 
@@ -155,5 +155,5 @@ button.submit {
 }
 .mainGameContainer.show{
     opacity: 1;
-    box-shadow: 0 0 100px rgb(140, 239, 239);
+    box-shadow: 0 0 6.25rem rgb(140, 239, 239);
 }
