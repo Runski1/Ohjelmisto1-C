@@ -12,6 +12,7 @@ function startScreen() {
     const logo = document.createElement('img');
     logo.src = '../img/logo.png';
     logo.id = 'logo';
+    logo.classList.add('cyanGlow')
     container.appendChild(logo);
 
     // Create container for the "Enter the game" button
@@ -23,17 +24,19 @@ function startScreen() {
     const enterGame = document.createElement('button');
     enterGame.innerText = 'Start The Game';
     enterGame.id = 'enterGameButton';
+    enterGame.classList.add('hide');
 
     enterCont.appendChild(enterGame);
 
     // Add the 'show' class with a transition when the DOM is loaded
     document.addEventListener("DOMContentLoaded", function () {
-        let enterGameButton = document.getElementById("enterGameButton");
+
 
         // Triggering the reflow/repaint before adding the 'show' class
         enterGameButton.offsetHeight;
 
         // Add a class to the button to trigger the transition
+        enterGameButton.classList.add("magentaGlow");
         enterGameButton.classList.add("show");
     });
 }
@@ -53,6 +56,7 @@ function selectGame() {
         inputNewGame.setAttribute('id', 'gameName');
         inputNewGame.setAttribute('name', 'gameName');
         inputNewGame.classList.add('form');
+        inputNewGame.classList.add('hide')
         inputNewGame.placeholder = 'Enter New/Saved Game Name';
 
         // Add input to form
@@ -61,15 +65,18 @@ function selectGame() {
         // Create submit button
         const inputButton = document.createElement("button");
         targetElem.appendChild(inputButton);
+        inputButton.classList.add('hide');
         inputButton.classList.add('submit');
         inputButton.id = 'submitNewGame';
         inputButton.style.width = '2rem';
-        inputButton.style.height = '4rem';
+        inputButton.style.height = '4.1rem';
         inputButton.style.fontSize = '2rem';
         inputButton.innerText = '>';
 
         // Add the 'show' class with a transition
         setTimeout(() => {
+            inputButton.classList.add('magentaGlow');
+            inputNewGame.classList.add('magentaGlow');
             inputButton.classList.add('show');
             inputNewGame.classList.add('show');
 
@@ -94,6 +101,7 @@ function mainGame() {
     targetELem.style.border = '1px solid #19caca';
 
     setTimeout(() => {
+        targetELem.classList.add('lightblueGlow')
         targetELem.classList.add("show");
     }, 600);
  }, 600);
