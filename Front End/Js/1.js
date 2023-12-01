@@ -81,6 +81,7 @@ function selectGame() {
             inputNewGame.classList.add('show');
 
             // Now that the button is created, add the event listener
+            /********MAIN GAME WILL START*********/
             document.getElementById('submitNewGame').addEventListener('click', mainGame);
         }, 0); // Use 0 for the next available frame
     }, 600);
