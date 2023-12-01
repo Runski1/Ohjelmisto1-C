@@ -1,8 +1,16 @@
+@font-face {
+    font-family: 'Chakra Petch';
+    src: url('../Fonts/Chakra_Petch/ChakraPetch-LightItalic.ttf') format('truetype');
+}
+
 * {
+    font-family: 'Chakra Petch';
+
     margin: 0;
     padding: 0;
 
 }
+
 
 #background-video {
     width: 100vw;
@@ -18,6 +26,7 @@
 
 
 body {
+
     width: 100%;
     height: 50vw;
     display: flex;
@@ -29,6 +38,7 @@ body {
 }
 
 #container {
+
     flex-direction: column;
     padding: 1rem;
     margin: 1rem;
@@ -40,6 +50,7 @@ body {
     max-width: 99%; /* Ensure the image doesn't exceed the viewport width */
     max-height: 100%; /* Ensure the image doesn't exceed the viewport height */
 }
+
 .button {
 
 }
@@ -50,12 +61,12 @@ body {
 }
 
 .button {
-    -webkit-filter: drop-shadow(0px 0px 100px rgb(253, 45, 231));
+
     position: relative;
     background-color: rgb(0, 0, 0, 0);
     opacity: 0;
     font-size: 1rem;
-    color: #19caca;
+    color: rgb(0, 255, 255);
     padding: 20px;
     width: 200px;
     text-align: center;
@@ -69,13 +80,14 @@ body {
 }
 
 .button.show {
+    -webkit-filter: drop-shadow(0px 0px 100px rgb(253, 45, 231));
     opacity: 1;
 }
 
 .button:after {
-    -webkit-filter: drop-shadow(0px 0px 100px rgb(253, 45, 231));
+    -webkit-filter: drop-shadow(0px 0px 100px rgb(255, 0, 225));
     content: "";
-    background: #fd2de7;
+    background: rgb(253, 45, 231);
     display: block;
     position: absolute;
     padding-top: 300%;
@@ -94,6 +106,39 @@ body {
 
 }
 
+.button:active {
+    -webkit-filter: drop-shadow(0px 0px 100px rgb(255, 0, 225));
+}
 
+.form {
+    position: relative;
+    background-color: rgb(0, 0, 0, 0);
+    opacity: 0;
+    font-size: 1rem;
+    color: rgb(0, 255, 255);
+    padding: 20px;
+    width: 220px;
+    text-align: center;
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+    transition: opacity 2s ease-in-out;
+    border: 2px solid #19caca;
+    display: flex;/
+    flex-direction: column;
+    align-items: center;
+    margin: auto; /* Keskittää vaakasuunnassa */
+}
+
+.form.show {
+    opacity: 1;
+
+}
+
+input[type=text]:focus {
+    -webkit-filter: drop-shadow(0px 0px 100px rgb(255, 0, 225));
+
+}
 
 
