@@ -33,11 +33,11 @@ function startScreen() {
 
 
         // Triggering the reflow/repaint before adding the 'show' class
-        enterGameButton.offsetHeight;
+        enterGame.offsetHeight;
 
         // Add a class to the button to trigger the transition
-        enterGameButton.classList.add("magentaGlow");
-        enterGameButton.classList.add("show");
+        enterGame.classList.add("magentaGlow");
+        enterGame.classList.add("show");
     });
 }
 
@@ -79,12 +79,12 @@ function selectGame() {
 
             // Now that the button is created, add the event listener
             /********MAIN GAME WILL START*********/    /*Offline: Add mainGame instead of addPlayers */
-            document.getElementById('selectGame').addEventListener('click', newGame);
+            document.getElementById('selectGame').addEventListener('click', addPlayers);
         }, 0); // Use 0 for the next available frame
     }, 600);
 }
 
-async function newGame() {
+async function addPlayers() {
     // gets value of entered game name
     const gameName = document.getElementById('gameName');
     const gameNameRequest = gameName.value;
