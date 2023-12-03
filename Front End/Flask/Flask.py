@@ -35,7 +35,7 @@ def get_playerData(name):
     cursor = connection.cursor()
     cursor.execute(f"select name, playerName from savedGames where name = '{name}'")
     sql_result = cursor.fetchone()
-
+    #kesken
 
 
 if __name__ == '__main__':
