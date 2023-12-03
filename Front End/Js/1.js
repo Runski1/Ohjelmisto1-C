@@ -50,7 +50,7 @@ function selectGame() {
         const newGameForm = document.createElement('form');
         targetElem.appendChild(newGameForm);
 
-        // Create input field
+        // Create input field for game name
         const inputNewGame = document.createElement('input');
         inputNewGame.setAttribute('type', 'text');
         inputNewGame.setAttribute('id', 'gameName');
@@ -95,15 +95,29 @@ async function addPlayers() {
     // if saved game not found makes new game and updates startButtonCont
     if (jsonData.gameName.value == "not found") {
 
+        //add new player form for information
         const targetElem = document.getElementById('startButtonCont');
         targetElem.innerHTML = '';
         const newPlayerForm = document.createElement('form');
         targetElem.classList.add('hide');
         targetElem.appendChild(newPlayerForm);
+        // ask player ammount
+        const playerAmmount = document.createElement('input');
+        playerAmmount.setAttribute('type', 'text');
+        playerAmmount.setAttribute('id', `playerAmmount`);
+        playerAmmount.classList.add('form');
+        playerAmmount.placeholder = `How many players?`;
+        newPlayerForm.appendChild(playerAmmount);
+        setTimeout(() => {
+            targetElem.classList.add('show');
+            targetElem.classList.add('magentaGlow');
+            }, 600);
+
+
         //if you want to add more players max player limit needed from server
         //for (jsonData.playerLimit.value);
         const playerList = [];
-        // ask player ammount
+    /
 
 
         for (let i = 0; i < 2; i++) {
@@ -146,42 +160,42 @@ async function addPlayers() {
         }
 
 
-    }
-    else {
+    } else {
         document.getElementById('selectGame').addEventListener('click', mainGame);
     }
 }
-    async function playerData {
 
-    }
+async function playerData {
 
-    function mainGame() {
+}
+
+function mainGame() {
+    setTimeout(() => {
+
+        const targetELem = document.getElementById('startButtonCont');
+        targetELem.classList.add('mainGameContainer');
+        // Clear the body content
+        targetELem.innerHTML = '';
+
+        // Set the body height to 100%
+        document.body.style.height = '100%';
+        targetELem.style.width = '50rem';
+        targetELem.style.height = '37.5rem';
+        targetELem.style.border = '1px solid #19caca';
+
         setTimeout(() => {
-
-            const targetELem = document.getElementById('startButtonCont');
-            targetELem.classList.add('mainGameContainer');
-            // Clear the body content
-            targetELem.innerHTML = '';
-
-            // Set the body height to 100%
-            document.body.style.height = '100%';
-            targetELem.style.width = '50rem';
-            targetELem.style.height = '37.5rem';
-            targetELem.style.border = '1px solid #19caca';
-
-            setTimeout(() => {
-                targetELem.classList.add('lightblueGlow')
-                targetELem.classList.add("show");
-            }, 600);
-
+            targetELem.classList.add('lightblueGlow')
+            targetELem.classList.add("show");
         }, 600);
 
-    }
+    }, 600);
 
-    /*********************** PROGRAM STARTS FROM HERE**********************/
-    startScreen();
+}
 
-    document.getElementById("enterGameButton").addEventListener('click', selectGame);
+/*********************** PROGRAM STARTS FROM HERE**********************/
+startScreen();
+
+document.getElementById("enterGameButton").addEventListener('click', selectGame);
 
 
 //**const video_Background = document.createElement('video');
