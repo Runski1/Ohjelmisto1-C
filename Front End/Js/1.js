@@ -137,14 +137,17 @@ async function addPlayers() {
         }
         // append new player names to new save game
         for( let id of playerList) {
-            playerList[id]
-            document.getElementById('player'+`${id}`).addEventListener('click',);
+            const playerName = playerList[id].value
+            const playerNameResponse = await fetch(`https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
+
         }
 
-        document.getElementById('player').addEventListener('click', mainGame);
+        document.getElementById('selectGame').addEventListener('click', mainGame);
     }
 }
+async function playerData{
 
+}
 
 function mainGame() {
     setTimeout(() => {

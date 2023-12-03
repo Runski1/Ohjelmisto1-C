@@ -30,6 +30,12 @@ def get_saveGame(savegame):
     response = Response(response=response_data, status=status_code, mimetype="application/json")
     return response
 
+@server.route('/get_playerData/<name>')
+def get_playerData(name):
+    cursor = connection.cursor()
+    cursor.execute(f"select name, playerName from savedGames where name = '{name}'")
+
+
 
 if __name__ == '__main__':
     server.run(use_reloader=True, host='127.0.0.1', port=3000)
