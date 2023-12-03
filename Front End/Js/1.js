@@ -103,11 +103,14 @@ async function addPlayers() {
         //if you want to add more players max player limit needed from server
         //for (jsonData.playerLimit.value);
         const playerList = [];
+        // ask player ammount
+
+
         for (let i = 0; i < 2; i++) {
             // Create input field
             const inputNewPlayer = document.createElement('input');
             inputNewPlayer.setAttribute('type', 'text');
-            inputNewPlayer.setAttribute('id', `player${i+1}`);
+            inputNewPlayer.setAttribute('id', `player${i + 1}`);
             inputNewPlayer.classList.add('form');
             //inputNewPlayer.classList.add('hide');
             inputNewPlayer.placeholder = `Player ${i + 1}`;
@@ -131,51 +134,54 @@ async function addPlayers() {
             //inputButton.classList.add('show');
             // Loop through playerList and add the style class to each input element
             //for (const playerInput of playerList) {
-                //playerInput.classList.add('magentaGlow');
-            }, 600);
+            //playerInput.classList.add('magentaGlow');
+        }, 600);
 
-        }
+
         // append new player names to new save game
-        for( let id of playerList) {
+        for (let id of playerList) {
             const playerName = playerList[id].value
             const playerNameResponse = await fetch(`https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
 
         }
 
+
+    }
+    else {
         document.getElementById('selectGame').addEventListener('click', mainGame);
     }
 }
-async function playerData{
+    async function playerData {
 
-}
+    }
 
-function mainGame() {
-    setTimeout(() => {
-
-        const targetELem = document.getElementById('startButtonCont');
-        targetELem.classList.add('mainGameContainer');
-        // Clear the body content
-        targetELem.innerHTML = '';
-
-        // Set the body height to 100%
-        document.body.style.height = '100%';
-        targetELem.style.width = '50rem';
-        targetELem.style.height = '37.5rem';
-        targetELem.style.border = '1px solid #19caca';
-
+    function mainGame() {
         setTimeout(() => {
-            targetELem.classList.add('lightblueGlow')
-            targetELem.classList.add("show");
+
+            const targetELem = document.getElementById('startButtonCont');
+            targetELem.classList.add('mainGameContainer');
+            // Clear the body content
+            targetELem.innerHTML = '';
+
+            // Set the body height to 100%
+            document.body.style.height = '100%';
+            targetELem.style.width = '50rem';
+            targetELem.style.height = '37.5rem';
+            targetELem.style.border = '1px solid #19caca';
+
+            setTimeout(() => {
+                targetELem.classList.add('lightblueGlow')
+                targetELem.classList.add("show");
+            }, 600);
+
         }, 600);
 
-    }, 600);
+    }
 
-}
+    /*********************** PROGRAM STARTS FROM HERE**********************/
+    startScreen();
 
-/*********************** PROGRAM STARTS FROM HERE**********************/
-startScreen();
-
-document.getElementById("enterGameButton").addEventListener('click', selectGame);
+    document.getElementById("enterGameButton").addEventListener('click', selectGame);
 
 
 //**const video_Background = document.createElement('video');
