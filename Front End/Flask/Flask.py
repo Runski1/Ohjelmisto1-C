@@ -20,7 +20,7 @@ def get_saveGame(savegame):
     cursor.execute(f"select name, playerName from savedGames where name = '{savegame}'")
     sql_result = cursor.fetchone()
     if sql_result:
-        response_data = {"gameName": sql_result[0], "playerName1": sql_result[1], "playerName2": sql_result[2]}
+        response_data = {"gameName": f'{sql_result[0]}', "players": [f'{sql_result[1:]}']}
         status_code = 200
     else:
         response_data = {"gameName": "not found"}

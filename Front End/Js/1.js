@@ -78,24 +78,59 @@ function selectGame() {
             inputNewGame.classList.add('show');
 
             // Now that the button is created, add the event listener
-            /********MAIN GAME WILL START*********/
+            /********MAIN GAME WILL START*********/    /*Offline: Add mainGame instead of addPlayers */
             document.getElementById('selectGame').addEventListener('click', addPlayers);
         }, 0); // Use 0 for the next available frame
     }, 600);
 }
 
 async function addPlayers() {
+    // gets value of entered game name
     const gameName = document.getElementById('gameName');
-    const gameNameRequest =gameName.value;
-    try{
-        const gameNameResponse = await fetch(`https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
-
-
-    }    setTimeout(() => {
+    const gameNameRequest = gameName.value;
+    // makes json request from Flask-server
+    const gameNameResponse = await fetch(`https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
+    const jsonData = await gameNameResponse.json();
+    console.log(jsonData);
+    // if saved game not found makes new game and updates startButtonCont
+    if (jsonData.gameName.value == "not found") {
         const targetElem = document.getElementById('startButtonCont');
         targetElem.innerHTML = '';
+        const newPlayerForm = document.createElement('form');
+        targetElem.appendChild(newPlayerForm);
+        //if you want to add more players max player limit needed from server
+        //for (jsonData.playerLimit.value);
+        const playerList = [];
+        for (let i = 0; i < 2; i++) {
+            // Create input field
+            const inputNewPlayer = document.createElement('input');
+            inputNewPlayer.setAttribute('type', 'text');
+            inputNewPlayer.classList.add('form');
+            inputNewPlayer.classList.add('hide');
+            inputNewPlayer.placeholder = `Player ${i + 1}`;
+            newPlayerForm.appendChild(inputNewPlayer);
+            playerList.push(inputNewPlayer);
 
-    }, 600);
+
+        }
+        const inputButton = document.createElement("button");
+        inputButton.setAttribute('type', 'submit');
+        targetElem.appendChild(inputButton);
+        inputButton.classList.add('hide');
+        inputButton.id = 'selectGame'
+        inputButton.style.width = '2rem';
+        inputButton.innerText = '>';
+        setTimeout(() => {
+            inputButton.classList.add('magentaGlow');
+
+            // Loop through playerList and add the class to each input element
+            for (const playerInput of playerList) {
+                playerInput.classList.add('magentaGlow');
+            }
+
+            inputButton.classList.add('show');
+        }, 600);
+    }
 }
 
 function mainGame() {
