@@ -23,6 +23,7 @@ def get_saveGame(savegame):
         response_data = {"gameName": f'{sql_result[0]}', "players": [f'{sql_result[1:]}']}
         status_code = 200
     else:
+        cursor.execute("INSERT INTO savedGames (name) VALUES (%s)", (savegame,))
         response_data = {"gameName": "not found"}
         status_code = 400
     response_data = json.dumps(response_data)

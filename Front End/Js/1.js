@@ -79,12 +79,12 @@ function selectGame() {
 
             // Now that the button is created, add the event listener
             /********MAIN GAME WILL START*********/    /*Offline: Add mainGame instead of addPlayers */
-            document.getElementById('selectGame').addEventListener('click', addPlayers);
+            document.getElementById('selectGame').addEventListener('click', newGame);
         }, 0); // Use 0 for the next available frame
     }, 600);
 }
 
-async function addPlayers() {
+async function newGame() {
     // gets value of entered game name
     const gameName = document.getElementById('gameName');
     const gameNameRequest = gameName.value;
@@ -94,9 +94,11 @@ async function addPlayers() {
     console.log(jsonData);
     // if saved game not found makes new game and updates startButtonCont
     if (jsonData.gameName.value == "not found") {
+
         const targetElem = document.getElementById('startButtonCont');
         targetElem.innerHTML = '';
         const newPlayerForm = document.createElement('form');
+        targetElem.classList.add('hide');
         targetElem.appendChild(newPlayerForm);
         //if you want to add more players max player limit needed from server
         //for (jsonData.playerLimit.value);
@@ -105,33 +107,44 @@ async function addPlayers() {
             // Create input field
             const inputNewPlayer = document.createElement('input');
             inputNewPlayer.setAttribute('type', 'text');
+            inputNewPlayer.setAttribute('id', `player${i+1}`);
             inputNewPlayer.classList.add('form');
-            inputNewPlayer.classList.add('hide');
+            //inputNewPlayer.classList.add('hide');
             inputNewPlayer.placeholder = `Player ${i + 1}`;
             newPlayerForm.appendChild(inputNewPlayer);
             playerList.push(inputNewPlayer);
 
 
         }
+        // adds submit button to player name input field
         const inputButton = document.createElement("button");
         inputButton.setAttribute('type', 'submit');
         targetElem.appendChild(inputButton);
-        inputButton.classList.add('hide');
+        //inputButton.classList.add('hide');
         inputButton.id = 'selectGame'
         inputButton.style.width = '2rem';
         inputButton.innerText = '>';
         setTimeout(() => {
-            inputButton.classList.add('magentaGlow');
+            targetElem.classList.add('show');
+            targetElem.classList.add('magentaGlow');
+            //inputButton.classList.add('magentaGlow');
+            //inputButton.classList.add('show');
+            // Loop through playerList and add the style class to each input element
+            //for (const playerInput of playerList) {
+                //playerInput.classList.add('magentaGlow');
+            }, 600);
 
-            // Loop through playerList and add the class to each input element
-            for (const playerInput of playerList) {
-                playerInput.classList.add('magentaGlow');
-            }
+        }
+        // append new player names to new save game
+        for( let id of playerList) {
+            playerList[id]
+            document.getElementById('player'+`${id}`).addEventListener('click',);
+        }
 
-            inputButton.classList.add('show');
-        }, 600);
+        document.getElementById('player').addEventListener('click', mainGame);
     }
 }
+
 
 function mainGame() {
     setTimeout(() => {
