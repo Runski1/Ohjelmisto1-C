@@ -20,7 +20,7 @@ def get_saveGame(savegame):
     cursor.execute(f"select name, playerName from savedGames where name = '{savegame}'")
     sql_result = cursor.fetchone()
     if sql_result:
-        response_data = {"gameName": f'{sql_result[0]}', "players": [f'{sql_result[1:]}']}
+        response_data = {"gameName": f'{sql_result[0]}', "players": [f'{sql_result[1]}']}
         status_code = 200
     else:
         cursor.execute("INSERT INTO savedGames (name) VALUES (%s)", (savegame,))
