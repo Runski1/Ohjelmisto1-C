@@ -16,9 +16,9 @@ function startScreen() {
     container.appendChild(logo);
 
     // Create container for the "Enter the game" button
-    const enterCont = document.createElement('div');
-    enterCont.id = 'enterGame';
-    targetElem.appendChild(enterCont);
+    const startButtonCont = document.createElement('div');
+    startButtonCont.id = 'startButtonCont';
+    targetElem.appendChild(startButtonCont);
 
     // Create and add the "Enter the game" button
     const enterGame = document.createElement('button');
@@ -26,7 +26,7 @@ function startScreen() {
     enterGame.id = 'enterGameButton';
     enterGame.classList.add('hide');
 
-    enterCont.appendChild(enterGame);
+    startButtonCont.appendChild(enterGame);
 
     // Add the 'show' class with a transition when the DOM is loaded
     document.addEventListener("DOMContentLoaded", function () {
@@ -44,7 +44,7 @@ function startScreen() {
 
 function selectGame() {
     setTimeout(() => {
-        const targetElem = document.getElementById('enterGame');
+        const targetElem = document.getElementById('startButtonCont');
         targetElem.innerHTML = '';
         // Create and add the "New game" Form
         const newGameForm = document.createElement('form');
@@ -64,13 +64,12 @@ function selectGame() {
 
         // Create submit button
         const inputButton = document.createElement("button");
+        inputButton.setAttribute('type', 'submit');
         targetElem.appendChild(inputButton);
         inputButton.classList.add('hide');
-        inputButton.classList.add('submit');
-        inputButton.id = 'submitNewGame';
+        inputButton.id = 'selectGame'
         inputButton.style.width = '2rem';
         inputButton.innerText = '>';
-
         // Add the 'show' class with a transition
         setTimeout(() => {
             inputButton.classList.add('magentaGlow');
@@ -80,32 +79,48 @@ function selectGame() {
 
             // Now that the button is created, add the event listener
             /********MAIN GAME WILL START*********/
-            document.getElementById('submitNewGame').addEventListener('click', mainGame);
+            document.getElementById('selectGame').addEventListener('click', addPlayers);
         }, 0); // Use 0 for the next available frame
+    }, 600);
+}
+
+async function addPlayers() {
+    const gameName = document.getElementById('gameName');
+    const gameNameRequest =gameName.value;
+    try{
+        const gameNameResponse = await fetch(`https://127.0.0.1:3000/game_files/savedgames/${gameNameRequest}`);
+
+
+    }    setTimeout(() => {
+        const targetElem = document.getElementById('startButtonCont');
+        targetElem.innerHTML = '';
+
     }, 600);
 }
 
 function mainGame() {
     setTimeout(() => {
 
-    const targetELem = document.getElementById('enterGame');
-    targetELem.classList.add('mainGameContainer');
-    // Clear the body content
-    targetELem.innerHTML = '';
+        const targetELem = document.getElementById('startButtonCont');
+        targetELem.classList.add('mainGameContainer');
+        // Clear the body content
+        targetELem.innerHTML = '';
 
-    // Set the body height to 100%
-    document.body.style.height = '100%';
-    targetELem.style.width = '50rem';
-    targetELem.style.height = '37.5rem';
-    targetELem.style.border = '1px solid #19caca';
+        // Set the body height to 100%
+        document.body.style.height = '100%';
+        targetELem.style.width = '50rem';
+        targetELem.style.height = '37.5rem';
+        targetELem.style.border = '1px solid #19caca';
 
-    setTimeout(() => {
-        targetELem.classList.add('lightblueGlow')
-        targetELem.classList.add("show");
+        setTimeout(() => {
+            targetELem.classList.add('lightblueGlow')
+            targetELem.classList.add("show");
+        }, 600);
+
     }, 600);
- }, 600);
 
 }
+
 /*********************** PROGRAM STARTS FROM HERE**********************/
 startScreen();
 
