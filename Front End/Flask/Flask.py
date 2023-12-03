@@ -1,4 +1,7 @@
 import mysql.connector
+from flask import Flask, request,Response
+import json
+import mysql.connector
 connection = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
@@ -9,10 +12,23 @@ connection = mysql.connector.connect(
 )
 
 server = Flask(__name__)
-@server.route('/game_files/savedgames/<savegame>')
-def get saveGame(savegame):
+
+
+@server.route('/get_saveGame/<savegame>')
+def get_saveGame(savegame):
     cursor = connection.cursor()
-    cursor.execute(f"")
+    cursor.execute(f"select name, playerName from savedGames where name = '{savegame}'")
+    sql_result = cursor.fetchone()
+    if sql_result:
+        response_data = {"gameName": sql_result[0], "playerName1": sql_result[1], "playerName2": sql_result[2]}
+        status_code = 200
+    else:
+        response_data = {"gameName": "not found"}
+        status_code = 400
+    response_data = json.dumps(response_data)
+    response = Response(response=response_data, status=status_code, mimetype="application/json")
+    return response
+
 
 if __name__ == '__main__':
-    server.run(use_reloader = True, host = '127.0.0.1',port = 3000)
+    server.run(use_reloader=True, host='127.0.0.1', port=3000)

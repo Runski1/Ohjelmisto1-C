@@ -88,7 +88,7 @@ async function addPlayers() {
     const gameName = document.getElementById('gameName');
     const gameNameRequest =gameName.value;
     try{
-        const gameNameResponse = await fetch(`https://127.0.0.1:3000/game_files/savedgames/${gameNameRequest}`);
+        const gameNameResponse = await fetch(`https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
 
 
     }    setTimeout(() => {
