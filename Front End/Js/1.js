@@ -78,7 +78,7 @@ function selectGame() {
             inputNewGame.classList.add('show');
 
             // Now that the button is created, add the event listener
-            /********MAIN GAME WILL START*********/    /*Offline: Add mainGame instead of addPlayers */
+            /********MAIN GAME WILL START*********/    /*TEST: Add mainGame instead of addPlayers */
             document.getElementById('selectGame').addEventListener('click', addPlayers);
         }, 0); // Use 0 for the next available frame
     }, 600);

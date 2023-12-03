@@ -30,10 +30,11 @@ def get_saveGame(savegame):
     response = Response(response=response_data, status=status_code, mimetype="application/json")
     return response
 
-@server.route('/get_playerData/<name>')
+@server.route('/get_playerData/<savedGame>/<name>')
 def get_playerData(name):
     cursor = connection.cursor()
     cursor.execute(f"select name, playerName from savedGames where name = '{name}'")
+    sql_result = cursor.fetchone()
 
 
 
