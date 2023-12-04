@@ -17,7 +17,7 @@ if new_game_selection == "y":
     sql = "INSERT INTO player SET screen_name = '" + player2_name + "'"
     cursor.execute(sql)
     print(f"Player 2 is now known as {player2_name}")
-    generate_main_bag()
+ #   generate_main_bag()
     if input("Do you wish to skip the intro? (Y/N): ").lower() == "n":
         intro()
         if input(f"Do you want to run tutorial for this game to get on track?(y/n)").lower() == "y":
