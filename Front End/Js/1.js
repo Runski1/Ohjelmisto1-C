@@ -41,9 +41,10 @@ function startScreen() {
 }
 
 function selectGame() {
-  setTimeout(() => {
+
     const targetElem = document.getElementById('startButtonCont');
     targetElem.innerHTML = '';
+
     // Create and add the "New game" Form
     const newGameForm = document.createElement('form');
     newGameForm.id = 'newGameForm';
@@ -54,8 +55,8 @@ function selectGame() {
     inputNewGame.setAttribute('type', 'text');
     inputNewGame.setAttribute('id', 'gameName');
     inputNewGame.setAttribute('name', 'gameName');
-    inputNewGame.classList.add('form');
-    inputNewGame.classList.add('hide');
+    inputNewGame.setAttribute('action', '');
+    inputNewGame.classList.add('form', 'hide');
     inputNewGame.placeholder = 'Enter New/Saved Game Name';
 
     // Add input to form
@@ -69,36 +70,51 @@ function selectGame() {
     inputButton.id = 'selectGame';
     inputButton.style.width = '2rem';
     inputButton.innerText = '>';
+
     // Add the 'show' class with a transition
     setTimeout(() => {
-      inputButton.classList.add('magentaGlow');
-      inputNewGame.classList.add('magentaGlow');
-      inputButton.classList.add('show');
-      inputNewGame.classList.add('show');
+      inputButton.classList.add('magentaGlow', 'show');
+      inputNewGame.classList.add('magentaGlow', 'show');
 
-      // Now that the button is created, add the event listener
-      /********MAIN GAME WILL START*********/    /*TEST: Add mainGame instead of addPlayers */
-      document.getElementById('selectGame').
-          addEventListener('click', addPlayers);
-    }, 0); // Use 0 for the next available frame
-  }, 600);
+      // Add event listener for "Enter" key press on the input field
+      inputNewGame.addEventListener('keypress', function (event) {
+        // If the user presses the "Enter" key on the keyboard
+        if (event.key === 'Enter') {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          inputButton.click();
+        }
+      });
+
+      // Add event listener for button click
+      inputButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        addPlayers();
+      });
+    }, 0);
+
 }
 
 async function addPlayers() {
+
   // gets value of entered game name
   const gameName = document.getElementById('gameName');
   const gameNameRequest = gameName.value;
   // makes json request from Flask-server
+
   const gameNameResponse = await fetch(
       `https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
   const jsonData = await gameNameResponse.json();
   console.log(jsonData);
   // if saved game not found makes new game and updates startButtonCont
+
   if (jsonData.gameName.value == 'not found') {
 
     //add new player form for information max player (ammount:4)!!!!
     //if you want to add more players max player limit needed from server
     //for (jsonData.playerLimit.value);
+
     const playerList = [];
 
     //add player name input form
@@ -141,14 +157,12 @@ async function addPlayers() {
         `https://127.0.0.1:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
     const jsonData = await playerNameResponse.json();
     console.log(jsonData);
-
-    /*********************** MAINGAME STARTS FROM HERE**********************/
     mainGame();
+    /*********************** MAINGAME STARTS FROM HERE**********************/
   } else {
     document.getElementById('selectGame').addEventListener('click', mainGame);
   }
 }
-
 
 /*async function playerData {
 
@@ -176,9 +190,13 @@ function mainGame() {
 
   }, 600);
 
-
-  const targetElem = document.getElementById('enterGame')
-  const mapFrame =
+  const targetElem = document.getElementById('enterGame');
+  const mapFrame = targetElem.createElement('div');
+  mapFrame.style.width = '800px';
+  mapFrame.style.height = '600px';
+  targetElem.appendChild(mapFrame);
+  const mapImg = mapFrame.createElement('img');
+  mapImg.src = '../img/placeholdermap_800x600.png';
 
   /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
 	attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -186,7 +204,6 @@ function mainGame() {
 	maxZoom: 22,
 	subdomains: 'abcd',
 	accessToken: '<your accessToken>'*/
-});
 }
 
 /*********************** PROGRAM STARTS FROM HERE**********************/
