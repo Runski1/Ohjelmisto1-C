@@ -100,7 +100,9 @@ async function addPlayers() {
         targetElem.innerHTML = '';
         targetElem.classList.add('hide');
         const twoPlayers = document.createElement('button');
+        twoPlayers.id = 'twoPlayers';
         const fourPlayers = document.createElement('button');
+        fourPlayers.id = 'fourPlayers';
         twoPlayers.innerText = '2p'
         fourPlayers.innerText = '4p'
         targetElem.appendChild(twoPlayers);
@@ -110,28 +112,38 @@ async function addPlayers() {
 
             targetElem.classList.add('magentaGlow');
         }, 600);
-        let selectAmmountclicked = false;
+        let selectAmmountClicked = false;
 
-        function handleClick(event) {
-            if (!selectAmmountclicked) {
-                selectAmmountclicked = true;
+         let selectAmountClicked = false;
+    function handleClick(event) {
+      if (!selectAmountClicked) {
+        selectAmountClicked = true;
 
-                // Get the clicked element
-                const clickedButton = event.target;
+        // Get the clicked button
+        const clickedButton = event.target;
 
-                // Your code for handling the click event goes here
-                console.log(`Element with id ${clickedButton.id} clicked`);
+        // Your code for handling the click event goes here
+        console.log(`Element with id ${clickedButton.id} clicked`);
 
-                // Simulate some asynchronous operation (e.g., setTimeout) before allowing another click
-                setTimeout(() => {
-                    selectAmmountclicked = false;
-                }, 1000); // Set a delay, in milliseconds, before allowing another click
-            }
+        // Check which button was clicked
+        if (clickedButton === twoPlayers) {
+          // Handle the click on the "Two Players" button
+          targetElem.innerHTML = 'Selected Two Players';
+        } else if (clickedButton === fourPlayers) {
+          // Handle the click on the "Four Players" button
+          targetElem.innerHTML = 'Selected Four Players';
         }
 
-        // Attach click event listeners to your elements
-        twoPlayers.addEventListener.addEventListener('click', handleClick);
-        fourPlayers.addEventListener.addEventListener('click', handleClick);
+        // Simulate some asynchronous operation (e.g., setTimeout) before allowing another click
+        setTimeout(() => {
+          selectAmountClicked = false;
+        }, 1000); // Set a delay, in milliseconds, before allowing another click
+      }
+    }
+
+    // Attach click event listeners to your buttons
+    twoPlayers.addEventListener('click', handleClick);
+    fourPlayers.addEventListener('click', handleClick);
 
 
 
