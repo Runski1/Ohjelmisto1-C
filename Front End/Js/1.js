@@ -85,73 +85,75 @@ function selectGame() {
 }
 
 async function addPlayers() {
- /* // gets value of entered game name
+  // gets value of entered game name
   const gameName = document.getElementById('gameName');
   const gameNameRequest = gameName.value;
   // makes json request from Flask-server
-  const gameNameResponse = await fetch(
-      `https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
-  const jsonData = await gameNameResponse.json();
-  console.log(jsonData);
-  // if saved game not found makes new game and updates startButtonCont
-  if (jsonData.gameName.value == 'not found') {
 
-    //add new player form for information max player (ammount:4)!!!!
-    //if you want to add more players max player limit needed from server
-    //for (jsonData.playerLimit.value);
+   const gameNameResponse = await fetch(
+       `https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
+   const jsonData = await gameNameResponse.json();
+   console.log(jsonData);*/
+   // if saved game not found makes new game and updates startButtonCont
 
-    */
-    const playerList = [];
+   if (jsonData.gameName.value == 'not found') {
+
+     //add new player form for information max player (ammount:4)!!!!
+     //if you want to add more players max player limit needed from server
+     //for (jsonData.playerLimit.value);
 
 
-    //add player name input form
-    for (let i = 0; i < 3; i++) {
-      const targetElem = document.getElementById('newGameForm');
-      // Create input field
-      const inputNewPlayer = document.createElement('input');
-      inputNewPlayer.setAttribute('type', 'text');
-      inputNewPlayer.setAttribute('id', `player${i + 1}`);
-      inputNewPlayer.classList.add('form');
-      //inputNewPlayer.classList.add('hide');
-      inputNewPlayer.placeholder = `Player ${i + 1}`;
-      targetElem.appendChild(inputNewPlayer);
-      playerList.push(inputNewPlayer);
+  const playerList = [];
 
-    }
-    // adds submit button to player name form
-    const inputButton = document.createElement('button');
-    inputButton.setAttribute('type', 'submit');
-    gameName.appendChild(inputButton);
-    //inputButton.classList.add('hide');
-    inputButton.id = 'selectGame';
-    inputButton.style.width = '2rem';
-    inputButton.innerText = '>';
-    setTimeout(() => {
-      gameName.classList.add('show');
-      gameName.classList.add('magentaGlow');
-      //inputButton.classList.add('magentaGlow');
-      //inputButton.classList.add('show');
-      // Loop through playerList and add the style class to each input element
-      //for (const playerInput of playerList) {
-      //playerInput.classList.add('magentaGlow');
-    }, 600);
+  //add player name input form
+  for (let i = 0; i < 3; i++) {
+    const targetElem = document.getElementById('newGameForm');
+    // Create input field
+    const inputNewPlayer = document.createElement('input');
+    inputNewPlayer.setAttribute('type', 'text');
+    inputNewPlayer.setAttribute('id', `player${i + 1}`);
+    inputNewPlayer.classList.add('form');
+    //inputNewPlayer.classList.add('hide');
+    inputNewPlayer.placeholder = `Player ${i + 1}`;
+    targetElem.appendChild(inputNewPlayer);
+    playerList.push(inputNewPlayer);
 
-    // append new player names to new save game
-    const playerName1 = playerList[0];
-    const playerName2 = playerList[1];
-
-    const playerNameResponse = await fetch(
-        `https://127.0.0.1:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
-    const jsonData = await playerNameResponse.json();
-    console.log(jsonData);
-
-    /*********************** MAINGAME STARTS FROM HERE**********************/
-    mainGame();
-  } else {
-    document.getElementById('selectGame').addEventListener('click', mainGame);
   }
+  // adds submit button to player name form
+  const inputButton = document.createElement('button');
+  inputButton.setAttribute('type', 'submit');
+  gameName.appendChild(inputButton);
+  //inputButton.classList.add('hide');
+  inputButton.id = 'selectGame';
+  inputButton.style.width = '2rem';
+  inputButton.innerText = '>';
+  setTimeout(() => {
+    gameName.classList.add('show');
+    gameName.classList.add('magentaGlow');
+    //inputButton.classList.add('magentaGlow');
+    //inputButton.classList.add('show');
+    // Loop through playerList and add the style class to each input element
+    //for (const playerInput of playerList) {
+    //playerInput.classList.add('magentaGlow');
+  }, 600);
+
+  // append new player names to new save game
+  const playerName1 = playerList[0];
+  const playerName2 = playerList[1];
+
+  const playerNameResponse = await fetch(
+      `https://127.0.0.1:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
+  const jsonData = await playerNameResponse.json();
+  console.log(jsonData);
+  mainGame();
+  /*********************** MAINGAME STARTS FROM HERE**********************/
 }
 
+else
+{
+  document.getElementById('selectGame').addEventListener('click', mainGame);
+}
+}
 
 /*async function playerData {
 
@@ -179,15 +181,13 @@ function mainGame() {
 
   }, 600);
 
-
-  const targetElem = document.getElementById('enterGame')
+  const targetElem = document.getElementById('enterGame');
   const mapFrame = targetElem.createElement('div');
   mapFrame.style.width = '800px';
   mapFrame.style.height = '600px';
   targetElem.appendChild(mapFrame);
   const mapImg = mapFrame.createElement('img');
-  mapImg.src = '../img/placeholdermap_800x600.png'
-
+  mapImg.src = '../img/placeholdermap_800x600.png';
 
   /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
 	attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -196,7 +196,6 @@ function mainGame() {
 	subdomains: 'abcd',
 	accessToken: '<your accessToken>'*/
 }
-
 
 /*********************** PROGRAM STARTS FROM HERE**********************/
 startScreen();
