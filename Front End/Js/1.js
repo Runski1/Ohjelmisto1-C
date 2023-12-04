@@ -106,7 +106,7 @@ async function addPlayers() {
   // makes json request from Flask-server
 
   const gameNameResponse = await fetch(
-      `https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
+      `http://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
   const jsonData = await gameNameResponse.json();
   console.log(jsonData);
   // if saved game not found makes new game and updates startButtonCont
