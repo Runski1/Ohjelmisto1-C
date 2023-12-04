@@ -1,235 +1,189 @@
 'use strict';
 
 function startScreen() {
-    const targetElem = document.body;
+  const targetElem = document.body;
 
-    // Create container for the start screen
-    const container = document.createElement('div');
-    container.id = 'container';
-    targetElem.appendChild(container);
+  // Create container for the start screen
+  const container = document.createElement('div');
+  container.id = 'container';
+  targetElem.appendChild(container);
 
-    // Create and add the logo
-    const logo = document.createElement('img');
-    logo.src = '../img/logo.png';
-    logo.id = 'logo';
-    logo.classList.add('cyanGlow')
-    container.appendChild(logo);
+  // Create and add the logo
+  const logo = document.createElement('img');
+  logo.src = '../img/logo.png';
+  logo.id = 'logo';
+  logo.classList.add('cyanGlow');
+  container.appendChild(logo);
 
-    // Create container for the "Enter the game" button
-    const startButtonCont = document.createElement('div');
-    startButtonCont.id = 'startButtonCont';
-    targetElem.appendChild(startButtonCont);
+  // Create container for the "Enter the game" button
+  const startButtonCont = document.createElement('div');
+  startButtonCont.id = 'startButtonCont';
+  targetElem.appendChild(startButtonCont);
 
-    // Create and add the "Enter the game" button
-    const enterGame = document.createElement('button');
-    enterGame.innerText = 'Start The Game';
-    enterGame.id = 'enterGameButton';
-    enterGame.classList.add('hide');
+  // Create and add the "Enter the game" button
+  const enterGame = document.createElement('button');
+  enterGame.innerText = 'Start The Game';
+  enterGame.id = 'enterGameButton';
+  enterGame.classList.add('hide');
 
-    startButtonCont.appendChild(enterGame);
+  startButtonCont.appendChild(enterGame);
 
-    // Add the 'show' class with a transition when the DOM is loaded
-    document.addEventListener("DOMContentLoaded", function () {
+  // Add the 'show' class with a transition when the DOM is loaded
+  document.addEventListener('DOMContentLoaded', function() {
 
+    // Triggering the reflow/repaint before adding the 'show' class
+    enterGame.offsetHeight;
 
-        // Triggering the reflow/repaint before adding the 'show' class
-        enterGame.offsetHeight;
-
-        // Add a class to the button to trigger the transition
-        enterGame.classList.add("magentaGlow");
-        enterGame.classList.add("show");
-    });
+    // Add a class to the button to trigger the transition
+    enterGame.classList.add('magentaGlow');
+    enterGame.classList.add('show');
+  });
 }
 
-
 function selectGame() {
+  setTimeout(() => {
+    const targetElem = document.getElementById('startButtonCont');
+    targetElem.innerHTML = '';
+    // Create and add the "New game" Form
+    const newGameForm = document.createElement('form');
+    newGameForm.id = 'newGameForm';
+    targetElem.appendChild(newGameForm);
+
+    // Create input field for game name
+    const inputNewGame = document.createElement('input');
+    inputNewGame.setAttribute('type', 'text');
+    inputNewGame.setAttribute('id', 'gameName');
+    inputNewGame.setAttribute('name', 'gameName');
+    inputNewGame.classList.add('form');
+    inputNewGame.classList.add('hide');
+    inputNewGame.placeholder = 'Enter New/Saved Game Name';
+
+    // Add input to form
+    newGameForm.appendChild(inputNewGame);
+
+    // Create submit button
+    const inputButton = document.createElement('button');
+    inputButton.setAttribute('type', 'submit');
+    targetElem.appendChild(inputButton);
+    inputButton.classList.add('hide');
+    inputButton.id = 'selectGame';
+    inputButton.style.width = '2rem';
+    inputButton.innerText = '>';
+    // Add the 'show' class with a transition
     setTimeout(() => {
-        const targetElem = document.getElementById('startButtonCont');
-        targetElem.innerHTML = '';
-        // Create and add the "New game" Form
-        const newGameForm = document.createElement('form');
-        targetElem.appendChild(newGameForm);
+      inputButton.classList.add('magentaGlow');
+      inputNewGame.classList.add('magentaGlow');
+      inputButton.classList.add('show');
+      inputNewGame.classList.add('show');
 
-        // Create input field for game name
-        const inputNewGame = document.createElement('input');
-        inputNewGame.setAttribute('type', 'text');
-        inputNewGame.setAttribute('id', 'gameName');
-        inputNewGame.setAttribute('name', 'gameName');
-        inputNewGame.classList.add('form');
-        inputNewGame.classList.add('hide')
-        inputNewGame.placeholder = 'Enter New/Saved Game Name';
-
-        // Add input to form
-        newGameForm.appendChild(inputNewGame);
-
-        // Create submit button
-        const inputButton = document.createElement("button");
-        inputButton.setAttribute('type', 'submit');
-        targetElem.appendChild(inputButton);
-        inputButton.classList.add('hide');
-        inputButton.id = 'selectGame'
-        inputButton.style.width = '2rem';
-        inputButton.innerText = '>';
-        // Add the 'show' class with a transition
-        setTimeout(() => {
-            inputButton.classList.add('magentaGlow');
-            inputNewGame.classList.add('magentaGlow');
-            inputButton.classList.add('show');
-            inputNewGame.classList.add('show');
-
-            // Now that the button is created, add the event listener
-            /********MAIN GAME WILL START*********/    /*TEST: Add mainGame instead of addPlayers */
-            document.getElementById('selectGame').addEventListener('click', addPlayers);
-        }, 0); // Use 0 for the next available frame
-    }, 600);
+      // Now that the button is created, add the event listener
+      /********MAIN GAME WILL START*********/    /*TEST: Add mainGame instead of addPlayers */
+      document.getElementById('selectGame').
+          addEventListener('click', addPlayers);
+    }, 0); // Use 0 for the next available frame
+  }, 600);
 }
 
 async function addPlayers() {
-    // gets value of entered game name
-    const gameName = document.getElementById('gameName');
-    const gameNameRequest = gameName.value;
-    // makes json request from Flask-server
-    const gameNameResponse = await fetch(`https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
-    const jsonData = await gameNameResponse.json();
+  // gets value of entered game name
+  const gameName = document.getElementById('gameName');
+  const gameNameRequest = gameName.value;
+  // makes json request from Flask-server
+  const gameNameResponse = await fetch(
+      `https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
+  const jsonData = await gameNameResponse.json();
+  console.log(jsonData);
+  // if saved game not found makes new game and updates startButtonCont
+  if (jsonData.gameName.value == 'not found') {
+
+    //add new player form for information max player (ammount:4)!!!!
+    //if you want to add more players max player limit needed from server
+    //for (jsonData.playerLimit.value);
+    const playerList = [];
+
+    //add player name input form
+    for (let i = 0; i < 3; i++) {
+      const targetElem = document.getElementById('newGameForm');
+      // Create input field
+      const inputNewPlayer = document.createElement('input');
+      inputNewPlayer.setAttribute('type', 'text');
+      inputNewPlayer.setAttribute('id', `player${i + 1}`);
+      inputNewPlayer.classList.add('form');
+      //inputNewPlayer.classList.add('hide');
+      inputNewPlayer.placeholder = `Player ${i + 1}`;
+      targetElem.appendChild(inputNewPlayer);
+      playerList.push(inputNewPlayer);
+
+    }
+    // adds submit button to player name form
+    const inputButton = document.createElement('button');
+    inputButton.setAttribute('type', 'submit');
+    gameName.appendChild(inputButton);
+    //inputButton.classList.add('hide');
+    inputButton.id = 'selectGame';
+    inputButton.style.width = '2rem';
+    inputButton.innerText = '>';
+    setTimeout(() => {
+      gameName.classList.add('show');
+      gameName.classList.add('magentaGlow');
+      //inputButton.classList.add('magentaGlow');
+      //inputButton.classList.add('show');
+      // Loop through playerList and add the style class to each input element
+      //for (const playerInput of playerList) {
+      //playerInput.classList.add('magentaGlow');
+    }, 600);
+
+    // append new player names to new save game
+    const playerName1 = playerList[0];
+    const playerName2 = playerList[1];
+
+    const playerNameResponse = await fetch(
+        `https://127.0.0.1:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
+    const jsonData = await playerNameResponse.json();
     console.log(jsonData);
-    // if saved game not found makes new game and updates startButtonCont
-    if (jsonData.gameName.value == "not found") {
 
-        //add new player form for information
-        const targetElem = document.getElementById('startButtonCont');
-        targetElem.innerHTML = '';
-        targetElem.classList.add('hide');
-        const twoPlayers = document.createElement('button');
-        twoPlayers.id = 'twoPlayers';
-        const fourPlayers = document.createElement('button');
-        fourPlayers.id = 'fourPlayers';
-        twoPlayers.innerText = '2p'
-        fourPlayers.innerText = '4p'
-        targetElem.appendChild(twoPlayers);
-        targetElem.appendChild(fourPlayers);
-        setTimeout(() => {
-            targetElem.classList.add('show');
-
-            targetElem.classList.add('magentaGlow');
-        }, 600);
-        let selectAmmountClicked = false;
-
-         let selectAmountClicked = false;
-    function handleClick(event) {
-      if (!selectAmountClicked) {
-        selectAmountClicked = true;
-
-        // Get the clicked button
-        const clickedButton = event.target;
-
-        // Your code for handling the click event goes here
-        console.log(`Element with id ${clickedButton.id} clicked`);
-
-        // Check which button was clicked
-        if (clickedButton === twoPlayers) {
-          // Handle the click on the "Two Players" button
-          targetElem.innerHTML = 'Selected Two Players';
-        } else if (clickedButton === fourPlayers) {
-          // Handle the click on the "Four Players" button
-          targetElem.innerHTML = 'Selected Four Players';
-        }
-
-        // Simulate some asynchronous operation (e.g., setTimeout) before allowing another click
-        setTimeout(() => {
-          selectAmountClicked = false;
-        }, 1000); // Set a delay, in milliseconds, before allowing another click
-      }
-    }
-
-    // Attach click event listeners to your buttons
-    twoPlayers.addEventListener('click', handleClick);
-    fourPlayers.addEventListener('click', handleClick);
-
-
-
-        //if you want to add more players max player limit needed from server
-        //for (jsonData.playerLimit.value);
-        const playerList = [];
-    /
-
-
-        for (let i = 0; i < 2; i++) {
-            // Create input field
-            const inputNewPlayer = document.createElement('input');
-            inputNewPlayer.setAttribute('type', 'text');
-            inputNewPlayer.setAttribute('id', `player${i + 1}`);
-            inputNewPlayer.classList.add('form');
-            //inputNewPlayer.classList.add('hide');
-            inputNewPlayer.placeholder = `Player ${i + 1}`;
-            twoPlayers.appendChild(inputNewPlayer);
-            playerList.push(inputNewPlayer);
-
-
-        }
-        // adds submit button to player name input field
-        const inputButton = document.createElement("button");
-        inputButton.setAttribute('type', 'submit');
-        targetElem.appendChild(inputButton);
-        //inputButton.classList.add('hide');
-        inputButton.id = 'selectGame'
-        inputButton.style.width = '2rem';
-        inputButton.innerText = '>';
-        setTimeout(() => {
-            targetElem.classList.add('show');
-            targetElem.classList.add('magentaGlow');
-            //inputButton.classList.add('magentaGlow');
-            //inputButton.classList.add('show');
-            // Loop through playerList and add the style class to each input element
-            //for (const playerInput of playerList) {
-            //playerInput.classList.add('magentaGlow');
-        }, 600);
-
-
-        // append new player names to new save game
-        for (let id of playerList) {
-            const playerName = playerList[id].value
-            const playerNameResponse = await fetch(`https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
-
-        }
-
-
-    } else {
-        document.getElementById('selectGame').addEventListener('click', mainGame);
-    }
-}
-
-async function playerData {
+  }
 
 }
+
+else
+{
+  document.getElementById('selectGame').addEventListener('click', mainGame);
+}
+}
+
+/*async function playerData {
+
+}*/
 
 function mainGame() {
+  setTimeout(() => {
+
+    const targetELem = document.getElementById('startButtonCont');
+    targetELem.classList.add('mainGameContainer');
+    // Clear the body content
+    targetELem.innerHTML = '';
+
+    // Set the body height to 100%
+    document.body.style.height = '100%';
+    targetELem.style.width = '50rem';
+    targetELem.style.height = '37.5rem';
+    targetELem.style.border = '1px solid #19caca';
+
     setTimeout(() => {
-
-        const targetELem = document.getElementById('startButtonCont');
-        targetELem.classList.add('mainGameContainer');
-        // Clear the body content
-        targetELem.innerHTML = '';
-
-        // Set the body height to 100%
-        document.body.style.height = '100%';
-        targetELem.style.width = '50rem';
-        targetELem.style.height = '37.5rem';
-        targetELem.style.border = '1px solid #19caca';
-
-        setTimeout(() => {
-            targetELem.classList.add('lightblueGlow')
-            targetELem.classList.add("show");
-        }, 600);
-
+      targetELem.classList.add('lightblueGlow');
+      targetELem.classList.add('show');
     }, 600);
+
+  }, 600);
 
 }
 
 /*********************** PROGRAM STARTS FROM HERE**********************/
 startScreen();
 
-document.getElementById("enterGameButton").addEventListener('click', selectGame);
-
+document.getElementById('enterGameButton').
+    addEventListener('click', selectGame);
 
 //**const video_Background = document.createElement('video');
 // video_Background.id = 'background-video';
