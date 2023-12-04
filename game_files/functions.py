@@ -146,14 +146,12 @@ def get_round_number():
 def add_to_round_counter():
     sql = "UPDATE round_counter SET counter = counter + 1"
     cursor.execute(sql)
-#    cursor.close()
 
 
 def get_city_data():
     sql = "SELECT * from city"
     cursor.execute(sql)
     all_from_city = cursor.fetchall()
-#    cursor.close()
     all_data_from_city_as_list = []
     for i in range(len(all_from_city)):
         all_data_from_city_as_list.append((list(all_from_city[i])))
@@ -345,21 +343,25 @@ def set_lockstate(distance, player_id, counter, travel_type):
     return
 
 
-def get_not_visited_city_ids():
-    sql = "SELECT id FROM city WHERE visited = '0'"
+"""def get_not_visited_city_ids():
+    sql = "SELECT id FROM city WHERE id != '16'"
     cursor.execute(sql)
     cities = cursor.fetchall()
     result = []
     for city in cities:
         result.append(city[0])
-    return result
+    return result"""
 
 
 def generate_main_bag():
-    not_visited_cities = get_not_visited_city_ids()
-    random_city = random.choice(not_visited_cities)
-    sql = f"UPDATE city SET bag_city = 1 WHERE id = '{random_city}'"
-    cursor.execute(sql)
+    city_id = []
+    city_data = get_city_data()
+    for city in city_data:
+        city_id.append(city[0])
+    random_city = random.choice(city_id)
+ #   sql = f"UPDATE city SET bag_city = 1 WHERE id = '{random_city}'"
+ #   cursor.execute(sql)
+    return random_city
 
 
 def generate_additional_bags():
