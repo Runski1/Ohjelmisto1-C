@@ -98,20 +98,41 @@ async function addPlayers() {
         //add new player form for information
         const targetElem = document.getElementById('startButtonCont');
         targetElem.innerHTML = '';
-        const newPlayerForm = document.createElement('form');
         targetElem.classList.add('hide');
-        targetElem.appendChild(newPlayerForm);
-        // ask player ammount
-        const playerAmmount = document.createElement('input');
-        playerAmmount.setAttribute('type', 'text');
-        playerAmmount.setAttribute('id', `playerAmmount`);
-        playerAmmount.classList.add('form');
-        playerAmmount.placeholder = `How many players?`;
-        newPlayerForm.appendChild(playerAmmount);
+        const twoPlayers = document.createElement('button');
+        const fourPlayers = document.createElement('button');
+        twoPlayers.innerText = '2p'
+        fourPlayers.innerText = '4p'
+        targetElem.appendChild(twoPlayers);
+        targetElem.appendChild(fourPlayers);
         setTimeout(() => {
             targetElem.classList.add('show');
+
             targetElem.classList.add('magentaGlow');
-            }, 600);
+        }, 600);
+        let selectAmmountclicked = false;
+
+        function handleClick(event) {
+            if (!selectAmmountclicked) {
+                selectAmmountclicked = true;
+
+                // Get the clicked element
+                const clickedButton = event.target;
+
+                // Your code for handling the click event goes here
+                console.log(`Element with id ${clickedButton.id} clicked`);
+
+                // Simulate some asynchronous operation (e.g., setTimeout) before allowing another click
+                setTimeout(() => {
+                    selectAmmountclicked = false;
+                }, 1000); // Set a delay, in milliseconds, before allowing another click
+            }
+        }
+
+        // Attach click event listeners to your elements
+        twoPlayers.addEventListener.addEventListener('click', handleClick);
+        fourPlayers.addEventListener.addEventListener('click', handleClick);
+
 
 
         //if you want to add more players max player limit needed from server
@@ -128,7 +149,7 @@ async function addPlayers() {
             inputNewPlayer.classList.add('form');
             //inputNewPlayer.classList.add('hide');
             inputNewPlayer.placeholder = `Player ${i + 1}`;
-            newPlayerForm.appendChild(inputNewPlayer);
+            twoPlayers.appendChild(inputNewPlayer);
             playerList.push(inputNewPlayer);
 
 
