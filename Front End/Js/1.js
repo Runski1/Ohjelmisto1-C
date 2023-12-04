@@ -142,15 +142,13 @@ async function addPlayers() {
     const jsonData = await playerNameResponse.json();
     console.log(jsonData);
 
+    /*********************** MAINGAME STARTS FROM HERE**********************/
+    mainGame();
+  } else {
+    document.getElementById('selectGame').addEventListener('click', mainGame);
   }
-
 }
 
-else
-{
-  document.getElementById('selectGame').addEventListener('click', mainGame);
-}
-}
 
 /*async function playerData {
 
@@ -161,13 +159,14 @@ function mainGame() {
 
     const targetELem = document.getElementById('startButtonCont');
     targetELem.classList.add('mainGameContainer');
-    // Clear the body content
+    // Clear the gamecontainer content
     targetELem.innerHTML = '';
 
     // Set the body height to 100%
     document.body.style.height = '100%';
-    targetELem.style.width = '50rem';
-    targetELem.style.height = '37.5rem';
+    // kartta on 800x600 = 50remx37.5rem
+    targetELem.style.width = '70rem';
+    targetELem.style.height = '57.5rem';
     targetELem.style.border = '1px solid #19caca';
 
     setTimeout(() => {
@@ -177,6 +176,17 @@ function mainGame() {
 
   }, 600);
 
+
+  const targetElem = document.getElementById('enterGame')
+  const mapFrame =
+
+  /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
+	attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	minZoom: 0,
+	maxZoom: 22,
+	subdomains: 'abcd',
+	accessToken: '<your accessToken>'*/
+});
 }
 
 /*********************** PROGRAM STARTS FROM HERE**********************/
