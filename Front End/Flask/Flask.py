@@ -16,7 +16,13 @@ server = Flask(__name__)
 
 @server.route('/get_saveGame/<savegame>')
 def get_saveGame(savegame):
-    cursor = connection.cursor()
+    if savegame == 'testgame':
+        response = {"gameName":"testgame"}
+
+    else:
+        response = {"gameName":"not found"}
+
+    '''cursor = connection.cursor()
     cursor.execute(f"select name, playerName from savedGames where name = '{savegame}'")
     sql_result = cursor.fetchone()
     if sql_result:
@@ -27,24 +33,24 @@ def get_saveGame(savegame):
         response_data = {"gameName": "not found"}
         status_code = 400
     response_data = json.dumps(response_data)
-    response = Response(response=response_data, status=status_code, mimetype="application/json")
+    response = Response(response=response_data, status=status_code, mimetype="application/json")'''
     return response
-@server.route('/add_player/<savegame>/<player1>/<player2>/<player3>/<player4>')
+'''@server.route('/add_player/<savegame>/<player1>/<player2>/<player3>/<player4>')
 def add_player(savegame, player):
     cursor = connection.cursor()
     cursor.execute("
     connection.commit()
-    cursor.close()
+    cursor.close()'''
 
 
 
-@server.route('/get_playerData/<savedGame>/<name>')
+'''@server.route('/get_playerData/<savedGame>/<name>')
 def get_playerData(name):
     cursor = connection.cursor()
     cursor.execute(f"select name, playerName from savedGames where name = '{name}'")
     sql_result = cursor.fetchone()
     #kesken
-
+'''
 
 if __name__ == '__main__':
     server.run(use_reloader=True, host='127.0.0.1', port=3000)
