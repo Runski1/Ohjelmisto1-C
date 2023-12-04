@@ -41,13 +41,14 @@ function startScreen() {
 }
 
 function selectGame() {
-
+setTimeout(() => {
     const targetElem = document.getElementById('startButtonCont');
     targetElem.innerHTML = '';
 
     // Create and add the "New game" Form
     const newGameForm = document.createElement('form');
     newGameForm.id = 'newGameForm';
+    newGameForm.classList.add('hide')
     targetElem.appendChild(newGameForm);
 
     // Create input field for game name
@@ -56,7 +57,7 @@ function selectGame() {
     inputNewGame.setAttribute('id', 'gameName');
     inputNewGame.setAttribute('name', 'gameName');
     inputNewGame.setAttribute('action', '');
-    inputNewGame.classList.add('form', 'hide');
+    inputNewGame.classList.add('form');
     inputNewGame.placeholder = 'Enter New/Saved Game Name';
 
     // Add input to form
@@ -66,15 +67,16 @@ function selectGame() {
     const inputButton = document.createElement('button');
     inputButton.setAttribute('type', 'submit');
     targetElem.appendChild(inputButton);
-    inputButton.classList.add('hide');
+inputButton.classList.add('hide');
     inputButton.id = 'selectGame';
     inputButton.style.width = '2rem';
     inputButton.innerText = '>';
 
     // Add the 'show' class with a transition
     setTimeout(() => {
-      inputButton.classList.add('magentaGlow', 'show');
-      inputNewGame.classList.add('magentaGlow', 'show');
+        newGameForm.classList.add('magentaGlow', 'show')
+        inputButton.classList.add('show');
+
 
       // Add event listener for "Enter" key press on the input field
       inputNewGame.addEventListener('keypress', function (event) {
@@ -93,7 +95,7 @@ function selectGame() {
         addPlayers();
       });
     }, 0);
-
+}, 300);
 }
 
 async function addPlayers() {

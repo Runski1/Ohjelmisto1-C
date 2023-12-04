@@ -1,7 +1,8 @@
 import mysql.connector
-from flask import Flask, request,Response
+from flask import Flask, request, Response
 import json
 import mysql.connector
+
 connection = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
@@ -16,11 +17,14 @@ server = Flask(__name__)
 
 @server.route('/get_saveGame/<savegame>')
 def get_saveGame(savegame):
+    sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}
     if savegame == 'testgame':
-        response = {"gameName":"testgame"}
+        response_data = sql_result
+        status_code = 200
 
     else:
-        response = {"gameName":"not found"}
+        response_data = {"gameName": "not found"}
+        status_code = 400
 
     '''cursor = connection.cursor()
     cursor.execute(f"select name, playerName from savedGames where name = '{savegame}'")
@@ -31,18 +35,19 @@ def get_saveGame(savegame):
     else:
         cursor.execute("INSERT INTO savedGames (name) VALUES (%s)", (savegame,))
         response_data = {"gameName": "not found"}
-        status_code = 400
+        status_code = 400'''
     response_data = json.dumps(response_data)
-    response = Response(response=response_data, status=status_code, mimetype="application/json")'''
+    response = Response(response=response_data, status=status_code, mimetype="application/json")
+
     return response
+
+
 '''@server.route('/add_player/<savegame>/<player1>/<player2>/<player3>/<player4>')
 def add_player(savegame, player):
     cursor = connection.cursor()
     cursor.execute("
     connection.commit()
     cursor.close()'''
-
-
 
 '''@server.route('/get_playerData/<savedGame>/<name>')
 def get_playerData(name):
