@@ -32,7 +32,6 @@ create table player
     current_pp     int        default 2000 null,
     lockstate      int        default 0    null,
     prizeholder    tinyint(1) default 0    not null,
-    real_prize     tinyint(1) default 0    not null,
     total_dice     int        default 0    null,
     location       int        default 16   not null,
     game           int                     null,
