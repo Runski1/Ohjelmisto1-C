@@ -1,5 +1,5 @@
 import mysql.connector
-from flask import Flask, Response,Request
+from flask import Flask, Response, Request
 import json
 import mysql.connector
 
