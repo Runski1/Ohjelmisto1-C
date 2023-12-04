@@ -1,4 +1,3 @@
-import mysql.connector
 from db_connection import connection
 import functions
 
@@ -19,7 +18,7 @@ class Game:
     def add_to_db(self):
         bag_city = functions.generate_main_bag()
 
-        query = (f"INSERT INTO game (game_name, round_counter, bag_city, visited)"
+        query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
                  f" VALUES('{self.game_name}', '{self.round_counter}', '{bag_city}', '{Game.visited}')")
         self.cursor.execute(query)
 
@@ -44,3 +43,7 @@ class Player:
                  f" '{self.prizeholder}', '{self.total_dice}', '{self.location}')")
 
         Game.cursor.execute(query)
+
+
+game1 = Game('holaa', 'sini', 'miro')
+print(game1.players[0])
