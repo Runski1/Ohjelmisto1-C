@@ -29,9 +29,13 @@ def get_saveGame(savegame):
     response_data = json.dumps(response_data)
     response = Response(response=response_data, status=status_code, mimetype="application/json")
     return response
-@server.route('/add_player/<player>')
-def add_player(player):
+@server.route('/add_player/<savegame>/<player1>/<player2>/<player3>/<player4>')
+def add_player(savegame, player):
     cursor = connection.cursor()
+    cursor.execute("
+    connection.commit()
+    cursor.close()
+
 
 
 @server.route('/get_playerData/<savedGame>/<name>')

@@ -48,6 +48,7 @@ function selectGame() {
         targetElem.innerHTML = '';
         // Create and add the "New game" Form
         const newGameForm = document.createElement('form');
+        newGameForm.id = 'newGameForm';
         targetElem.appendChild(newGameForm);
 
         // Create input field for game name
@@ -95,65 +96,14 @@ async function addPlayers() {
     // if saved game not found makes new game and updates startButtonCont
     if (jsonData.gameName.value == "not found") {
 
-        //add new player form for information
-        const targetElem = document.getElementById('startButtonCont');
-        targetElem.innerHTML = '';
-        targetElem.classList.add('hide');
-        const twoPlayers = document.createElement('button');
-        twoPlayers.id = 'twoPlayers';
-        const fourPlayers = document.createElement('button');
-        fourPlayers.id = 'fourPlayers';
-        twoPlayers.innerText = '2p'
-        fourPlayers.innerText = '4p'
-        targetElem.appendChild(twoPlayers);
-        targetElem.appendChild(fourPlayers);
-        setTimeout(() => {
-            targetElem.classList.add('show');
-
-            targetElem.classList.add('magentaGlow');
-        }, 600);
-        let selectAmmountClicked = false;
-
-         let selectAmountClicked = false;
-    function handleClick(event) {
-      if (!selectAmountClicked) {
-        selectAmountClicked = true;
-
-        // Get the clicked button
-        const clickedButton = event.target;
-
-        // Your code for handling the click event goes here
-        console.log(`Element with id ${clickedButton.id} clicked`);
-
-        // Check which button was clicked
-        if (clickedButton === twoPlayers) {
-          // Handle the click on the "Two Players" button
-          targetElem.innerHTML = 'Selected Two Players';
-        } else if (clickedButton === fourPlayers) {
-          // Handle the click on the "Four Players" button
-          targetElem.innerHTML = 'Selected Four Players';
-        }
-
-        // Simulate some asynchronous operation (e.g., setTimeout) before allowing another click
-        setTimeout(() => {
-          selectAmountClicked = false;
-        }, 1000); // Set a delay, in milliseconds, before allowing another click
-      }
-    }
-
-    // Attach click event listeners to your buttons
-    twoPlayers.addEventListener('click', handleClick);
-    fourPlayers.addEventListener('click', handleClick);
-
-
-
+        //add new player form for information max player (ammount:4)!!!!
         //if you want to add more players max player limit needed from server
         //for (jsonData.playerLimit.value);
         const playerList = [];
-    /
 
-
-        for (let i = 0; i < 2; i++) {
+        //add player name input form
+        for (let i = 0; i < 3; i++) {
+            const targetElem = document.getElementById('newGameForm');
             // Create input field
             const inputNewPlayer = document.createElement('input');
             inputNewPlayer.setAttribute('type', 'text');
@@ -161,22 +111,22 @@ async function addPlayers() {
             inputNewPlayer.classList.add('form');
             //inputNewPlayer.classList.add('hide');
             inputNewPlayer.placeholder = `Player ${i + 1}`;
-            twoPlayers.appendChild(inputNewPlayer);
+            targetElem.appendChild(inputNewPlayer);
             playerList.push(inputNewPlayer);
 
 
         }
-        // adds submit button to player name input field
+        // adds submit button to player name form
         const inputButton = document.createElement("button");
         inputButton.setAttribute('type', 'submit');
-        targetElem.appendChild(inputButton);
+        gameName.appendChild(inputButton);
         //inputButton.classList.add('hide');
         inputButton.id = 'selectGame'
         inputButton.style.width = '2rem';
         inputButton.innerText = '>';
         setTimeout(() => {
-            targetElem.classList.add('show');
-            targetElem.classList.add('magentaGlow');
+            gameName.classList.add('show');
+            gameName.classList.add('magentaGlow');
             //inputButton.classList.add('magentaGlow');
             //inputButton.classList.add('show');
             // Loop through playerList and add the style class to each input element
@@ -188,7 +138,7 @@ async function addPlayers() {
         // append new player names to new save game
         for (let id of playerList) {
             const playerName = playerList[id].value
-            const playerNameResponse = await fetch(`https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
+            const playerNameResponse = await fetch(`https://127.0.0.1:3000/get_saveGame/${}`);
 
         }
 
@@ -198,9 +148,9 @@ async function addPlayers() {
     }
 }
 
-async function playerData {
+/*async function playerData {
 
-}
+}*/
 
 function mainGame() {
     setTimeout(() => {
