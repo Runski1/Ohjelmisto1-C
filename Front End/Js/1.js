@@ -106,7 +106,7 @@ async function addPlayers() {
   // makes json request from Flask-server
 
   const gameNameResponse = await fetch(
-      `https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
+      `http://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
   const jsonData = await gameNameResponse.json();
   console.log(jsonData);
   // if saved game not found makes new game and updates startButtonCont
@@ -182,7 +182,7 @@ function mainGame() {
     document.body.style.height = '100%';
     // kartta on 800x600 = 50remx37.5rem
     targetELem.style.width = '70rem';
-    targetELem.style.height = '57.5rem';
+    targetELem.style.height = '47.5rem';
     targetELem.style.border = '1px solid #19caca';
 
     setTimeout(() => {
