@@ -85,10 +85,10 @@ function selectGame() {
 }
 
 async function addPlayers() {
-  // gets value of entered game name
+ /* // gets value of entered game name
   const gameName = document.getElementById('gameName');
   const gameNameRequest = gameName.value;
-  /*// makes json request from Flask-server
+  // makes json request from Flask-server
   const gameNameResponse = await fetch(
       `https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
   const jsonData = await gameNameResponse.json();
@@ -99,8 +99,11 @@ async function addPlayers() {
     //add new player form for information max player (ammount:4)!!!!
     //if you want to add more players max player limit needed from server
     //for (jsonData.playerLimit.value);
+
+    */
     const playerList = [];
-*/
+
+
     //add player name input form
     for (let i = 0; i < 3; i++) {
       const targetElem = document.getElementById('newGameForm');
