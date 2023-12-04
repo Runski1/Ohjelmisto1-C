@@ -182,7 +182,7 @@ function mainGame() {
     document.body.style.height = '100%';
     // kartta on 800x600 = 50remx37.5rem
     targetELem.style.width = '70rem';
-    targetELem.style.height = '57.5rem';
+    targetELem.style.height = '47.5rem';
     targetELem.style.border = '1px solid #19caca';
 
     setTimeout(() => {
