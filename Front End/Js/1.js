@@ -138,7 +138,7 @@ async function addPlayers() {
     const playerName2 = playerList[1];
 
     const playerNameResponse = await fetch(
-        `https://127.0.0.1:3000//add_player/${gameName} /${playerName1}/${playerName2}`);
+        `https://127.0.0.1:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
     const jsonData = await playerNameResponse.json();
     console.log(jsonData);
 
