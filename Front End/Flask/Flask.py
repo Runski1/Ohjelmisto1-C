@@ -1,5 +1,5 @@
 import mysql.connector
-from flask import Flask, request, Response
+from flask import Flask, Response
 import json
 import mysql.connector
 
@@ -16,8 +16,8 @@ server = Flask(__name__)
 
 
 @server.route('/get_saveGame/<savegame>')
-def get_saveGame(savegame):
-    sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}
+def get_savegame(savegame):
+    sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}}
     if savegame == 'testgame':
         response_data = sql_result
         status_code = 200
