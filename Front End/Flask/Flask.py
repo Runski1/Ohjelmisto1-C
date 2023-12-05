@@ -15,6 +15,7 @@ connection = mysql.connector.connect(
 server = Flask(__name__)
 CORS(server)
 
+
 @server.route('/get_saveGame/<savegame>')
 def get_savegame(savegame):
     sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}}
@@ -23,8 +24,8 @@ def get_savegame(savegame):
         status_code = 200
 
     else:
-        response_data = {"gameName": "not found"}
-        status_code = 400
+        response_data = {"gameName":"not found"}
+        status_code = 200
 
     '''cursor = connection.cursor()
     cursor.execute(f"select name, playerName from savedGames where name = '{savegame}'")
