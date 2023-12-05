@@ -112,7 +112,7 @@ async function addPlayers() {
   console.log(jsonData);
   // if saved game not found makes new game and updates startButtonCont
 
-  if (jsonData.gameName.value == 'not found') {
+  if (jsonData.gameName == 'not found') {
 
     //add new player form for information max player (ammount:4)!!!!
     //if you want to add more players max player limit needed from server
@@ -145,11 +145,6 @@ async function addPlayers() {
     setTimeout(() => {
       gameName.classList.add('show');
       gameName.classList.add('magentaGlow');
-      //inputButton.classList.add('magentaGlow');
-      //inputButton.classList.add('show');
-      // Loop through playerList and add the style class to each input element
-      //for (const playerInput of playerList) {
-      //playerInput.classList.add('magentaGlow');
     }, 600);
 
     // append new player names to new save game
@@ -199,7 +194,6 @@ function mainGame() {
       targetELem.classList.add('show');
       mapFrame.classList.add('show');
     }, 600);
-
   }, 600);
 
 
