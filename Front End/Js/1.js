@@ -41,14 +41,14 @@ function startScreen() {
 }
 
 function selectGame() {
-setTimeout(() => {
+  setTimeout(() => {
     const targetElem = document.getElementById('startButtonCont');
     targetElem.innerHTML = '';
 
     // Create and add the "New game" Form
     const newGameForm = document.createElement('form');
     newGameForm.id = 'newGameForm';
-    newGameForm.classList.add('hide')
+    newGameForm.classList.add('hide');
     targetElem.appendChild(newGameForm);
 
     // Create input field for game name
@@ -67,36 +67,34 @@ setTimeout(() => {
     const inputButton = document.createElement('button');
     inputButton.setAttribute('type', 'submit');
     targetElem.appendChild(inputButton);
-inputButton.classList.add('hide');
+    inputButton.classList.add('hide');
     inputButton.id = 'selectGame';
     inputButton.style.width = '2rem';
     inputButton.innerText = '>';
 
     // Add the 'show' class with a transition
     setTimeout(() => {
-        newGameForm.classList.add('magentaGlow', 'show')
-        inputButton.classList.add('show');
-
-
-      // Add event listener for "Enter" key press on the input field
-      inputNewGame.addEventListener('keypress',  function (event) {
-        // If the user presses the "Enter" key on the keyboard
-        if (event.key === 'Enter') {
-          // Cancel the default action, if needed
-          event.preventDefault();
-          // Trigger the button element with a click
-          inputButton.click();
-
-        }
-      });
-
-      // Add event listener for button click
-      inputButton.addEventListener('click', function (event) {
-        event.preventDefault();
-        addPlayers();
-      });
+      newGameForm.classList.add('magentaGlow', 'show');
+      inputButton.classList.add('show');
     }, 0);
-}, 300);
+
+    // Add event listener for "Enter" key press on the input field
+    inputNewGame.addEventListener('keypress', function(event) {
+      // If the user presses the "Enter" key on the keyboard
+      if (event.key === 'Enter') {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        inputButton.click();
+
+      }
+    });
+    // Add event listener for button click
+    inputButton.addEventListener('click', function(event) {
+      addPlayers();
+    });
+
+  }, 300);
 }
 
 async function addPlayers() {
@@ -111,8 +109,8 @@ async function addPlayers() {
   const jsonData = await gameNameResponse.json();
   console.log(jsonData);
   // if saved game not found makes new game and updates startButtonCont
-
-  if (jsonData.gameName.value == 'not found') {
+console.log(jsonData.gameName)
+  if (jsonData.gameName == 'not found') {
 
     //add new player form for information max player (ammount:4)!!!!
     //if you want to add more players max player limit needed from server
@@ -145,11 +143,6 @@ async function addPlayers() {
     setTimeout(() => {
       gameName.classList.add('show');
       gameName.classList.add('magentaGlow');
-      //inputButton.classList.add('magentaGlow');
-      //inputButton.classList.add('show');
-      // Loop through playerList and add the style class to each input element
-      //for (const playerInput of playerList) {
-      //playerInput.classList.add('magentaGlow');
     }, 600);
 
     // append new player names to new save game
@@ -162,14 +155,12 @@ async function addPlayers() {
     console.log(jsonData);
     mainGame();
     /*********************** MAINGAME STARTS FROM HERE**********************/
-  } else {
+  }
+  else {
     document.getElementById('selectGame').addEventListener('click', mainGame);
   }
 }
 
-/*async function playerData {
-
-}*/
 
 function mainGame() {
   setTimeout(() => {
@@ -193,7 +184,7 @@ function mainGame() {
 
   }, 600);
 
-  const targetElem = document.getElementById('enterGame');
+  const targetElem = document.getElementById('startButtonCont');
   const mapFrame = document.createElement('div');
   mapFrame.style.width = '800px';
   mapFrame.style.height = '600px';
