@@ -24,8 +24,8 @@ def get_savegame(savegame):
         status_code = 200
 
     else:
-        response_data = {"gameName": "not found"}
-        status_code = 400
+        response_data = {"gameName":"not found"}
+        status_code = 200
 
     '''cursor = connection.cursor()
     cursor.execute(f"select name, playerName from savedGames where name = '{savegame}'")
