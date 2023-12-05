@@ -1,8 +1,8 @@
 import mysql.connector
-from flask import Flask, request, Response
+from flask import Flask, Response,Request
 import json
 import mysql.connector
-
+from flask_cors import CORS
 connection = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
@@ -13,11 +13,12 @@ connection = mysql.connector.connect(
 )
 
 server = Flask(__name__)
+CORS(server)
 
 
 @server.route('/get_saveGame/<savegame>')
-def get_saveGame(savegame):
-    sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}
+def get_savegame(savegame):
+    sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}}
     if savegame == 'testgame':
         response_data = sql_result
         status_code = 200

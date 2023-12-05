@@ -79,13 +79,14 @@ inputButton.classList.add('hide');
 
 
       // Add event listener for "Enter" key press on the input field
-      inputNewGame.addEventListener('keypress', function (event) {
+      inputNewGame.addEventListener('keypress',  function (event) {
         // If the user presses the "Enter" key on the keyboard
         if (event.key === 'Enter') {
           // Cancel the default action, if needed
           event.preventDefault();
           // Trigger the button element with a click
           inputButton.click();
+
         }
       });
 
@@ -106,7 +107,7 @@ async function addPlayers() {
   // makes json request from Flask-server
 
   const gameNameResponse = await fetch(
-      `https://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
+      `http://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
   const jsonData = await gameNameResponse.json();
   console.log(jsonData);
   // if saved game not found makes new game and updates startButtonCont
@@ -156,7 +157,7 @@ async function addPlayers() {
     const playerName2 = playerList[1];
 
     const playerNameResponse = await fetch(
-        `https://127.0.0.1:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
+        `http://127.0.0.1:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
     const jsonData = await playerNameResponse.json();
     console.log(jsonData);
     mainGame();
@@ -182,23 +183,25 @@ function mainGame() {
     document.body.style.height = '100%';
     // kartta on 800x600 = 50remx37.5rem
     targetELem.style.width = '70rem';
-    targetELem.style.height = '57.5rem';
+    targetELem.style.height = '47.5rem';
     targetELem.style.border = '1px solid #19caca';
 
     setTimeout(() => {
       targetELem.classList.add('lightblueGlow');
       targetELem.classList.add('show');
     }, 600);
-
+    const targetElem = document.getElementById('startButtonCont');
+    const mapFrame = document.createElement('div');
+    mapFrame.style.width = '800';
+    mapFrame.style.height = '600';
+    const mapImg = document.createElement('img');
+    mapImg.src = '../img/placeholdermap_800x600.png';
+    mapFrame.appendChild(mapImg);
+    targetElem.appendChild(mapFrame);
+    mapFrame.classList.add('show'); 
   }, 600);
 
-  const targetElem = document.getElementById('enterGame');
-  const mapFrame = targetElem.createElement('div');
-  mapFrame.style.width = '800px';
-  mapFrame.style.height = '600px';
-  targetElem.appendChild(mapFrame);
-  const mapImg = mapFrame.createElement('img');
-  mapImg.src = '../img/placeholdermap_800x600.png';
+
 
   /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
 	attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
