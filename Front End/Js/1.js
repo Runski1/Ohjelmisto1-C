@@ -79,13 +79,14 @@ inputButton.classList.add('hide');
 
 
       // Add event listener for "Enter" key press on the input field
-      inputNewGame.addEventListener('keypress', function (event) {
+      inputNewGame.addEventListener('keypress',  function (event) {
         // If the user presses the "Enter" key on the keyboard
         if (event.key === 'Enter') {
           // Cancel the default action, if needed
           event.preventDefault();
           // Trigger the button element with a click
           inputButton.click();
+
         }
       });
 
@@ -156,7 +157,7 @@ async function addPlayers() {
     const playerName2 = playerList[1];
 
     const playerNameResponse = await fetch(
-        `https://127.0.0.1:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
+        `http://127.0.0.1:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
     const jsonData = await playerNameResponse.json();
     console.log(jsonData);
     mainGame();
@@ -193,11 +194,12 @@ function mainGame() {
   }, 600);
 
   const targetElem = document.getElementById('enterGame');
-  const mapFrame = targetElem.createElement('div');
+  const mapFrame = document.createElement('div');
   mapFrame.style.width = '800px';
   mapFrame.style.height = '600px';
   targetElem.appendChild(mapFrame);
-  const mapImg = mapFrame.createElement('img');
+  const mapImg = document.createElement('img');
+  mapFrame.appendChild(mapImg);
   mapImg.src = '../img/placeholdermap_800x600.png';
 
   /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
