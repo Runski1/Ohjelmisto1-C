@@ -23,13 +23,16 @@ class Game:
         self.cursor.execute(query)
 
     def babymaker(self):
-        self.players.append(Player(self.player1_name))
-        self.players.append(Player(self.player2_name))
+        player1 = Player(self.player1_name)
+        player2 = Player(self.player2_name)
+        self.players.append(player1)
+        self.players.append(player2)
 
 
 class Player:
 
     def __init__(self, player_name, money=2000, location=16, bag=0, lock_state=0, prizeholder=0, total_dice=0):
+        self.id = id
         self.player_name = player_name
         self.money = money
         self.location = location
@@ -43,7 +46,7 @@ class Player:
                  f" '{self.prizeholder}', '{self.total_dice}', '{self.location}')")
 
         Game.cursor.execute(query)
-
-
-game1 = Game('holaa', 'sini', 'miro')
-print(game1.players[0])
+        query = f"SELECT id FROM player"
+        Game.cursor.execute(query)
+        result = Game.cursor.fetchall()
+        self.id = result[0]

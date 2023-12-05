@@ -2,6 +2,7 @@ import random
 import os
 from db_connection import connection
 import mysql.connector
+from classes import *
 from geopy.distance import geodesic
 from math import floor
 from config import config
@@ -329,6 +330,7 @@ def determine_travel_lock_amount(distance, travel_type, player_id):
 
 
 def set_lockstate(distance, player_id, counter, travel_type):
+
     query = f"SELECT lockstate FROM player WHERE id = '{player_id}'"
     cursor.execute(query)
     result = cursor.fetchone()
@@ -337,7 +339,6 @@ def set_lockstate(distance, player_id, counter, travel_type):
         lock_amount = determine_travel_lock_amount(distance, travel_type, player_id)
     if counter != 0:
         lock_amount = int(lock_amount) + int(counter)
-    # print("lock amount: " + str(lock_amount))
     query = f"UPDATE player SET lockstate = '{lock_amount}' WHERE id = '{player_id}'"
     cursor.execute(query)
     return
@@ -359,18 +360,16 @@ def generate_main_bag():
     for city in city_data:
         city_id.append(city[0])
     random_city = random.choice(city_id)
- #   sql = f"UPDATE city SET bag_city = 1 WHERE id = '{random_city}'"
- #   cursor.execute(sql)
     return random_city
 
 
-def generate_additional_bags():
+"""def generate_additional_bags():
     not_visited_cities = get_not_visited_city_ids()
     player_count = len(get_player_data_as_list())
     random_cities = random.sample(not_visited_cities, player_count - 1)
     for city_id in random_cities:
         sql = f"UPDATE city SET bag_city = 1 WHERE id = '{city_id}'"
-        cursor.execute(sql)
+        cursor.execute(sql)"""
 
 
 def check_if_in_port(player):
@@ -380,7 +379,7 @@ def check_if_in_port(player):
     lista = []
     for city in result:
         lista.append(city[0])
-    if player[8] in lista:
+    if player[6] in lista:
         return True
     else:
         return False
@@ -392,19 +391,18 @@ def bag_found(player):
     bagman = cursor.fetchone()
     query = f"UPDATE player SET prizeholder = 1 WHERE id ='{player[0]}'"
     cursor.execute(query)
-    query = f"UPDATE city SET bag_city = 0 WHERE id ='{player[8]}'"
+    query = f"UPDATE game SET bag_city = '0'"
     cursor.execute(query)
     if bagman[0] == 0:
-        generate_additional_bags()
+        generate_main_bag()
         end_game_email()
 
 
 def is_city_bag_city(player):
-    sql = (f"SELECT bag_city FROM city inner join player on "
-           f"city.id = player.location and player.screen_name = '{player[1]}'")
+    sql = f"SELECT bag_city FROM game"
     cursor.execute(sql)
     result = cursor.fetchall()
-    if result[0][0] == 1:
+    if result[0][0] == player[6]:
         return True
     else:
         return False
@@ -412,7 +410,7 @@ def is_city_bag_city(player):
 
 def print_city_status(player):
     cities = get_city_data()
-    player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
+    player_coords = ((cities[player[6] - 1][3]), (cities[player[6] - 1][4]))
     for city in cities:
         distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
         city.append(distance_from_player)
