@@ -3,8 +3,8 @@ import functions
 
 
 class Game:
-    players = []
     visited = []
+    players = []
     cursor = connection.cursor()
 
     def __init__(self, game_name, player1, player2, round_number=0):
@@ -46,7 +46,20 @@ class Player:
                  f" '{self.prizeholder}', '{self.total_dice}', '{self.location}')")
 
         Game.cursor.execute(query)
+
+    def update_db(self):
         query = f"SELECT id FROM player"
         Game.cursor.execute(query)
         result = Game.cursor.fetchall()
         self.id = result[0]
+
+        sql = f"UPDATE player SET current_pp = '{self.money}' WHERE id = '{self.id}'"
+        Game.cursor.execute(sql)
+        sql = f"UPDATE player SET lockstate = '{self.lock_state}' WHERE id = '{self.id}'"
+        Game.cursor.execute(sql)
+        sql = f"UPDATE player SET prizeholder = '{self.prizeholder}' WHERE id = '{self.id}'"
+        Game.cursor.execute(sql)
+        sql = f"UPDATE player SET total_dice = '{self.total_dice}' WHERE id = '{self.id}'"
+        Game.cursor.execute(sql)
+        sql = f"UPDATE player SET location = '{self.location}' WHERE id = '{self.id}'"
+        Game.cursor.execute(sql)

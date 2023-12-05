@@ -1,3 +1,4 @@
+import json
 import random
 import os
 from db_connection import connection
@@ -9,11 +10,12 @@ from config import config
 from prize_found_event import end_game_email
 from colorama import Fore
 cursor = connection.cursor()
+from Front End, Flask import Flask
 
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
 # mysql.connector.errors.DatabaseError: 2014 (HY000): Commands out of sync; you can't run this command now
 # -erroriin
-
+visited = []
 
 def dice_roll():
     input("Press Enter to roll dice: ")
@@ -85,7 +87,9 @@ def set_location(new_location, player_id):  # new location, player id tulee stri
 
 
 def set_searched(location):
-    sql = f"UPDATE city SET visited = 1 WHERE city.id = '{location}'"
+    Game.visited.append(location)
+    visited_json = json.dumps(visited)
+    sql = f"UPDATE game SET visited = '{visited_json}' WHERE name = {Game.}"
     cursor.execute(sql)
 
 
@@ -137,15 +141,14 @@ def get_player_data_as_list():
 
 
 def get_round_number():
-    sql = "SELECT counter FROM round_counter"
+    sql = "SELECT round_counter FROM game"
     cursor.execute(sql)
     result = cursor.fetchone()[0]
-    #    cursor.close()
     return result
 
 
 def add_to_round_counter():
-    sql = "UPDATE round_counter SET counter = counter + 1"
+    sql = "UPDATE game SET round_counter = round_counter + 1"
     cursor.execute(sql)
 
 
@@ -237,7 +240,7 @@ def lock_reduce(player):
     return
 
 
-def event_randomizer(player):
+"""def event_randomizer(player):
     event_multiplier = float(config.get('config', 'RandomEventChance'))
     rand_test = random.uniform(0, 1)
     # Haetaan kaikkien eventtien määrä ja kokeillaan tuleeko eventtiä vai ei
@@ -305,7 +308,7 @@ def event_randomizer(player):
                     print(f"You are frozen for {outcome_l[1]} turns.")
                     return False
                 else:
-                    return True
+                    return True"""
 
 
 def item_randomizer():
