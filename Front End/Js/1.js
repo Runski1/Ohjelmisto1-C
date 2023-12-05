@@ -107,7 +107,7 @@ async function addPlayers() {
   // makes json request from Flask-server
 
   const gameNameResponse = await fetch(
-      `http://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
+      `http://127.0.0.2:3000/get_saveGame/${gameNameRequest}`);
   const jsonData = await gameNameResponse.json();
   console.log(jsonData);
   // if saved game not found makes new game and updates startButtonCont
@@ -152,7 +152,7 @@ async function addPlayers() {
     const playerName2 = playerList[1];
 
     const playerNameResponse = await fetch(
-        `http://127.0.0.1:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
+        `http://127.0.0.2:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
     const jsonData = await playerNameResponse.json();
     console.log(jsonData);
     mainGame();

@@ -1,4 +1,4 @@
-import mysql.connector
+
 from flask import Flask, Response, Request
 import json
 import mysql.connector
@@ -59,4 +59,6 @@ def get_playerData(name):
 '''
 
 if __name__ == '__main__':
-    server.run(use_reloader=True, host='127.0.0.1', port=3000)
+    server.run(use_reloader=True, host='127.0.0.2', port=3000)
+
+    #testi ip
