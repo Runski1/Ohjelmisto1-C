@@ -26,6 +26,13 @@ def get_savegame(savegame):
         response_data = sql_result
         status_code = 200
 
+    sql = f"SELECT name FROM game WHERE name = '{savegame}'"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    if cursor.rowcount == 0:
+         response_data = {"gameNAme": None, "cod": "200"}
+
     else:
         response_data = {"gameName": "not found"}
         status_code = 200
@@ -50,18 +57,16 @@ def get_savegame(savegame):
 @server.route('/add_player/<gamename>/<player1>/<player2>/')
 def create_game(gamename, player1, player2):
     game = classes.Game(gamename, player1, player2)
-    game.add_to_db()
+    game.update_db()
     json_data = game.json_response()
-    cursor = connection.cursor()
-    # cursor.execute()
     connection.commit()
-    cursor.close()
 
 
 @server.route('/action/<game_id>/<player_id>/<action>/<target>')
 def do_action(game_id, player_id, action, target):
     cursor = connection.cursor()
     # getting the correct player
+
     cursor.execute(f"SELECT * FROM player WHERE (game={game_id} AND id={player_id})")
     player_data = cursor.fetchall()
 

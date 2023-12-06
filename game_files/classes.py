@@ -16,12 +16,12 @@ class Game:
         self.bag_city = bag_city
         self.player1 = self.babymaker(self.player1_name)
         self.player2 = self.babymaker(self.player2_name)
-        self.add_to_db()
+        self.update_db()
 
     #    self.player1 = player1
     #    self.player2 = player2
 
-    def add_to_db(self):
+    def update_db(self):
         self.bag_city = self.generate_bag()
         query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
                  f" VALUES('{self.game_name}', '{self.round_counter}', '{self.bag_city}', '{self.visited}')")
@@ -31,12 +31,9 @@ class Game:
 
     @staticmethod
     def babymaker(player):
-        return Player(player)
-
-    """  self.player1 = Player(self.player1_name)
-        self.players.append(self.player1)
-        self.player2 = Player(self.player2_name)
-        self.players.append(self.player2)"""
+        baby = Player(player)
+        Game.players.append(baby)
+        return baby
 
     @staticmethod
     def generate_bag():
