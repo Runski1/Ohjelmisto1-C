@@ -44,7 +44,6 @@ class Game:
 class Player:
 
     def __init__(self, player_name, money=2000, location=16, bag=0, lock_state=0, prizeholder=0, total_dice=0):
-        self.id = id
         self.player_name = player_name
         self.money = money
         self.location = location
@@ -58,12 +57,13 @@ class Player:
                 f" '{self.prizeholder}', '{self.total_dice}', '{self.location}')")
 
         Game.cursor.execute(query)
-
-    def update_db(self):
-        query = f"SELECT id FROM player"
+        query = f"SELECT id FROM player WHERE screen_name = '{self.player_name}'"
         Game.cursor.execute(query)
         result = Game.cursor.fetchall()
         self.id = result[0]
+
+    def update_db(self):
+
 
         sql = f"UPDATE player SET current_pp = '{self.money}' WHERE id = '{self.id}'"
         Game.cursor.execute(sql)
