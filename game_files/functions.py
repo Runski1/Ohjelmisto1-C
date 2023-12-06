@@ -324,7 +324,7 @@ def bag_found(player):
     query = f"UPDATE game SET bag_city = '0' WHERE name = '{classes.g1.game_name}'"
     cursor.execute(query)
     if bagman[0] == 0:
-        generate_main_bag()
+        classes.g1.generate_bag()
         end_game_email()
 
 

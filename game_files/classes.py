@@ -54,8 +54,8 @@ class Player:
         self.total_dice = total_dice
 
         query = (f"INSERT INTO player (screen_name, current_pp, lockstate, prizeholder,"
-                 f" total_dice, location) VALUES ('{self.player_name}', '{self.money}', '{self.lock_state}',"
-                 f" '{self.prizeholder}', '{self.total_dice}', '{self.location}')")
+                f" total_dice, location) VALUES ('{self.player_name}', '{self.money}', '{self.lock_state}',"
+                f" '{self.prizeholder}', '{self.total_dice}', '{self.location}')")
 
         Game.cursor.execute(query)
 

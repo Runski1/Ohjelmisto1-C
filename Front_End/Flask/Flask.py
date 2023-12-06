@@ -26,7 +26,7 @@ def get_savegame(savegame):
     else:
         response_data = {"gameName":"not found"}
         status_code = 200
-        classes.Game(sql_result['gameName'], sql_result['players'])
+      #  classes.Game(sql_result['gameName'], sql_result['players'])
 
 
     '''cursor = connection.cursor()
