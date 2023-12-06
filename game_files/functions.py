@@ -3,14 +3,13 @@ import random
 import os
 from db_connection import connection
 import mysql.connector
-from classes import *
 from geopy.distance import geodesic
 from math import floor
 from config import config
 from prize_found_event import end_game_email
 from colorama import Fore
+import classes
 cursor = connection.cursor()
-from Front End, Flask import Flask
 
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
 # mysql.connector.errors.DatabaseError: 2014 (HY000): Commands out of sync; you can't run this command now
@@ -87,9 +86,9 @@ def set_location(new_location, player_id):  # new location, player id tulee stri
 
 
 def set_searched(location):
-    Game.visited.append(location)
+    classes.Game.visited.append(location)
     visited_json = json.dumps(visited)
-    sql = f"UPDATE game SET visited = '{visited_json}' WHERE name = {Game.}"
+    sql = f"UPDATE game SET visited = '{visited_json}' WHERE name = {classes.g1.game_name}"
     cursor.execute(sql)
 
 
@@ -130,7 +129,6 @@ def get_player_data_as_list():
     sql = "SELECT * FROM player"
     cursor.execute(sql)
     all_from_player_table = cursor.fetchall()
-    #    cursor.close()
     # Alustetaan lista
     all_from_player_table_as_list = []
     # Muutetaan kaikki data player-taulusta listaksi
@@ -222,7 +220,7 @@ def get_cities_in_range(travel_mode, player):
 
 def lock_reduce(player):
     if int(player[7]) > 0:
-        print(f"You need to roll {player[7]} more to reach your destination.")
+        print(f"You need to roll {player[5]} more to reach your destination.")
         roll = dice_roll()
         sql = f"UPDATE player SET total_dice = total_dice - {roll} WHERE id = '{player[0]}'"
         if player[7] - roll > 0:
@@ -333,7 +331,6 @@ def determine_travel_lock_amount(distance, travel_type, player_id):
 
 
 def set_lockstate(distance, player_id, counter, travel_type):
-
     query = f"SELECT lockstate FROM player WHERE id = '{player_id}'"
     cursor.execute(query)
     result = cursor.fetchone()
@@ -394,7 +391,7 @@ def bag_found(player):
     bagman = cursor.fetchone()
     query = f"UPDATE player SET prizeholder = 1 WHERE id ='{player[0]}'"
     cursor.execute(query)
-    query = f"UPDATE game SET bag_city = '0'"
+    query = f"UPDATE game SET bag_city = '0' WHERE name = '{classes.g1.game_name}'"
     cursor.execute(query)
     if bagman[0] == 0:
         generate_main_bag()
@@ -402,13 +399,17 @@ def bag_found(player):
 
 
 def is_city_bag_city(player):
-    sql = f"SELECT bag_city FROM game"
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    if result[0][0] == player[6]:
+  #  sql = f"SELECT bag_city FROM game WHERE name = '{classes.g1.game_name}'"
+   # cursor.execute(sql)
+   # result = cursor.fetchall()
+    if classes.g1.bag_city == player[6]:
         return True
     else:
         return False
+  #  if result[0][0] == player[6]:
+  #      return True
+  #  else:
+   #     return False
 
 
 def print_city_status(player):

@@ -22,7 +22,6 @@ def travel_fly(parameter, player):
                 remove_pp(city[4], current_player_id)  # vähennetään lennon hinta pelaajan rahoista
                 # print("You begin your flight to " + parameter + ".")  # kuittaus onnistuneesta matkasta
                 print(f"You are now in {parameter}.\n")
-                # event_randomizer(player)
                 input("<Press ENTER to continue>")
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
         print("City doesn't exist or it is out of range.")  # tämä fix, ettei pelaaja menetä vuoroaan typolla
@@ -52,7 +51,6 @@ def travel_sail(parameter, player):
                 remove_pp(city[4], current_player_id)  # vähennetään laivamatkan hinta pelaajan rahoista
                 set_lockstate(city[3], player[0], 0, "sail")
                 print("You begin sailing to " + parameter + ".")  # kuittaus onnistuneesta matkasta
-                event_randomizer(player)
                 input("<Press ENTER to continue>")
                 return False
         print("City doesn't exist or it is out of range.")  # tämä fix, ettei pelaaja menetä vuoroaan typolla
@@ -78,7 +76,6 @@ def travel_hitchhike(parameter, player):
                 # print("city dist: " + str(city[3]))
                 set_lockstate(city[3], player[0], 0, "hike")
                 print("You begin your hitchhike to " + parameter + ".")  # kuittaus onnistuneesta matkasta
-                event_randomizer(player)
                 input("<Press ENTER to continue>")
                 return False  # kaupunkilooppi rikki kun kohdekaupunki on löytynyt
         print("City doesn't exist or it is out of range.")  # tämä fix, ettei pelaaja menetä vuoroaan typolla

@@ -1,5 +1,5 @@
-from db_connection import connection
 import functions
+from db_connection import connection
 
 
 class Game:
@@ -7,26 +7,28 @@ class Game:
     players = []
     cursor = connection.cursor()
 
-    def __init__(self, game_name, player1, player2, round_number=0):
+    def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0, player1="", player2=""):
         self.game_name = game_name
-        self.player1_name = player1
-        self.player2_name = player2
+        self.player1_name = player1_name
+        self.player2_name = player2_name
         self.round_counter = round_number
+        self.bag_city = bag_city
         self.babymaker()
         self.add_to_db()
+        self.bag_city = functions.generate_main_bag()
+        self.player1 = player1
+        self.player2 = player2
 
     def add_to_db(self):
-        bag_city = functions.generate_main_bag()
-
         query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
-                 f" VALUES('{self.game_name}', '{self.round_counter}', '{bag_city}', '{Game.visited}')")
+                 f" VALUES('{self.game_name}', '{self.round_counter}', '{self.bag_city}', '{Game.visited}')")
         self.cursor.execute(query)
 
     def babymaker(self):
-        player1 = Player(self.player1_name)
-        player2 = Player(self.player2_name)
-        self.players.append(player1)
-        self.players.append(player2)
+        self.player1 = Player(self.player1_name)
+        self.players.append(self.player1)
+        self.player2 = Player(self.player2_name)
+        self.players.append(self.player2)
 
 
 class Player:
@@ -63,3 +65,6 @@ class Player:
         Game.cursor.execute(sql)
         sql = f"UPDATE player SET location = '{self.location}' WHERE id = '{self.id}'"
         Game.cursor.execute(sql)
+
+
+g1 = Game("hoi", "tatti", "taavi")
