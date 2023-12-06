@@ -26,17 +26,13 @@ def get_savegame(savegame):
         response_data = sql_result
         status_code = 200
 
-    sql = f"SELECT name FROM game WHERE name = '{savegame}'"
-    cursor = connection.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    if cursor.rowcount == 0:
-         response_data = {"gameNAme": None, "cod": "200"}
+
+
 
     else:
-        response_data = {"gameName": "not found"}
-        status_code = 200
-        # classes.Game(sql_result['gameName'], sql_result['players'])
+        response_data = {"gameName": None}
+        response = Response(response=json.dumps(response_data), status=200, mimetype='application/json')
+        return response
 
     # '''cursor = connection.cursor()
     # cursor.execute(f"select name, playerName from savedGames where name = '{savegame}'")
