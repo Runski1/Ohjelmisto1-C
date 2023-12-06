@@ -363,6 +363,35 @@ def print_city_status(player):
                   f"{visited_status:>15}{Fore.RESET}")
     return True
 
+def id_to_name(city_id):
+    sql = f"SELECT name from city WHERE id={city_id}"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    return result[0]
+
+def player_loc_id_to_coords(player_data):
+    return
+
+def city_id_to_coords(tgt_id):
+    sql = f"SELECT latitude_deg, longitude_deg FROM city WHERE id={tgt_id}"
+    cursor.execute(sql)
+    coords = cursor.fetchone()
+    return coords
+def has_pp_checker(player_data, tgt_id, travel_mode):
+    target_location = city_id_to_coords(tgt_id)
+    player_location = city_id_to_coords(player_data[6])
+    price_multiplier_dict = {
+        "fly": config.get('config', 'FlyPriceMultiplier'),  # HUOM Nämä config-filestä tuodut on stringejä!
+        "sail": config.get('config', 'BoatPriceMultiplier')
+    }
+    price_multiplier = float(price_multiplier_dict[travel_mode])
+    player_pp = player_data[2]
+    distance_from_player = floor(geodesic(player_location, ((target_location[0]), (target_location[1]))).km)
+    price = distance_from_player * price_multiplier
+    if tgt_id != player_data[6] and price <= player_pp:
+        return True
+    else:
+        return False
 
 if __name__ == "__main__":
     pass

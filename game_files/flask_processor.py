@@ -16,16 +16,32 @@ connection = mysql.connector.connect(
     autocommit=True
 )
 
+cursor = connection.cursor()
+
 server = Flask(__name__)
 CORS(server)
 
+def id_to_name(city_id):
+    sql = f"SELECT name from city WHERE id={city_id}"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    print(result[0])
+    #return result[1]
 
-@server.route('action_input/<game_name>/<player>/<action>/<target>')
+def player_selector(game_id):
+    sql = f'SELECT * FROM player WHERE game={game_id}'
+    cursor.execute(sql)
+    player_list = cursor.fetchall()
+    print(player_list)
+    return
+
+
+@server.route('/action_input/<game_name>/<player>/<action>/<target>')
 def input_processor(game_name, player, action, target):
-    #Hae kannasta oikea peli
-    #Valitse sen perusteella oikea pelaaja
-    #????
-    #profit
+    # Hae kannasta oikea peli
+    # Valitse sen perusteella oikea pelaaja
+    # ????
+    # profit
 
     if action == "hike":
         user_input_processor.travel_hitchhike(target, player)
@@ -34,5 +50,9 @@ def input_processor(game_name, player, action, target):
     elif action == "fly":
         user_input_processor.travel_fly(target, player)
     elif action == "work":
-        user_input_processor.work("do",player)
+        user_input_processor.work("do", player)
 
+current_player = classes.g1.players[(round_number-1) % 2]
+
+player_selector(1)
+id_to_name(1)
