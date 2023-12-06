@@ -1,4 +1,4 @@
-import functions
+import random
 from db_connection import connection
 
 
@@ -19,16 +19,26 @@ class Game:
         self.player2 = player2
 
     def add_to_db(self):
-        self.bag_city = functions.generate_main_bag()
+        self.bag_city = self.generate_bag()
         query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
                  f" VALUES('{self.game_name}', '{self.round_counter}', '{self.bag_city}', '{Game.visited}')")
         self.cursor.execute(query)
+
 
     def babymaker(self):
         self.player1 = Player(self.player1_name)
         self.players.append(self.player1)
         self.player2 = Player(self.player2_name)
         self.players.append(self.player2)
+
+    def generate_bag(self):
+        city_id = []
+        sql = f"SELECT id FROM city"
+        Game.cursor.execute(sql)
+        result = Game.cursor.fetchall()
+        for city in result:
+            city_id.append(city[0])
+        return random.choice(city_id)
 
 
 class Player:

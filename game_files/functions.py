@@ -72,12 +72,13 @@ def format_database_for_new_game():
 
 
 def get_location(player_id):
-    sql = (f"SELECT name FROM city INNER JOIN player ON city.id = player.location WHERE "
+
+  """  sql = (f"SELECT name FROM city INNER JOIN player ON city.id = player.location WHERE "
            f"player.id = '{player_id}'")  # player id tulee inttinä
     cursor.execute(sql)
     result = cursor.fetchone()
     location = result[0]  # location tuplesta ulos
-    return location  # type(location)=str
+    return location  # type(location)=str"""
 
 
 def set_location(new_location, player_id):  # new location, player id tulee stringinä!
@@ -92,39 +93,36 @@ def set_searched(location):
     cursor.execute(sql)
 
 
-def lock_check(player_id):  # Printer ei tarvitse tätä enää, tarvitseeko joku muu?
+"""def lock_check(player_id):  # Printer ei tarvitse tätä enää, tarvitseeko joku muu?
     sql = "SELECT lockstate FROM player"
     sql += " WHERE id = '" + player_id + "';"
     cursor.execute(sql)
     result = cursor.fetchall()
     #    cursor.close()
     lock_state = int(result[0][0])
-    return lock_state
+    return lock_state"""
 
 
 def printer(player):
-    current_pp = int(player.money)
-    current_location = get_location((str(player[0])))
-    lock_status = int(player[3])
     print("---Player status---\n")
-    print(f"Name: {player[1]}")
-    print(f"Current PP: {current_pp}")
-    if player[3] == 0:
-        print(f"Location: {current_location}")
+    print(f"Name: {player.player_name}")
+    print(f"Current PP: {player.money}")
+    if player.lock_state == 0:
+        print(f"Location: {player.location}")
     else:
-        print(f"You're travelling to {current_location}.")
-    if player[4] > 0:
+        print(f"You're travelling to {player.location}.")
+    if player.prizeholder > 0:
         print(f"Take your grandma's luggage back to her at Sysma!")
     else:
         print("Find your grandma's luggage.")
-    if lock_status == 0:
+    if player.lock_state == 0:
         print("You are free to do actions.")
-    elif player[7] == 0:
-        print(f"You are frozen and cannot do actions for {lock_status} turns.")
+    elif player.lock_state == 0:
+        print(f"You are frozen and cannot do actions for {player.lock_state} turns.")
     return True
 
 
-def get_player_data_as_list():
+def get_player_data_as_list(): #KÄYTETÄÄN KUN LADATAAN VANHA PELI
     # SQL-kyselyllä kaikki player-taulusta
     sql = "SELECT * FROM player"
     cursor.execute(sql)
@@ -146,8 +144,7 @@ def get_round_number():
 
 
 def add_to_round_counter():
-    sql = "UPDATE game SET round_counter = round_counter + 1"
-    cursor.execute(sql)
+    classes.g1.round_counter += 1
 
 
 def get_city_data():
@@ -219,22 +216,24 @@ def get_cities_in_range(travel_mode, player):
 
 
 def lock_reduce(player):
-    if int(player[7]) > 0:
-        print(f"You need to roll {player[5]} more to reach your destination.")
+    if int(player.lock_state) > 0:
+        print(f"You need to roll {player.total_dice} more to reach your destination.")
         roll = dice_roll()
-        sql = f"UPDATE player SET total_dice = total_dice - {roll} WHERE id = '{player[0]}'"
-        if player[7] - roll > 0:
-            print(f"You need to roll {player[7] -  roll} more next round.")
+        player.total_dice -= roll
+    #    sql = f"UPDATE player SET total_dice = total_dice - {roll} WHERE id = '{player[0]}'"
+        if player.total_dice > 0:
+            print(f"You need to roll {player.total_dice} more next round.")
         else:
             print("You reached your destination! You can do actions next turn.")
-            cursor.execute(sql)
-            sql = f"UPDATE player SET lockstate = '0' WHERE id = '{player[0]}'"
-            cursor.execute(sql)
+       #     cursor.execute(sql)
+        #    sql = f"UPDATE player SET lockstate = '0' WHERE id = '{player[0]}'"
+      #      cursor.execute(sql)
             input("<Press ENTER to continue>")
     else:
-        sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
+        player.lock_state -= 1
+ #       sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
         print("Player lock updated.")
-    cursor.execute(sql)
+ #   cursor.execute(sql)
     return
 
 
@@ -284,13 +283,13 @@ def set_lockstate(distance, player_id, counter, travel_type):
     return result"""
 
 
-def generate_main_bag():
+"""def generate_main_bag():
     city_id = []
     city_data = get_city_data()
     for city in city_data:
         city_id.append(city[0])
     random_city = random.choice(city_id)
-    return random_city
+    return random_city"""
 
 
 """def generate_additional_bags():
