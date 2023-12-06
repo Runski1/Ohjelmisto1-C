@@ -47,6 +47,9 @@ def get_savegame(savegame):
 
 @server.route('/add_player/<gamename>/<player1>/<player2>/')
 def create_game(gamename, player1, player2):
+    game = classes.Game(gamename, player1, player2)
+    game.add_to_db()
+    json_data = game.json_response()
     cursor = connection.cursor()
     cursor.execute()
     connection.commit()
