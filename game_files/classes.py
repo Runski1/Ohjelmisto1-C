@@ -1,30 +1,68 @@
+import random
 from db_connection import connection
-import functions
+import json
 
 
 class Game:
-    players = []
     visited = []
+    players = []
     cursor = connection.cursor()
 
-    def __init__(self, game_name, player1, player2, round_number=0):
+    def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0):
         self.game_name = game_name
-        self.player1_name = player1
-        self.player2_name = player2
+        self.player1_name = player1_name
+        self.player2_name = player2_name
         self.round_counter = round_number
-        self.babymaker()
+        self.bag_city = bag_city
+        self.player1 = self.babymaker(self.player1_name)
+        self.player2 = self.babymaker(self.player2_name)
         self.add_to_db()
 
+    #    self.player1 = player1
+    #    self.player2 = player2
+
     def add_to_db(self):
-        bag_city = functions.generate_main_bag()
-
+        self.bag_city = self.generate_bag()
         query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
-                 f" VALUES('{self.game_name}', '{self.round_counter}', '{bag_city}', '{Game.visited}')")
+                 f" VALUES('{self.game_name}', '{self.round_counter}', '{self.bag_city}', '{self.visited}')")
         self.cursor.execute(query)
+        for player in self.players:
+            player.update_db()
 
-    def babymaker(self):
-        self.players.append(Player(self.player1_name))
-        self.players.append(Player(self.player2_name))
+    @staticmethod
+    def babymaker(player):
+        return Player(player)
+
+    """  self.player1 = Player(self.player1_name)
+        self.players.append(self.player1)
+        self.player2 = Player(self.player2_name)
+        self.players.append(self.player2)"""
+
+    @staticmethod
+    def generate_bag():
+        city_id = []
+        sql = f"SELECT id FROM city"
+        Game.cursor.execute(sql)
+        result = Game.cursor.fetchall()
+        for city in result:
+            city_id.append(city[0])
+        return random.choice(city_id)
+
+    def json_response(self):
+        game_status = {
+            "game": {
+                "game_name": self.game_name,
+                "round_counter": self.round_counter,
+                "bag_city": self.bag_city,
+                "visited": self.visited
+            },
+            "players": {
+                "player1": self.player1,
+                "player2": self.player2
+            }
+        }
+        game_json = json.dumps(game_status)
+        return game_json
 
 
 class Player:
@@ -43,7 +81,21 @@ class Player:
                  f" '{self.prizeholder}', '{self.total_dice}', '{self.location}')")
 
         Game.cursor.execute(query)
+        query = f"SELECT id FROM player WHERE screen_name = '{self.player_name}'"
+        Game.cursor.execute(query)
+        result = Game.cursor.fetchall()
+        self.id = result[0]
 
+    def update_db(self):
+        sql = f"UPDATE player SET current_pp = '{self.money}' WHERE id = '{self.id}'"
+        Game.cursor.execute(sql)
+        sql = f"UPDATE player SET lockstate = '{self.lock_state}' WHERE id = '{self.id}'"
+        Game.cursor.execute(sql)
+        sql = f"UPDATE player SET prizeholder = '{self.prizeholder}' WHERE id = '{self.id}'"
+        Game.cursor.execute(sql)
+        sql = f"UPDATE player SET total_dice = '{self.total_dice}' WHERE id = '{self.id}'"
+        Game.cursor.execute(sql)
+        sql = f"UPDATE player SET location = '{self.location}' WHERE id = '{self.id}'"
+        Game.cursor.execute(sql)
 
-game1 = Game('holaa', 'sini', 'miro')
-print(game1.players[0])
+# g1 = Game("hoi", "tatti", "taavi")

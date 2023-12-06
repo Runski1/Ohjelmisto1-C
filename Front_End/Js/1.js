@@ -107,12 +107,12 @@ async function addPlayers() {
   // makes json request from Flask-server
 
   const gameNameResponse = await fetch(
-      `http://127.0.0.1:3000/get_saveGame/${gameNameRequest}`);
+      `http://127.0.0.2:3000/get_saveGame/${gameNameRequest}`);
   const jsonData = await gameNameResponse.json();
   console.log(jsonData);
   // if saved game not found makes new game and updates startButtonCont
 
-  if (jsonData.gameName.value == 'not found') {
+  if (jsonData.gameName == 'not found') {
 
     //add new player form for information max player (ammount:4)!!!!
     //if you want to add more players max player limit needed from server
@@ -145,11 +145,6 @@ async function addPlayers() {
     setTimeout(() => {
       gameName.classList.add('show');
       gameName.classList.add('magentaGlow');
-      //inputButton.classList.add('magentaGlow');
-      //inputButton.classList.add('show');
-      // Loop through playerList and add the style class to each input element
-      //for (const playerInput of playerList) {
-      //playerInput.classList.add('magentaGlow');
     }, 600);
 
     // append new player names to new save game
@@ -157,7 +152,7 @@ async function addPlayers() {
     const playerName2 = playerList[1];
 
     const playerNameResponse = await fetch(
-        `http://127.0.0.1:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
+        `http://127.0.0.2:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
     const jsonData = await playerNameResponse.json();
     console.log(jsonData);
     mainGame();
@@ -185,12 +180,7 @@ function mainGame() {
     targetELem.style.width = '70rem';
     targetELem.style.height = '47.5rem';
     targetELem.style.border = '1px solid #19caca';
-
-    setTimeout(() => {
-      targetELem.classList.add('lightblueGlow');
-      targetELem.classList.add('show');
-    }, 600);
-    const targetElem = document.getElementById('startButtonCont');
+  const targetElem = document.getElementById('startButtonCont');
     const mapFrame = document.createElement('div');
     mapFrame.style.width = '800';
     mapFrame.style.height = '600';
@@ -198,7 +188,12 @@ function mainGame() {
     mapImg.src = '../img/placeholdermap_800x600.png';
     mapFrame.appendChild(mapImg);
     targetElem.appendChild(mapFrame);
-    mapFrame.classList.add('show'); 
+    mapFrame.classList.add('hide');
+    setTimeout(() => {
+      targetELem.classList.add('lightblueGlow');
+      targetELem.classList.add('show');
+      mapFrame.classList.add('show');
+    }, 600);
   }, 600);
 
 

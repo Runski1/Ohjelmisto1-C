@@ -1,3 +1,4 @@
+import json
 import random
 import os
 from db_connection import connection
@@ -7,12 +8,13 @@ from math import floor
 from config import config
 from prize_found_event import end_game_email
 from colorama import Fore
+import classes
 cursor = connection.cursor()
 
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
 # mysql.connector.errors.DatabaseError: 2014 (HY000): Commands out of sync; you can't run this command now
 # -erroriin
-
+visited = []
 
 def dice_roll():
     input("Press Enter to roll dice: ")
@@ -70,12 +72,13 @@ def format_database_for_new_game():
 
 
 def get_location(player_id):
-    sql = (f"SELECT name FROM city INNER JOIN player ON city.id = player.location WHERE "
+
+  """  sql = (f"SELECT name FROM city INNER JOIN player ON city.id = player.location WHERE "
            f"player.id = '{player_id}'")  # player id tulee inttinä
     cursor.execute(sql)
     result = cursor.fetchone()
     location = result[0]  # location tuplesta ulos
-    return location  # type(location)=str
+    return location  # type(location)=str"""
 
 
 def set_location(new_location, player_id):  # new location, player id tulee stringinä!
@@ -84,48 +87,46 @@ def set_location(new_location, player_id):  # new location, player id tulee stri
 
 
 def set_searched(location):
-    sql = f"UPDATE city SET visited = 1 WHERE city.id = '{location}'"
+    classes.Game.visited.append(location)
+    visited_json = json.dumps(visited)
+    sql = f"UPDATE game SET visited = '{visited_json}' WHERE name = {classes.g1.game_name}"
     cursor.execute(sql)
 
 
-def lock_check(player_id):  # Printer ei tarvitse tätä enää, tarvitseeko joku muu?
+"""def lock_check(player_id):  # Printer ei tarvitse tätä enää, tarvitseeko joku muu?
     sql = "SELECT lockstate FROM player"
     sql += " WHERE id = '" + player_id + "';"
     cursor.execute(sql)
     result = cursor.fetchall()
     #    cursor.close()
     lock_state = int(result[0][0])
-    return lock_state
+    return lock_state"""
 
 
 def printer(player):
-    current_pp = int(player[2])
-    current_location = get_location((str(player[0])))
-    lock_status = int(player[3])
     print("---Player status---\n")
-    print(f"Name: {player[1]}")
-    print(f"Current PP: {current_pp}")
-    if player[3] == 0:
-        print(f"Location: {current_location}")
+    print(f"Name: {player.player_name}")
+    print(f"Current PP: {player.money}")
+    if player.lock_state == 0:
+        print(f"Location: {player.location}")
     else:
-        print(f"You're travelling to {current_location}.")
-    if player[4] > 0:
+        print(f"You're travelling to {player.location}.")
+    if player.prizeholder > 0:
         print(f"Take your grandma's luggage back to her at Sysma!")
     else:
         print("Find your grandma's luggage.")
-    if lock_status == 0:
+    if player.lock_state == 0:
         print("You are free to do actions.")
-    elif player[7] == 0:
-        print(f"You are frozen and cannot do actions for {lock_status} turns.")
+    elif player.lock_state == 0:
+        print(f"You are frozen and cannot do actions for {player.lock_state} turns.")
     return True
 
 
-def get_player_data_as_list():
+def get_player_data_as_list(): #KÄYTETÄÄN KUN LADATAAN VANHA PELI
     # SQL-kyselyllä kaikki player-taulusta
     sql = "SELECT * FROM player"
     cursor.execute(sql)
     all_from_player_table = cursor.fetchall()
-    #    cursor.close()
     # Alustetaan lista
     all_from_player_table_as_list = []
     # Muutetaan kaikki data player-taulusta listaksi
@@ -136,16 +137,14 @@ def get_player_data_as_list():
 
 
 def get_round_number():
-    sql = "SELECT counter FROM round_counter"
+    sql = "SELECT round_counter FROM game"
     cursor.execute(sql)
     result = cursor.fetchone()[0]
-    #    cursor.close()
     return result
 
 
 def add_to_round_counter():
-    sql = "UPDATE round_counter SET counter = counter + 1"
-    cursor.execute(sql)
+    classes.g1.round_counter += 1
 
 
 def get_city_data():
@@ -217,94 +216,26 @@ def get_cities_in_range(travel_mode, player):
 
 
 def lock_reduce(player):
-    if int(player[7]) > 0:
-        print(f"You need to roll {player[7]} more to reach your destination.")
+    if int(player.lock_state) > 0:
+        print(f"You need to roll {player.total_dice} more to reach your destination.")
         roll = dice_roll()
-        sql = f"UPDATE player SET total_dice = total_dice - {roll} WHERE id = '{player[0]}'"
-        if player[7] - roll > 0:
-            print(f"You need to roll {player[7] -  roll} more next round.")
+        player.total_dice -= roll
+    #    sql = f"UPDATE player SET total_dice = total_dice - {roll} WHERE id = '{player[0]}'"
+        if player.total_dice > 0:
+            print(f"You need to roll {player.total_dice} more next round.")
         else:
             print("You reached your destination! You can do actions next turn.")
-            cursor.execute(sql)
-            sql = f"UPDATE player SET lockstate = '0' WHERE id = '{player[0]}'"
-            cursor.execute(sql)
+       #     cursor.execute(sql)
+        #    sql = f"UPDATE player SET lockstate = '0' WHERE id = '{player[0]}'"
+      #      cursor.execute(sql)
             input("<Press ENTER to continue>")
     else:
-        sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
+        player.lock_state -= 1
+ #       sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
         print("Player lock updated.")
-    cursor.execute(sql)
+ #   cursor.execute(sql)
     return
 
-
-def event_randomizer(player):
-    event_multiplier = float(config.get('config', 'RandomEventChance'))
-    rand_test = random.uniform(0, 1)
-    # Haetaan kaikkien eventtien määrä ja kokeillaan tuleeko eventtiä vai ei
-    sql = "SELECT COUNT(id) FROM random_events"
-    cursor.execute(sql)
-    events_sum = cursor.fetchall()
-    playerid = player[0]
-    # jos eventtiä ei tule tulostetaan allaoleva
-    if rand_test > event_multiplier:
-        # print("No events for you this time.")
-        return False
-    # jos eventti tulee, haetaan arpomalla eventti kaikkien eventtien joukosta ja käsitellään sitä
-    # niin että outcom_high jaetaan splitillä kahteen osaan ja outcome_lower jaetaan kahteen osaan
-    # sekä tallennetaan fluff teksi muuttujaksi.
-    elif rand_test < event_multiplier:
-        randomized_num = random.randint(1, events_sum[0][0])
-        sql = f"SELECT * FROM random_events WHERE id = {randomized_num}"
-        cursor.execute(sql)
-        rand_event = cursor.fetchall()
-        outcome_h = rand_event[0][3].split(",")
-        outcome_l = rand_event[0][4].split(",")
-        fluff = rand_event[0][1]
-        # kokeillaan tuleeko pelaaja ryöstetyksi menettäen kaikki pp:nsä
-        # ja tyhjennetään pelaajalta kaikki pp:t
-        if outcome_h[0] == "robbed":
-            print(fluff)
-            input("<Press ENTER to continue>")
-            remove_pp(player[2], player[0])
-            print(f"Your EP is gone.")
-            if int(outcome_h[1]) > 0:
-                set_lockstate(0, player[0], outcome_h[1], "diggoo")
-                print(f"You cannot do actions for {outcome_h[1]} turns.")
-                return False
-            else:
-                return True
-        # jossei pelaajalta ryöstetä kaikkea omaisuutta ruvetaan tutkimaan erinäisiä vaihtoehtoja mitä
-        # eventistä tulee
-        else:
-            # jos eventissä pitää heittää noppaa heitetään sitä pelaajan avustuksella
-            # sen jälkeen testataan onko nopan heitto tarpeeksi iso roll_treshold sarakkeen määräämän arvon perusteella
-            if rand_event[0][2] >= 0:
-                print(fluff)
-                input("<Press ENTER to continue>")
-            roll = random.randint(2, 12)
-            if rand_event[0][2] > 0:
-                print(f"\nYou need to roll at least {rand_event[0][2]}.")
-                roll = dice_roll()
-            # jos isompi tai yhtä iso, tehdään näin
-            if roll >= rand_event[0][2]:
-                add_pp(int(outcome_h[0]), int(playerid))
-                print(f"Your EP changes {outcome_h[0]}.")
-                if int(outcome_h[1]) > 0:
-                    set_lockstate(0, playerid, outcome_h[1], "diggoo")
-                    print(f"You are frozen for {outcome_h[1]} turns.")
-                    # Pelaaja voi ylikirjoittaa tämän lockin heittämällä hitchhike-noppaa
-                    return False
-                else:
-                    return True
-            # jos pienempi tehdään näin
-            elif roll < rand_event[0][2]:
-                add_pp(int(outcome_l[0]), int(playerid))  # perkeleen duplicatet, en äkkiseltään keksi miten välttyisi
-                print(f"Your EP changes {outcome_l[0]}.")
-                if int(outcome_l[1]) > 0:
-                    set_lockstate(0, playerid, outcome_l[1], "diggoo")
-                    print(f"You are frozen for {outcome_l[1]} turns.")
-                    return False
-                else:
-                    return True
 
 
 def item_randomizer():
@@ -337,7 +268,6 @@ def set_lockstate(distance, player_id, counter, travel_type):
         lock_amount = determine_travel_lock_amount(distance, travel_type, player_id)
     if counter != 0:
         lock_amount = int(lock_amount) + int(counter)
-    # print("lock amount: " + str(lock_amount))
     query = f"UPDATE player SET lockstate = '{lock_amount}' WHERE id = '{player_id}'"
     cursor.execute(query)
     return
@@ -353,24 +283,22 @@ def set_lockstate(distance, player_id, counter, travel_type):
     return result"""
 
 
-def generate_main_bag():
+"""def generate_main_bag():
     city_id = []
     city_data = get_city_data()
     for city in city_data:
         city_id.append(city[0])
     random_city = random.choice(city_id)
- #   sql = f"UPDATE city SET bag_city = 1 WHERE id = '{random_city}'"
- #   cursor.execute(sql)
-    return random_city
+    return random_city"""
 
 
-def generate_additional_bags():
+"""def generate_additional_bags():
     not_visited_cities = get_not_visited_city_ids()
     player_count = len(get_player_data_as_list())
     random_cities = random.sample(not_visited_cities, player_count - 1)
     for city_id in random_cities:
         sql = f"UPDATE city SET bag_city = 1 WHERE id = '{city_id}'"
-        cursor.execute(sql)
+        cursor.execute(sql)"""
 
 
 def check_if_in_port(player):
@@ -380,39 +308,43 @@ def check_if_in_port(player):
     lista = []
     for city in result:
         lista.append(city[0])
-    if player[8] in lista:
+    if player[6] in lista:
         return True
     else:
         return False
 
 
 def bag_found(player):
+
     query = f"SELECT COUNT(*) FROM player WHERE prizeholder = '1'"
     cursor.execute(query)
     bagman = cursor.fetchone()
     query = f"UPDATE player SET prizeholder = 1 WHERE id ='{player[0]}'"
     cursor.execute(query)
-    query = f"UPDATE city SET bag_city = 0 WHERE id ='{player[8]}'"
+    query = f"UPDATE game SET bag_city = '0' WHERE name = '{classes.g1.game_name}'"
     cursor.execute(query)
     if bagman[0] == 0:
-        generate_additional_bags()
+        classes.g1.generate_bag()
         end_game_email()
 
 
 def is_city_bag_city(player):
-    sql = (f"SELECT bag_city FROM city inner join player on "
-           f"city.id = player.location and player.screen_name = '{player[1]}'")
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    if result[0][0] == 1:
+  #  sql = f"SELECT bag_city FROM game WHERE name = '{classes.g1.game_name}'"
+   # cursor.execute(sql)
+   # result = cursor.fetchall()
+    if classes.g1.bag_city == player[6]:
         return True
     else:
         return False
+  #  if result[0][0] == player[6]:
+  #      return True
+  #  else:
+   #     return False
 
 
 def print_city_status(player):
     cities = get_city_data()
-    player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
+    player_coords = ((cities[player[6] - 1][3]), (cities[player[6] - 1][4]))
     for city in cities:
         distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
         city.append(distance_from_player)
