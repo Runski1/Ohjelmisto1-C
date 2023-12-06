@@ -48,17 +48,18 @@ def get_savegame(savegame):
 @server.route('/add_player/<gamename>/<player1>/<player2>/')
 def create_game(gamename, player1, player2):
     cursor = connection.cursor()
-    cursor.execute("
+    cursor.execute()
     connection.commit()
     cursor.close()
 
-'''@server.route('/get_playerData/<savedGame>/<name>')
-def get_playerData(name):
+
+@server.route('/action/<savedGame>/<playername>/<action>/<target>')
+def do_action(gamename, player_id, action, target):
     cursor = connection.cursor()
     cursor.execute(f"select name, playerName from savedGames where name = '{name}'")
     sql_result = cursor.fetchone()
     #kesken
-'''
+
 
 if __name__ == '__main__':
     server.run(use_reloader=True, host='127.0.0.2', port=3000)
