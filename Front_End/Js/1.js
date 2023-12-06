@@ -190,17 +190,18 @@ function mainGame() {
       targetELem.classList.add('lightblueGlow');
       targetELem.classList.add('show');
     }, 600);
-
+    const targetElem = document.getElementById('startButtonCont');
+    const mapFrame = document.createElement('div');
+    mapFrame.style.width = '800';
+    mapFrame.style.height = '600';
+    const mapImg = document.createElement('img');
+    mapImg.src = '../img/placeholdermap_800x600.png';
+    mapFrame.appendChild(mapImg);
+    targetElem.appendChild(mapFrame);
+    mapFrame.classList.add('show'); 
   }, 600);
 
-  const targetElem = document.getElementById('enterGame');
-  const mapFrame = document.createElement('div');
-  mapFrame.style.width = '800px';
-  mapFrame.style.height = '600px';
-  targetElem.appendChild(mapFrame);
-  const mapImg = document.createElement('img');
-  mapFrame.appendChild(mapImg);
-  mapImg.src = '../img/placeholdermap_800x600.png';
+
 
   /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
 	attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',

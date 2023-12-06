@@ -15,6 +15,7 @@ connection = mysql.connector.connect(
 server = Flask(__name__)
 CORS(server)
 
+
 @server.route('/get_saveGame/<savegame>')
 def get_savegame(savegame):
     sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}}
