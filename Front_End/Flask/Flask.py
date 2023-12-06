@@ -1,4 +1,4 @@
-
+from game_files import classes
 from flask import Flask, Response, Request
 import json
 import mysql.connector
@@ -26,6 +26,8 @@ def get_savegame(savegame):
     else:
         response_data = {"gameName":"not found"}
         status_code = 200
+        classes.Game(sql_result['gameName'], sql_result['players'])
+
 
     '''cursor = connection.cursor()
     cursor.execute(f"select name, playerName from savedGames where name = '{savegame}'")

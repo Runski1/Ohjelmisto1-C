@@ -99,7 +99,7 @@ def work(parameter, player):  # Tämä on oikeastaan vain placeholder-funktio, j
 
 
 def search(player):
-    set_searched(player[8])
+    set_searched(player[6])
     if is_city_bag_city(player):
         print('Congratulation you have found grandma`s lost luggage!!! Be fast and head back to Helsinki before anyone '
               ' else does!')

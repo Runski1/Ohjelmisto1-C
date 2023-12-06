@@ -103,7 +103,7 @@ def lock_check(player_id):  # Printer ei tarvitse tätä enää, tarvitseeko jok
 
 
 def printer(player):
-    current_pp = int(player[2])
+    current_pp = int(player.money)
     current_location = get_location((str(player[0])))
     lock_status = int(player[3])
     print("---Player status---\n")
@@ -238,76 +238,6 @@ def lock_reduce(player):
     return
 
 
-"""def event_randomizer(player):
-    event_multiplier = float(config.get('config', 'RandomEventChance'))
-    rand_test = random.uniform(0, 1)
-    # Haetaan kaikkien eventtien määrä ja kokeillaan tuleeko eventtiä vai ei
-    sql = "SELECT COUNT(id) FROM random_events"
-    cursor.execute(sql)
-    events_sum = cursor.fetchall()
-    playerid = player[0]
-    # jos eventtiä ei tule tulostetaan allaoleva
-    if rand_test > event_multiplier:
-        # print("No events for you this time.")
-        return False
-    # jos eventti tulee, haetaan arpomalla eventti kaikkien eventtien joukosta ja käsitellään sitä
-    # niin että outcom_high jaetaan splitillä kahteen osaan ja outcome_lower jaetaan kahteen osaan
-    # sekä tallennetaan fluff teksi muuttujaksi.
-    elif rand_test < event_multiplier:
-        randomized_num = random.randint(1, events_sum[0][0])
-        sql = f"SELECT * FROM random_events WHERE id = {randomized_num}"
-        cursor.execute(sql)
-        rand_event = cursor.fetchall()
-        outcome_h = rand_event[0][3].split(",")
-        outcome_l = rand_event[0][4].split(",")
-        fluff = rand_event[0][1]
-        # kokeillaan tuleeko pelaaja ryöstetyksi menettäen kaikki pp:nsä
-        # ja tyhjennetään pelaajalta kaikki pp:t
-        if outcome_h[0] == "robbed":
-            print(fluff)
-            input("<Press ENTER to continue>")
-            remove_pp(player[2], player[0])
-            print(f"Your EP is gone.")
-            if int(outcome_h[1]) > 0:
-                set_lockstate(0, player[0], outcome_h[1], "diggoo")
-                print(f"You cannot do actions for {outcome_h[1]} turns.")
-                return False
-            else:
-                return True
-        # jossei pelaajalta ryöstetä kaikkea omaisuutta ruvetaan tutkimaan erinäisiä vaihtoehtoja mitä
-        # eventistä tulee
-        else:
-            # jos eventissä pitää heittää noppaa heitetään sitä pelaajan avustuksella
-            # sen jälkeen testataan onko nopan heitto tarpeeksi iso roll_treshold sarakkeen määräämän arvon perusteella
-            if rand_event[0][2] >= 0:
-                print(fluff)
-                input("<Press ENTER to continue>")
-            roll = random.randint(2, 12)
-            if rand_event[0][2] > 0:
-                print(f"\nYou need to roll at least {rand_event[0][2]}.")
-                roll = dice_roll()
-            # jos isompi tai yhtä iso, tehdään näin
-            if roll >= rand_event[0][2]:
-                add_pp(int(outcome_h[0]), int(playerid))
-                print(f"Your EP changes {outcome_h[0]}.")
-                if int(outcome_h[1]) > 0:
-                    set_lockstate(0, playerid, outcome_h[1], "diggoo")
-                    print(f"You are frozen for {outcome_h[1]} turns.")
-                    # Pelaaja voi ylikirjoittaa tämän lockin heittämällä hitchhike-noppaa
-                    return False
-                else:
-                    return True
-            # jos pienempi tehdään näin
-            elif roll < rand_event[0][2]:
-                add_pp(int(outcome_l[0]), int(playerid))  # perkeleen duplicatet, en äkkiseltään keksi miten välttyisi
-                print(f"Your EP changes {outcome_l[0]}.")
-                if int(outcome_l[1]) > 0:
-                    set_lockstate(0, playerid, outcome_l[1], "diggoo")
-                    print(f"You are frozen for {outcome_l[1]} turns.")
-                    return False
-                else:
-                    return True"""
-
 
 def item_randomizer():
     item_id_roll = str(random.randint(1, 169))
@@ -386,6 +316,7 @@ def check_if_in_port(player):
 
 
 def bag_found(player):
+
     query = f"SELECT COUNT(*) FROM player WHERE prizeholder = '1'"
     cursor.execute(query)
     bagman = cursor.fetchone()

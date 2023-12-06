@@ -16,13 +16,13 @@ while True:
         round_number = get_round_number()
         turn = True
         turn_skipper = False
-        current_player = player_table[(round_number-1) % 2]
-        is_lock = lock_check(str(current_player[0]))
-        if current_player[4] == 1 and current_player[6] == 16 and is_lock == 0:
-            helsinki_sysma(current_player[1])
+        current_player = classes.g1.players[(round_number-1) % 2]
+        is_lock = lock_check(str(current_player.lock_state))
+        if current_player.prizeholder == 1 and current_player.location == 16 and is_lock == 0:
+            helsinki_sysma(current_player.player_name)
             turn_skipper = True
         if not turn_skipper:
-            print(f"\n{current_player[1]} it is your turn!\n")
+            print(f"\n{current_player.player_name} it is your turn!\n")
             if is_lock == 0:
                 printer(current_player)
                 while turn:

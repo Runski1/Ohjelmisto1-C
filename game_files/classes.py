@@ -15,11 +15,11 @@ class Game:
         self.bag_city = bag_city
         self.babymaker()
         self.add_to_db()
-        self.bag_city = functions.generate_main_bag()
         self.player1 = player1
         self.player2 = player2
 
     def add_to_db(self):
+        self.bag_city = functions.generate_main_bag()
         query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
                  f" VALUES('{self.game_name}', '{self.round_counter}', '{self.bag_city}', '{Game.visited}')")
         self.cursor.execute(query)
