@@ -74,19 +74,11 @@ def do_action(game_id, player_id, action, target):
         user_input_processor.travel_hitchhike(city_name, player_id)
         return False
     elif action == "sail":
-        if functions.has_pp_checker(player_data, target, action) == True:
-            user_input_processor.travel_sail(city_name, player_id)
-            return False
-        else:
-            # Toiminta, jos pelaajalla ei riitä PP matkaan
-            return True
+        user_input_processor.travel_sail(city_name, player_id)
+        return False
     elif action == "fly":
-        if functions.has_pp_checker(player_data, target, action) == True:
-            user_input_processor.travel_fly(city_name, player_id)
-            return False
-        else:
-            # Toiminta, jos pelaajalla ei riitä PP matkaan
-            return True
+        user_input_processor.travel_fly(city_name, player_id)
+        return False
     elif action == "work":
         user_input_processor.work("do", player_id)
         return False
