@@ -21,15 +21,26 @@ CORS(server)
 
 @server.route('/get_saveGame/<savegame>')
 def get_savegame(savegame):
+    cursor = connection.cursor()
     sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}}
+    sql = f"SELECT name FROM game WHERE name = '{savegame}'"
+    cursor.execute(sql)
+    if cursor.rowcount == 0:
+        response_data = {"gameName": None}
+        response = Response(response=json.dumps(response_data), status=200, mimetype='application/json')
+        return response
+    else:
+        game_data = cursor.fetchall()
+        sql = f"SELECT * FROM player WHERE game = '{functions.id_to_name()}'"
     if savegame == 'testgame':
         response_data = sql_result
         status_code = 200
 
+
+
+
     else:
-        response_data = {"gameName": "not found"}
-        status_code = 200
-        # classes.Game(sql_result['gameName'], sql_result['players'])
+
 
     # '''cursor = connection.cursor()
     # cursor.execute(f"select name, playerName from savedGames where name = '{savegame}'")
@@ -50,18 +61,16 @@ def get_savegame(savegame):
 @server.route('/add_player/<gamename>/<player1>/<player2>/')
 def create_game(gamename, player1, player2):
     game = classes.Game(gamename, player1, player2)
-    game.add_to_db()
+    game.update_db()
     json_data = game.json_response()
-    cursor = connection.cursor()
-    # cursor.execute()
     connection.commit()
-    cursor.close()
 
 
 @server.route('/action/<game_id>/<player_id>/<action>/<target>')
 def do_action(game_id, player_id, action, target):
     cursor = connection.cursor()
     # getting the correct player
+
     cursor.execute(f"SELECT * FROM player WHERE (game={game_id} AND id={player_id})")
     player_data = cursor.fetchall()
 
