@@ -90,7 +90,7 @@ def do_action(game_id, player_id, action, target):
         functions.fly(target, game_id, player_data)
         return classes.game.json_response()
     elif action == "work":
-        functions.work("do", player_id)
+        functions.work(game_id, player_id)
         return classes.game.json_response()
 
 
