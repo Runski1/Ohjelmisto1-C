@@ -1,6 +1,6 @@
 #from game_files import user_input_processor
 import classes
-#from game_files import functions
+import functions
 from flask import Flask, Response, Request
 import json
 from db_connection import connection
@@ -22,24 +22,24 @@ server = Flask(__name__)
 @server.route('/get_saveGame/<savegame>')
 def get_savegame(savegame):
     cursor = connection.cursor()
-    sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}}
     sql = f"SELECT * FROM game WHERE name = '{savegame}'"
     cursor.execute(sql)
     if cursor.rowcount == 0:
         response_data = {"gameName": None}
         response = Response(response=json.dumps(response_data), status=200, mimetype='application/json')
         return response
-    else:
+    elif cursor.rowcount > 0:
         game_data = cursor.fetchall()
         sql = f"SELECT * FROM player WHERE game = '{game_data[0][0]}'"
         cursor.execute(sql)
         players = cursor.fetchall()
         player1 = players[0]
         player2 = players[1]
-        game = classes.Game.load_game(game_data, player1, player2)
-    if savegame == 'testgame':
-        response_data = sql_result
-        status_code = 200
+    #    game = classes.Game(savegame, player1[1], player2[1])
+        game = savegame.load_game(game_data, player1, player2)
+        print(game)
+        return game.json_response()
+
 
 
 
@@ -75,27 +75,27 @@ def create_game(gamename, player1, player2):
 def do_action(game_id, player_id, action, target):
     cursor = connection.cursor()
     # getting the correct player
-
     cursor.execute(f"SELECT * FROM player WHERE (game={game_id} AND id={player_id})")
-    player_data = cursor.fetchall()
-
-    # muunnetaan target cityn id nimeksi
-    city_name = functions.id_to_name(target)
-
-    # tarkistetaan on pelaajalla rahaa matkaan
+    player_data = cursor.fetchone()
+    game_name = functions.get_game_name(game_id)
 
     if action == "hike":
-        user_input_processor.travel_hitchhike(city_name, player_id)
-        return False
+        functions.hitchhike(target, game_id, player_data)
+        functions.search(game_id, player_data)
+        return game_name.json_response()
     elif action == "sail":
-        user_input_processor.travel_sail(city_name, player_id)
-        return False
+        functions.sail(target, game_id, player_data)
+        functions.search(game_id, player_data)
+        return game_name.json_response()
     elif action == "fly":
-        user_input_processor.travel_fly(city_name, player_id)
-        return False
+        functions.fly(target, game_id, player_data)
+        functions.search(game_id, player_data)
+        return game_name.json_response()
     elif action == "work":
-        user_input_processor.work("do", player_id)
-        return False
+        functions.work(game_id, player_id)
+        functions.search(game_id, player_data)
+        print((functions.get_game_name(game_id)).visited)
+        return game_name.json_response()
 
 
 if __name__ == '__main__':

@@ -86,10 +86,12 @@ def set_location(new_location, game_id, player_id):  # new location, player id t
     cursor.execute(sql)
 
 
-def set_searched(location):
-    classes.Game.visited.append(location)
+def set_searched(game_id, location):
+    game = get_game_name(game_id)
+    eval(game).visited.append(location)
+    print(game.visited)
     visited_json = json.dumps(visited)
-    sql = f"UPDATE game SET visited = '{visited_json}' WHERE name = {classes.g1.game_name}"
+    sql = f"UPDATE game SET visited = {visited_json} WHERE id = {game_id}"
     cursor.execute(sql)
 
 
@@ -164,7 +166,7 @@ def get_ports(cities):
             port_cities.append(city)
     return port_cities
 
-
+'''
 def print_available_cities(travel_mode, city_list, player_id):
     if travel_mode == "fly":
         print("---Available cities where you can fly to---")
@@ -185,8 +187,8 @@ def print_available_cities(travel_mode, city_list, player_id):
             print(f"{Fore.RED}{city[1]:<15}{Fore.GREEN}: {city[2]:^25}: {Fore.BLUE}{city[3]:^7} km{Fore.GREEN} : cost "
                   f"{Fore.BLUE}{city[4]:^6.0f} EP {Fore.GREEN}{visited_status:>15}{Fore.RESET}")
     print(f"You have {get_current_pp(player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
-
-
+'''
+'''
 def get_cities_in_range(travel_mode, player):
     price_multiplier_dict = {
         "fly": config.get('config', 'FlyPriceMultiplier'),  # HUOM Nämä config-filestä tuodut on stringejä!
@@ -213,7 +215,7 @@ def get_cities_in_range(travel_mode, player):
         if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
             cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
     return cities_in_range
-
+'''
 
 def lock_reduce(player):
     if int(player.lock_state) > 0:
@@ -265,7 +267,7 @@ def set_lockstate(distance, game_id, player_id, counter, travel_type):
     result = cursor.fetchone()
     lock_amount = result[0]
     if int(distance) != 0:
-        lock_amount = determine_travel_lock_amount(distance, travel_type, player_id)
+        lock_amount = determine_travel_lock_amount(distance, travel_type, game_id, player_id)
     if counter != 0:
         lock_amount = int(lock_amount) + int(counter)
     query = f"UPDATE player SET lockstate = {lock_amount} WHERE id = {player_id} AND game = {game_id}"
@@ -314,18 +316,18 @@ def check_if_in_port(player):
         return False
 
 
-def bag_found(player):
-
+def bag_found(game_id, player):
     query = f"SELECT COUNT(*) FROM player WHERE prizeholder = '1'"
     cursor.execute(query)
     bagman = cursor.fetchone()
-    query = f"UPDATE player SET prizeholder = 1 WHERE id ='{player[0]}'"
+    query = f"UPDATE player SET prizeholder = 1 WHERE id ={player[0]} AND game = {game_id}"
     cursor.execute(query)
-    query = f"UPDATE game SET bag_city = '0' WHERE name = '{classes.g1.game_name}'"
+    game = get_game_name(game_id)
+    query = f"UPDATE game SET bag_city = '0' WHERE name = {classes.game.game_name}"
     cursor.execute(query)
     if bagman[0] == 0:
-        classes.g1.generate_bag()
-        end_game_email()
+        classes.game.generate_bag()
+        #end_game_email()
 
 
 def is_city_bag_city(player):
@@ -418,6 +420,24 @@ def fly(target_id, game_id, player):
 def work(game_id, player_id):
     salary = random.randint(100, 500)
     add_pp(salary, game_id, player_id)
+
+def search(game_id, player_data):
+    set_searched(game_id, player_data[6])
+    if is_city_bag_city(player_data[6]):
+        bag_found(game_id, player_data)
+        pass
+    else:
+        item_name, item_value = item_randomizer()
+        #print(f'Nah! No grandma`s luggage in here! But you found {item_name} and it`s worth {item_value}')
+        if item_value <= 0:  # Tällä hetkellä tietokannassa ei ole itemeitä mistä menettää rahaa. Voisi lisätä...? :)
+            remove_pp(item_value, game_id, player_data[0])  # player 0 on id
+        elif item_value >= 0:
+            add_pp(item_value, game_id, player_data[0])
+
+def get_game_name(game_id):
+    cursor.execute(f"SELECT name FROM game WHERE id = {game_id}")
+    game_tuple = cursor.fetchone()
+    return game_tuple[0]
 
 if __name__ == "__main__":
     pass

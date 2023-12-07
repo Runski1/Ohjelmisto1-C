@@ -4,7 +4,6 @@ import json
 
 
 class Game:
-    visited = []
     players = []
     cursor = db_connection.connection.cursor()
 
@@ -18,6 +17,8 @@ class Game:
         self.player1 = self.babymaker(self.player1_name, self.game_id)
         self.player2 = self.babymaker(self.player2_name, self.game_id)
         self.update_db()
+        self.visited = []
+        self.players = []
 
     def get_game_id(self, game_name):
         sql = f"SELECT id FROM game WHERE name = '{game_name}'"
@@ -35,14 +36,12 @@ class Game:
         for player in self.players:
             player.update_db()
 
-    @staticmethod
-    def babymaker(player, game_id):
+    def babymaker(self, player, game_id):
         baby = Player(player, game_id)
-        Game.players.append(baby)
+        self.players.append(baby)
         return baby
 
-    @staticmethod
-    def generate_bag():
+    def generate_bag(self):
         city_id = []
         sql = f"SELECT id FROM city"
         Game.cursor.execute(sql)
@@ -75,10 +74,9 @@ class Game:
         self.visited = game_data[0][4]
         self.player1 = Player(player1[2], player1[7])
         self.player2 = Player(player2[2], player1[7])
-
-
-
-
+        self.player1.set_player_data(player1)
+        self.player2.set_player_data(player2)
+        return self
 
 
 class Player:
@@ -115,3 +113,13 @@ class Player:
         sql = f"UPDATE player SET location = '{self.location}' WHERE id = '{self.id}'"
         Game.cursor.execute(sql)
 
+    def set_player_data(self, data):
+        self.id = data[0]
+        self.player_name = data[1]
+        self.money = data[2]
+        self.lock_state = data[3]
+        self.prizeholder = data[4]
+        self.total_dice = [5]
+        self.location = data[6]
+        self.game_id = data[7]
+        Game.players.append(self)
