@@ -120,7 +120,7 @@ async function addPlayers() {
 
         const gameContainer = document.getElementById('gameContainer');
         gameContainer.innerHTML = '';
-         const newGameForm = document.createElement('form');
+        const newGameForm = document.createElement('form');
         newGameForm.classList.add('hide')
         newGameForm.style.display = 'flex';
         gameContainer.appendChild(newGameForm);
@@ -165,10 +165,7 @@ async function addPlayers() {
         document.getElementById('addPlayer').addEventListener('click', mainGame);
 
         /*********************** MAINGAME STARTS FROM HERE**********************/
-    }
-
-
-    else {
+    } else {
         document.getElementById('selectGame').addEventListener('click', mainGame);
     }
 }
@@ -180,30 +177,58 @@ async function addPlayers() {
 function mainGame() {
     setTimeout(() => {
 
-        const targetELem = document.getElementById('gameContainer');
-        targetELem.classList.add('mainGameContainer');
+        const gameContainer = document.getElementById('gameContainer');
         // Clear the gamecontainer content
-        targetELem.innerHTML = '';
+        gameContainer.innerHTML = '';
 
         // Set the body height to 100%
         document.body.style.height = '100%';
-        // kartta on 800x600 = 50remx37.5rem
-        targetELem.style.width = '70rem';
-        targetELem.style.height = 'auto';
-        targetELem.style.border = '1px solid #19caca';
-        const targetElem = document.getElementById('gameContainer');
+
+        gameContainer.style.width = '70rem';
+        gameContainer.style.height = 'auto';
+        //gameContainer.style.border = '1px solid #19caca';
+
+        //make map // map is 800x600 = 50rem x 37.5rem
+
         const mapFrame = document.createElement('div');
         mapFrame.style.width = '800';
         mapFrame.style.height = '600';
         const mapImg = document.createElement('img');
         mapImg.src = '../img/placeholdermap_800x600.png';
         mapFrame.appendChild(mapImg);
-        targetElem.appendChild(mapFrame);
+        gameContainer.appendChild(mapFrame);
         mapFrame.classList.add('hide');
+        const uiCont = document.createElement('div');
+        gameContainer.appendChild(uiCont);
+
+        // add player action buttons
+
+        const actionButtonCont = document.createElement('div');
+        gameContainer.appendChild(actionButtonCont);
+        const flyButton = document.createElement('button');
+        const hikeButton = document.createElement('button');
+        const sailButton = document.createElement('button');
+        const searchButton = document.createElement('button');
+
+        flyButton.classList.add('actionButtons');
+        hikeButton.classList.add('actionButtons');
+        sailButton.classList.add('actionButtons');
+        searchButton.classList.add('searchButton');
+        flyButton.innerText = 'fly'
+        hikeButton.innerText = 'hike'
+        sailButton.innerText = 'sail'
+        searchButton.innerText = 'search'
+        actionButtonCont.appendChild(flyButton);
+        actionButtonCont.appendChild(hikeButton);
+        actionButtonCont.appendChild(sailButton);
+        actionButtonCont.appendChild(searchButton);
+
+
         setTimeout(() => {
-            targetELem.classList.add('lightblueGlow');
-            targetELem.classList.add('show');
+            gameContainer.classList.add('lightblueGlow');
+            gameContainer.classList.add('show');
             mapFrame.classList.add('show');
+
         }, 600);
     }, 600);
 
