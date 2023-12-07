@@ -90,7 +90,7 @@ async function selectGame() {
             inputButton.addEventListener('click', async function (event) {
                 event.preventDefault();
                 const gameName = document.getElementById('gameName').value;
-                const savedGameData = await getSavegame(gameName);
+                const savedGameData = await get_saveGame(gameName);
 
                 if (savedGameData.gameName === 'not found') {
                     // If the saved game is not found, create a new game and update gameContainer
@@ -136,14 +136,14 @@ async function selectGame() {
                         const playerName2 = document.getElementById('player2').value;
                         // add players to savegame
                         await playerSaveData(gameName, playerName1, playerName2);
-                        mainGame(gameName);
+                        await mainGame(gameName);
 
                     });
                 } else {
                     // If the saved game is found, add an event listener for the "selectGame" button
-                    document.getElementById('selectGame').addEventListener('click', function (event) {
+                    document.getElementById('selectGame').addEventListener('click', async function (event) {
                         event.preventDefault();
-                       mainGame(gameName);
+                       await mainGame(gameName);
                     });
 
                 }
@@ -154,8 +154,9 @@ async function selectGame() {
 }
 
 
-async function getSavegame(gameName) {
+async function get_saveGame(gameName) {
     // makes json request from Flask-server
+
     const gameNameResponse = await fetch(
         `http://127.0.0.2:3000/get_saveGame/${gameName}`);
     const jsonData = await gameNameResponse.json();
@@ -167,7 +168,7 @@ async function playerSaveData(gameName, playerName1, playerName2) {
     const addPlayerResponse = await fetch(
         `http://127.0.0.2:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
     const jsonData = await addPlayerResponse.json();
-    console.log(jsonData);
+    console.log('kaikki tallennukset',jsonData);
 }
 
 function mainGame(gameName) {
@@ -213,10 +214,14 @@ function mainGame(gameName) {
         const searchButton = document.createElement('button');
         const player1Name = document.createElement('p');
         const player2Name = document.createElement('p');
-        //  getSaveGame = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}
+        //  getSaveGame = {'savedGame':gamename,'p1': player1, 'p2': player2}
 
-        player1Name.textContent = getSavegame(gameName).players;
-        player2Name.textContent = getSavegame(gameName).players;
+
+
+        console.log('p1',get_saveGame(gameName).p1,'p2',get_saveGame(gameName).p2)
+
+        player1Name.textContent = get_saveGame(gameName).p1;
+        player2Name.textContent =get_saveGame(gameName).p2;
         flyButton.classList.add('actionButtons');
         hikeButton.classList.add('actionButtons');
         sailButton.classList.add('actionButtons');
