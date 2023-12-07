@@ -5,7 +5,7 @@ from colorama import Fore
 
 cursor = connection.cursor()  # Voi jos osaisimme luokkia ja olioita, tätä ei tarvittaisi täällä
 
-
+'''
 def travel_fly(parameter, player):
     # player-muuttujassa tuodaan koko vuorossa olevan pelaajan rivi tietokannasta
     current_player_id = str(player[0])  # pelaajan id stringinä
@@ -29,8 +29,8 @@ def travel_fly(parameter, player):
     else:
         print("Something is wrong here")
         return True
-
-
+'''
+'''
 def travel_sail(parameter, player):
     # player-muuttujassa tuodaan koko vuorossa olevan pelaajan rivi tietokannasta
     current_player_id = str(player[0])  # pelaajan id stringinä
@@ -58,8 +58,8 @@ def travel_sail(parameter, player):
     else:
         print("Something is wrong here")
         return True
-
-
+'''
+'''
 def travel_hitchhike(parameter, player):
     # player-muuttujassa tuodaan koko vuorossa olevan pelaajan rivi tietokannasta
     current_player_id = str(player[0])  # pelaajan id stringinä
@@ -83,7 +83,7 @@ def travel_hitchhike(parameter, player):
     else:
         print("Something is wrong here")
         return True
-
+'''
 '''
 def work(parameter, player):  # Tämä on oikeastaan vain placeholder-funktio, jolla voi generoida rahaa
     if parameter == "?":
@@ -97,7 +97,7 @@ def work(parameter, player):  # Tämä on oikeastaan vain placeholder-funktio, j
     else:
         return False
 '''
-
+'''
 def search(player):
     set_searched(player[6])
     if is_city_bag_city(player):
@@ -114,7 +114,7 @@ def search(player):
             add_pp(item_value, player[0])
     input("<Press ENTER to continue>")
     return False
-
+'''
 '''
 def hire(player):
     price_multiplier_dict = {
@@ -219,9 +219,9 @@ command_dictionary = {  # pelaajan komennot
     'man': manual,
     'status': printer,
     'map': print_city_status,
-    'fly': travel_fly,
-    'sail': travel_sail,
-    'hike': travel_hitchhike,
+    #'fly': travel_fly,
+    #'sail': travel_sail,
+    #'hike': travel_hitchhike,
     # 'work': work,
     'search': search,
     # 'hire': hire,
