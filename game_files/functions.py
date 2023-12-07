@@ -87,9 +87,9 @@ def set_location(new_location, game_id, player_id):  # new location, player id t
 
 
 def set_searched(game_id, location):
-    classes.Game.visited.append(location)
     visited_json = json.dumps(visited)
     game = get_game_name(game_id)
+    classes.game.visited.append(location)
     sql = f"UPDATE game SET visited = {visited_json} WHERE name = {classes.game.game_name}"
     cursor.execute(sql)
 
