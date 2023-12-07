@@ -98,6 +98,8 @@ def do_action(game_id, player_id, action, target):
         return game_name.json_response()
 
 
+g2 = classes.Game("game2", "seppo", "rauski")
+
 if __name__ == '__main__':
     server.run(use_reloader=True, host='127.0.0.1', port=3000)
 

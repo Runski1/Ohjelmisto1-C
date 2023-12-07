@@ -13,18 +13,18 @@ class Game:
         self.player2_name = player2_name
         self.round_counter = round_number
         self.bag_city = bag_city
+        self.update_db()
         self.game_id = self.get_game_id(self.game_name)
         self.player1 = self.babymaker(self.player1_name, self.game_id)
         self.player2 = self.babymaker(self.player2_name, self.game_id)
-        self.update_db()
         self.visited = []
         self.players = []
+        self.update_db()
 
     def get_game_id(self, game_name):
         sql = f"SELECT id FROM game WHERE name = '{game_name}'"
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
-        # print(result[0])
         return result[0]
 
     def update_db(self):
