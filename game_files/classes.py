@@ -4,7 +4,6 @@ import json
 
 
 class Game:
-    visited = []
     players = []
     cursor = db_connection.connection.cursor()
 
@@ -18,6 +17,8 @@ class Game:
         self.player1 = self.babymaker(self.player1_name, self.game_id)
         self.player2 = self.babymaker(self.player2_name, self.game_id)
         self.update_db()
+        self.visited = []
+        self.players = []
 
     def get_game_id(self, game_name):
         sql = f"SELECT id FROM game WHERE name = '{game_name}'"
@@ -35,14 +36,12 @@ class Game:
         for player in self.players:
             player.update_db()
 
-    @staticmethod
-    def babymaker(player, game_id):
+    def babymaker(self, player, game_id):
         baby = Player(player, game_id)
-        Game.players.append(baby)
+        self.players.append(baby)
         return baby
 
-    @staticmethod
-    def generate_bag():
+    def generate_bag(self):
         city_id = []
         sql = f"SELECT id FROM city"
         Game.cursor.execute(sql)
@@ -77,6 +76,7 @@ class Game:
         self.player2 = Player(player2[2], player1[7])
         self.player1.set_player_data(player1)
         self.player2.set_player_data(player2)
+        return self
 
 
 class Player:

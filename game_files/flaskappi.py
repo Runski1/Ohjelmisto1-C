@@ -22,24 +22,24 @@ server = Flask(__name__)
 @server.route('/get_saveGame/<savegame>')
 def get_savegame(savegame):
     cursor = connection.cursor()
-    sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}}
     sql = f"SELECT * FROM game WHERE name = '{savegame}'"
     cursor.execute(sql)
     if cursor.rowcount == 0:
         response_data = {"gameName": None}
         response = Response(response=json.dumps(response_data), status=200, mimetype='application/json')
         return response
-    else:
+    elif cursor.rowcount > 0:
         game_data = cursor.fetchall()
         sql = f"SELECT * FROM player WHERE game = '{game_data[0][0]}'"
         cursor.execute(sql)
         players = cursor.fetchall()
         player1 = players[0]
         player2 = players[1]
-        game = classes.Game.load_game(game_data, player1, player2)
-    if savegame == 'testgame':
-        response_data = sql_result
-        status_code = 200
+    #    game = classes.Game(savegame, player1[1], player2[1])
+        game = savegame.load_game(game_data, player1, player2)
+        print(game)
+        return game.json_response()
+
 
 
 
@@ -94,6 +94,7 @@ def do_action(game_id, player_id, action, target):
     elif action == "work":
         functions.work(game_id, player_id)
         functions.search(game_id, player_data)
+        print((functions.get_game_name(game_id)).visited)
         return game_name.json_response()
 
 
