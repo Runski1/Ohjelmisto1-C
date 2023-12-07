@@ -81,6 +81,7 @@ class Game:
 
 
 
+
 class Player:
 
     def __init__(self, player_name, game_id, money=2000, location=16, bag=0, lock_state=0, prizeholder=0, total_dice=0):
@@ -114,4 +115,8 @@ class Player:
         Game.cursor.execute(sql)
         sql = f"UPDATE player SET location = '{self.location}' WHERE id = '{self.id}'"
         Game.cursor.execute(sql)
+
+
+    def set_player_data(self, data):
+
 
