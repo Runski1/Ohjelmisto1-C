@@ -1,6 +1,6 @@
-from game_files import user_input_processor
+'''from game_files import user_input_processor
 from game_files import classes
-from game_files import functions
+from game_files import functions'''
 from flask import Flask, Response, Request
 import json
 import mysql.connector
@@ -46,16 +46,31 @@ def get_savegame(savegame):
 
     return response
 
-
+savedgames = {}
 @server.route('/add_player/<gamename>/<player1>/<player2>/')
 def create_game(gamename, player1, player2):
-    game = classes.Game(gamename, player1, player2)
+    savedgames[gamename] = {'p1': player1, 'p2': player2}
+
+        response_data = {'savedgame':gamename,'p1': player1, 'p2': player2}
+        status_code = 200
+    response_data = json.dumps(response_data)
+    response = Response(response=response_data, status=status_code, mimetype="application/json")
+
+    return response
+my_dict = {"Name":[],"Address":[],"Age":[]};
+
+my_dict["Name"].append("Guru")
+my_dict["Address"].append("Mumbai")
+my_dict["Age"].append(30)
+print(my_dict)
+
+  '''  game = classes.Game(gamename, player1, player2)
     game.add_to_db()
     json_data = game.json_response()
     cursor = connection.cursor()
     # cursor.execute()
     connection.commit()
-    cursor.close()
+    cursor.close()'''
 
 
 @server.route('/action/<game_id>/<player_id>/<action>/<target>')
