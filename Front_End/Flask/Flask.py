@@ -1,6 +1,6 @@
-#from game_files import user_input_processor
+from game_files import user_input_processor
 from game_files import classes
-#from game_files import functions
+from game_files import functions
 from flask import Flask, Response, Request
 import json
 import mysql.connector
@@ -59,7 +59,7 @@ def get_savegame(savegame):
 
  #   return response
 
-"""
+
 @server.route('/add_player/<gamename>/<player1>/<player2>/')
 def create_game(gamename, player1, player2):
     game = classes.Game(gamename, player1, player2)
@@ -74,6 +74,8 @@ def do_action(game_id, player_id, action, target):
     # getting the correct player
     cursor.execute(f"SELECT * FROM player WHERE (game={game_id} AND id={player_id})")
     player_data = cursor.fetchone()
+    cursor.execute(f"SELECT name FROM game WHERE id = '{game_id}'")
+    game = cursor.fetchone()
 
     if action == "hike":
         functions.hitchhike(target, game_id, player_data)
