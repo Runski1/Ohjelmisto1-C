@@ -136,14 +136,14 @@ async function selectGame() {
                         const playerName2 = document.getElementById('player2').value;
                         // add players to savegame
                         await playerSaveData(gameName, playerName1, playerName2);
-                        await mainGame(gameName);
+                        mainGame(gameName);
 
                     });
                 } else {
                     // If the saved game is found, add an event listener for the "selectGame" button
-                    document.getElementById('selectGame').addEventListener('click', async  function (event) {
+                    document.getElementById('selectGame').addEventListener('click', function (event) {
                         event.preventDefault();
-                       await mainGame(gameName);
+                       mainGame(gameName);
                     });
 
                 }
@@ -215,8 +215,8 @@ function mainGame(gameName) {
         const player2Name = document.createElement('p');
         //  getSaveGame = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}
 
-        //player1Name.textContent = getSavegame(gameName).players.player1;
-        //player2Name.textContent = getSavegame(gameName).players.player2;
+        player1Name.textContent = getSavegame(gameName).players;
+        player2Name.textContent = getSavegame(gameName).players;
         flyButton.classList.add('actionButtons');
         hikeButton.classList.add('actionButtons');
         sailButton.classList.add('actionButtons');
