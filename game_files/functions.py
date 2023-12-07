@@ -265,7 +265,7 @@ def set_lockstate(distance, game_id, player_id, counter, travel_type):
     result = cursor.fetchone()
     lock_amount = result[0]
     if int(distance) != 0:
-        lock_amount = determine_travel_lock_amount(distance, travel_type, player_id)
+        lock_amount = determine_travel_lock_amount(distance, travel_type, game_id, player_id)
     if counter != 0:
         lock_amount = int(lock_amount) + int(counter)
     query = f"UPDATE player SET lockstate = {lock_amount} WHERE id = {player_id} AND game = {game_id}"
