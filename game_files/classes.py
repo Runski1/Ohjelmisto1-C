@@ -8,25 +8,25 @@ class Game:
     players = []
     cursor = connection.cursor()
 
-    def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0, game_id=0):
+    def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0):
         self.game_name = game_name
         self.player1_name = player1_name
         self.player2_name = player2_name
         self.round_counter = round_number
         self.bag_city = bag_city
-        self.game_id = self.game_id(self.game_name)
-        self.player1 = self.babymaker(self.player1_name)
-        self.player2 = self.babymaker(self.player2_name)
+        self.game_id = self.get_game_id(self.game_name)
+        self.player1 = self.babymaker(self.player1_name, self.game_id)
+        self.player2 = self.babymaker(self.player2_name, self.game_id)
         self.update_db()
 
 
 
-    def game_id(self, game_name):
+    def get_game_id(self, game_name):
         sql = f"SELECT id FROM game WHERE name = '{game_name}'"
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
        # print(result[0])
-        return result
+        return result[0]
 
     def update_db(self):
         self.bag_city = self.generate_bag()
@@ -38,8 +38,8 @@ class Game:
             player.update_db()
 
     @staticmethod
-    def babymaker(player):
-        baby = Player(player)
+    def babymaker(player, game_id):
+        baby = Player(player, game_id)
         Game.players.append(baby)
         return baby
 
@@ -72,19 +72,19 @@ class Game:
 
 class Player:
 
-    def __init__(self, player_name, money=2000, location=16, bag=0, lock_state=0, prizeholder=0, total_dice=0):
+    def __init__(self, player_name, game_id, money=2000, location=16, bag=0, lock_state=0, prizeholder=0, total_dice=0):
         self.player_name = player_name
+        self.game_id = game_id
         self.money = money
         self.location = location
         self.bag = bag
         self.lock_state = lock_state
         self.prizeholder = prizeholder
         self.total_dice = total_dice
-        self.game = game
 
         query = (f"INSERT INTO player (screen_name, current_pp, lockstate, prizeholder,"
-                 f" total_dice, location) VALUES ('{self.player_name}', '{self.money}', '{self.lock_state}',"
-                 f" '{self.prizeholder}', '{self.total_dice}', '{self.location}')")
+                 f" total_dice, location, game) VALUES ('{self.player_name}', '{self.money}', '{self.lock_state}',"
+                 f" '{self.prizeholder}', '{self.total_dice}', '{self.location}'), '{self.game_id}'")
 
         Game.cursor.execute(query)
         query = f"SELECT id FROM player WHERE screen_name = '{self.player_name}'"
