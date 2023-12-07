@@ -76,6 +76,10 @@ class Game:
         self.player1 = Player(player1[2], player1[7])
         self.player2 = Player(player2[2], player1[7])
 
+    def set_player_data(self, data):
+        self.player1.id = data[0]
+        self.player1.player_name = data[1]
+        self.player1.
 
 
 
@@ -115,8 +119,5 @@ class Player:
         Game.cursor.execute(sql)
         sql = f"UPDATE player SET location = '{self.location}' WHERE id = '{self.id}'"
         Game.cursor.execute(sql)
-
-
-    def set_player_data(self, data):
 
 
