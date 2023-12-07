@@ -29,8 +29,9 @@ class Game:
 
     def update_db(self):
         self.bag_city = self.generate_bag()
+        visited_json = json.dumps(self.visited)
         query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
-                 f" VALUES('{self.game_name}', '{self.round_counter}', '{self.bag_city}', '{self.visited}')")
+                 f" VALUES('{self.game_name}', '{self.round_counter}', '{self.bag_city}', '{visited_json}')")
         self.cursor.execute(query)
 
         for player in self.players:
@@ -67,16 +68,19 @@ class Game:
         return game_json
 
     def load_game(self, game_data, player1, player2):
-        self.game_id = game_data[0][0]
-        self.game_name = game_data[0][1]
-        self.round_counter = game_data[0][2]
-        self.bag_city = game_data[0][3]
-        self.visited = game_data[0][4]
-        self.player1 = Player(player1[2], player1[7])
-        self.player2 = Player(player2[2], player1[7])
-        self.player1.set_player_data(player1)
-        self.player2.set_player_data(player2)
-        return self
+        game = Game(self.game_name, player1[1], player2[1])
+        game.game_id = game_data[0][0]
+        game.game_name = game_data[0][1]
+        game.round_counter = game_data[0][2]
+        game.bag_city = game_data[0][3]
+        game.visited = json.loads(game_data[0][4])
+
+        game.player1 = Player(player1[2], player1[7])
+        game.player2 = Player(player2[2], player1[7])
+
+        game.player1.set_player_data(player1)
+        game.player2.set_player_data(player2)
+        return game
 
 
 class Player:
