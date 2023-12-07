@@ -37,20 +37,24 @@ def player_selector(game_id):
 
 
 @server.route('/action_input/<game_name>/<player>/<action>/<target>')
-def input_processor(game_name, player, action, target):
-    # Hae kannasta oikea peli
-    # Valitse sen perusteella oikea pelaaja
-    # ????
-    # profit
+def do_action(game_id, player_id, action, target):
+    cursor = connection.cursor()
+    # getting the correct player
+    cursor.execute(f"SELECT * FROM player WHERE (game={game_id} AND id={player_id})")
+    player_data = cursor.fetchone()
 
     if action == "hike":
-        user_input_processor.travel_hitchhike(target, player)
+        functions.hitchhike(target, game_id, player_data)
+        return False
     elif action == "sail":
-        user_input_processor.travel_sail(target, player)
+        functions.sail(target, game_id, player_data)
+        return False
     elif action == "fly":
-        user_input_processor.travel_fly(target, player)
+        functions.fly(target, game_id, player_data)
+        return False
     elif action == "work":
-        user_input_processor.work("do", player)
+        functions.work("do", player_id)
+        return False
 
 
 player_selector(1)

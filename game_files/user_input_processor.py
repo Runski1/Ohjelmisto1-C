@@ -84,7 +84,7 @@ def travel_hitchhike(parameter, player):
         print("Something is wrong here")
         return True
 
-
+'''
 def work(parameter, player):  # Tämä on oikeastaan vain placeholder-funktio, jolla voi generoida rahaa
     if parameter == "?":
         print("This should list all available jobs.")
@@ -96,7 +96,7 @@ def work(parameter, player):  # Tämä on oikeastaan vain placeholder-funktio, j
         return False
     else:
         return False
-
+'''
 
 def search(player):
     set_searched(player[6])
@@ -115,7 +115,7 @@ def search(player):
     input("<Press ENTER to continue>")
     return False
 
-
+'''
 def hire(player):
     price_multiplier_dict = {
         "hire": config.get('config', 'HiringPrice')
@@ -143,7 +143,7 @@ def hire(player):
     elif yes_no == "n":
         print("You didnt hire a detective.")
     return True
-
+'''
 
 def manual(parameter):
     manual_dictionary = {  # Manuaalientryt
@@ -222,9 +222,9 @@ command_dictionary = {  # pelaajan komennot
     'fly': travel_fly,
     'sail': travel_sail,
     'hike': travel_hitchhike,
-    'work': work,
+    # 'work': work,
     'search': search,
-    'hire': hire,
+    # 'hire': hire,
     'exit': exit
 }
 commands_without_parameter = ["status", "map", "search", "hire", "help", "exit"]
