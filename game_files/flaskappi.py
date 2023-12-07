@@ -82,19 +82,19 @@ def do_action(game_id, player_id, action, target):
     if action == "hike":
         functions.hitchhike(target, game_id, player_data)
         functions.search(game_id, player_data)
-        return classes.game_name.json_response()
+        return game_name.json_response()
     elif action == "sail":
         functions.sail(target, game_id, player_data)
         functions.search(game_id, player_data)
-        return classes.game_name.json_response()
+        return game_name.json_response()
     elif action == "fly":
         functions.fly(target, game_id, player_data)
         functions.search(game_id, player_data)
-        return classes.game_name.json_response()
+        return game_name.json_response()
     elif action == "work":
         functions.work(game_id, player_id)
         functions.search(game_id, player_data)
-        return classes.game_name.json_response()
+        return game_name.json_response()
 
 
 if __name__ == '__main__':

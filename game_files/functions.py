@@ -89,7 +89,7 @@ def set_location(new_location, game_id, player_id):  # new location, player id t
 def set_searched(game_id, location):
     visited_json = json.dumps(visited)
     game = get_game_name(game_id)
-    classes.game.visited.append(location)
+    game.visited.append(location)
     sql = f"UPDATE game SET visited = {visited_json} WHERE name = {classes.game.game_name}"
     cursor.execute(sql)
 
@@ -325,7 +325,7 @@ def bag_found(game_id, player):
     query = f"UPDATE game SET bag_city = '0' WHERE name = {classes.game.game_name}"
     cursor.execute(query)
     if bagman[0] == 0:
-        classes.game.generate_bag()
+        game.generate_bag()
         #end_game_email()
 
 
