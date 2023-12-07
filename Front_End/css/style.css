@@ -170,7 +170,7 @@ button.submit {
     text-decoration: none;
     overflow: hidden;
     cursor: pointer;
-    border: 0.01rem solid #19caca;
+    border: 0.01rem solid rgba(25, 202, 202, 0.5);
 
 
 }
@@ -178,7 +178,7 @@ button.submit {
      position: relative;
     background-color: rgba(0, 0, 0, 0.7);
     font-size: 0.8rem;
-    color: rgb(0, 255, 255);
+    color: rgba(0, 255, 255);
     padding: 1rem;
     width: 19.95rem;
     text-align: center;
@@ -186,5 +186,5 @@ button.submit {
     text-decoration: none;
     overflow: hidden;
     cursor: pointer;
-    border: 0.01rem solid #19caca;
+    border: 0.01rem solid rgba(25, 202, 202, 0.5);
 }

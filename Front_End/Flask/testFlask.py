@@ -22,7 +22,7 @@ savedgames = {}
 @server.route('/get_saveGame/<savegame>')
 def get_savegame(savegame):
     sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}}
-    if savegame == 'testgame':
+    if savegame == sql_result["gameName"]:
         response_data = sql_result
         status_code = 200
 
@@ -37,9 +37,11 @@ def get_savegame(savegame):
 
 @server.route('/add_player/<gamename>/<player1>/<player2>/')
 def create_game(gamename, player1, player2):
+
     savedgames[gamename] = {'p1': player1, 'p2': player2}
     response_data = {'savedgame':gamename,'p1': player1, 'p2': player2}
     status_code = 200
+
     response_data = json.dumps(response_data)
     response = Response(response=response_data, status=status_code, mimetype="application/json")
     return response
