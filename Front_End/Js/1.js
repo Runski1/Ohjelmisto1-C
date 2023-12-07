@@ -213,11 +213,11 @@ function mainGame() {
         flyButton.classList.add('actionButtons');
         hikeButton.classList.add('actionButtons');
         sailButton.classList.add('actionButtons');
-        searchButton.classList.add('searchButton');
+        searchButton.classList.add('workButton');
         flyButton.innerText = 'fly'
         hikeButton.innerText = 'hike'
         sailButton.innerText = 'sail'
-        searchButton.innerText = 'search'
+        searchButton.innerText = 'work'
         actionButtonCont.appendChild(flyButton);
         actionButtonCont.appendChild(hikeButton);
         actionButtonCont.appendChild(sailButton);
