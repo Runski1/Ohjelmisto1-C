@@ -37,7 +37,7 @@ body {
 
 }
 
-#container {
+#logoContainer {
 
     flex-direction: column;
     padding: 1rem;
@@ -55,7 +55,7 @@ body {
 }
 
 
-#startButtonCont {
+#gameContainer {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;

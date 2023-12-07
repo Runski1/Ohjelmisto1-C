@@ -4,21 +4,21 @@ function startScreen() {
     const targetElem = document.body;
 
     // Create container for the start screen
-    const container = document.createElement('div');
-    container.id = 'container';
-    targetElem.appendChild(container);
+    const logoContainer = document.createElement('div');
+    logoContainer.id = 'logoContainer';
+    targetElem.appendChild(logoContainer);
 
     // Create and add the logo
     const logo = document.createElement('img');
     logo.src = '../img/logo.png';
     logo.id = 'logo';
     logo.classList.add('cyanGlow');
-    container.appendChild(logo);
+    logoContainer.appendChild(logo);
 
     // Create container for the "Enter the game" button
-    const startButtonCont = document.createElement('div');
-    startButtonCont.id = 'startButtonCont';
-    targetElem.appendChild(startButtonCont);
+    const gameContainer = document.createElement('div');
+    gameContainer.id = 'gameContainer';
+    targetElem.appendChild(gameContainer);
 
     // Create and add the "Enter the game" button
     const enterGame = document.createElement('button');
@@ -26,7 +26,7 @@ function startScreen() {
     enterGame.id = 'enterGameButton';
     enterGame.classList.add('hide');
 
-    startButtonCont.appendChild(enterGame);
+    gameContainer.appendChild(enterGame);
 
     // Add the 'show' class with a transition when the DOM is loaded
     document.addEventListener('DOMContentLoaded', function () {
@@ -42,7 +42,7 @@ function startScreen() {
 
 function selectGame() {
     setTimeout(() => {
-        const targetElem = document.getElementById('startButtonCont');
+        const targetElem = document.getElementById('gameContainer');
         targetElem.innerHTML = '';
 
         // Create and add the "New game" Form
@@ -110,7 +110,7 @@ async function addPlayers() {
         `http://127.0.0.2:3000/get_saveGame/${gameNameRequest}`);
     const jsonData = await gameNameResponse.json();
     console.log(jsonData);
-    // if saved game not found makes new game and updates startButtonCont
+    // if saved game not found makes new game and updates gameContainer
 
     if (jsonData.gameName == 'not found') {
 
@@ -118,12 +118,12 @@ async function addPlayers() {
         //if you want to add more players max player limit needed from server
         //for (jsonData.playerLimit.value);
 
-        const startButtonCont = document.getElementById('startButtonCont');
-        startButtonCont.innerHTML = '';
+        const gameContainer = document.getElementById('gameContainer');
+        gameContainer.innerHTML = '';
          const newGameForm = document.createElement('form');
         newGameForm.classList.add('hide')
         newGameForm.style.display = 'flex';
-        startButtonCont.appendChild(newGameForm);
+        gameContainer.appendChild(newGameForm);
 
 
         //add player name input form
@@ -144,7 +144,7 @@ async function addPlayers() {
 
         const inputButton = document.createElement('button');
         inputButton.setAttribute('type', 'submit');
-        startButtonCont.appendChild(inputButton);
+        gameContainer.appendChild(inputButton);
         inputButton.classList.add('hide');
         inputButton.id = 'addPlayer';
         inputButton.style.width = '2rem';
@@ -153,7 +153,7 @@ async function addPlayers() {
             inputButton.classList.add('show');
             newGameForm.classList.add('show')
             newGameForm.classList.add('magentaGlow');
-        }, 600);
+        }, 200);
 
         // append new player names to new save game
         const playerName1 = playerList[0];
@@ -180,7 +180,7 @@ async function addPlayers() {
 function mainGame() {
     setTimeout(() => {
 
-        const targetELem = document.getElementById('startButtonCont');
+        const targetELem = document.getElementById('gameContainer');
         targetELem.classList.add('mainGameContainer');
         // Clear the gamecontainer content
         targetELem.innerHTML = '';
@@ -189,9 +189,9 @@ function mainGame() {
         document.body.style.height = '100%';
         // kartta on 800x600 = 50remx37.5rem
         targetELem.style.width = '70rem';
-        targetELem.style.height = '47.5rem';
+        targetELem.style.height = 'auto';
         targetELem.style.border = '1px solid #19caca';
-        const targetElem = document.getElementById('startButtonCont');
+        const targetElem = document.getElementById('gameContainer');
         const mapFrame = document.createElement('div');
         mapFrame.style.width = '800';
         mapFrame.style.height = '600';
