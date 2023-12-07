@@ -312,7 +312,6 @@ def check_if_in_port(player):
         return True
     else:
         return False
-    classes.
 
 
 def bag_found(player):

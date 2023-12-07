@@ -1,19 +1,19 @@
 #from game_files import user_input_processor
-from game_files import classes
+import classes
 #from game_files import functions
 from flask import Flask, Response, Request
 import json
-import mysql.connector
+from db_connection import connection
 #from flask_cors import CORS
 
-connection = mysql.connector.connect(
+"""connection = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
     database='kadonnut_testamentti',
     user='game',
     password='pass',
     autocommit=True
-)
+) """
 
 server = Flask(__name__)
 #CORS(server)
@@ -31,12 +31,11 @@ def get_savegame(savegame):
         return response
     else:
         game_data = cursor.fetchall()
-        sql = f"SELECT * FROM player WHERE game = '{game_data[0]}'"
+        sql = f"SELECT * FROM player WHERE game = '{game_data[0][0]}'"
         cursor.execute(sql)
         players = cursor.fetchall()
         player1 = players[0]
         player2 = players[1]
-        print(players[0])
         game = classes.Game.load_game(game_data, player1, player2)
     if savegame == 'testgame':
         response_data = sql_result
@@ -63,7 +62,7 @@ def get_savegame(savegame):
 
  #   return response
 
-"""
+
 @server.route('/add_player/<gamename>/<player1>/<player2>/')
 def create_game(gamename, player1, player2):
     game = classes.Game(gamename, player1, player2)
@@ -100,6 +99,6 @@ def do_action(game_id, player_id, action, target):
 
 
 if __name__ == '__main__':
-    server.run(use_reloader=True, host='127.0.0.2', port=3000)
+    server.run(use_reloader=True, host='127.0.0.1', port=3000)
 
-    # testi ip """
+    # testi ip
