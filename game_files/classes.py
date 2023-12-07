@@ -8,24 +8,32 @@ class Game:
     players = []
     cursor = connection.cursor()
 
-    def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0):
+    def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0, game_id=0):
         self.game_name = game_name
         self.player1_name = player1_name
         self.player2_name = player2_name
         self.round_counter = round_number
         self.bag_city = bag_city
+        self.game_id = self.game_id(self.game_name)
         self.player1 = self.babymaker(self.player1_name)
         self.player2 = self.babymaker(self.player2_name)
         self.update_db()
 
-    #    self.player1 = player1
-    #    self.player2 = player2
+
+
+    def game_id(self, game_name):
+        sql = f"SELECT id FROM game WHERE name = '{game_name}'"
+        self.cursor.execute(sql)
+        result = self.cursor.fetchall()
+       # print(result[0])
+        return result
 
     def update_db(self):
         self.bag_city = self.generate_bag()
         query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
                  f" VALUES('{self.game_name}', '{self.round_counter}', '{self.bag_city}', '{self.visited}')")
         self.cursor.execute(query)
+
         for player in self.players:
             player.update_db()
 
@@ -72,6 +80,7 @@ class Player:
         self.lock_state = lock_state
         self.prizeholder = prizeholder
         self.total_dice = total_dice
+        self.game = game
 
         query = (f"INSERT INTO player (screen_name, current_pp, lockstate, prizeholder,"
                  f" total_dice, location) VALUES ('{self.player_name}', '{self.money}', '{self.lock_state}',"
@@ -95,4 +104,3 @@ class Player:
         sql = f"UPDATE player SET location = '{self.location}' WHERE id = '{self.id}'"
         Game.cursor.execute(sql)
 
-# g1 = Game("hoi", "tatti", "taavi")

@@ -21,7 +21,17 @@ CORS(server)
 
 @server.route('/get_saveGame/<savegame>')
 def get_savegame(savegame):
+    cursor = connection.cursor()
     sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}}
+    sql = f"SELECT name FROM game WHERE name = '{savegame}'"
+    cursor.execute(sql)
+    if cursor.rowcount == 0:
+        response_data = {"gameName": None}
+        response = Response(response=json.dumps(response_data), status=200, mimetype='application/json')
+        return response
+    else:
+        game_data = cursor.fetchall()
+        sql = f"SELECT * FROM player WHERE game = '{functions.id_to_name()}'"
     if savegame == 'testgame':
         response_data = sql_result
         status_code = 200
@@ -30,9 +40,7 @@ def get_savegame(savegame):
 
 
     else:
-        response_data = {"gameName": None}
-        response = Response(response=json.dumps(response_data), status=200, mimetype='application/json')
-        return response
+
 
     # '''cursor = connection.cursor()
     # cursor.execute(f"select name, playerName from savedGames where name = '{savegame}'")
