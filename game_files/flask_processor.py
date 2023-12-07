@@ -52,7 +52,6 @@ def input_processor(game_name, player, action, target):
     elif action == "work":
         user_input_processor.work("do", player)
 
-current_player = classes.g1.players[(round_number-1) % 2]
 
 player_selector(1)
 id_to_name(1)
