@@ -75,15 +75,8 @@ class Game:
         self.visited = game_data[0][4]
         self.player1 = Player(player1[2], player1[7])
         self.player2 = Player(player2[2], player1[7])
-
-    def set_player_data(self, data):
-        self.player1.id = data[0]
-        self.player1.player_name = data[1]
-        self.player1.
-
-
-
-
+        self.player1.set_player_data(player1)
+        self.player2.set_player_data(player2)
 
 
 class Player:
@@ -120,4 +113,13 @@ class Player:
         sql = f"UPDATE player SET location = '{self.location}' WHERE id = '{self.id}'"
         Game.cursor.execute(sql)
 
-
+    def set_player_data(self, data):
+        self.id = data[0]
+        self.player_name = data[1]
+        self.money = data[2]
+        self.lock_state = data[3]
+        self.prizeholder = data[4]
+        self.total_dice = [5]
+        self.location = data[6]
+        self.game_id = data[7]
+        Game.players.append(self)
