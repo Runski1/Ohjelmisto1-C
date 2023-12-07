@@ -29,7 +29,7 @@ while True:
                     choice = input("\nWhat would you like to do: ")
                     turn = user_input_processor(choice, current_player)
                 add_to_round_counter()
-                classes.g1.add_to_db()
+                classes.g1.update_db()
                 current_player.update_db()
             if is_lock != 0:
                 printer(current_player)
@@ -39,9 +39,9 @@ while True:
                     exit()
                 lock_reduce(current_player)
                 add_to_round_counter()
-                classes.g1.add_to_db()
+                classes.g1.update_db()
                 current_player.update_db()
         if turn_skipper:
             add_to_round_counter()
-            classes.g1.add_to_db()
+            classes.g1.update_db()
             current_player.update_db()

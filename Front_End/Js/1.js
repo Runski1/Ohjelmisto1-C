@@ -117,12 +117,17 @@ async function addPlayers() {
         //add new player form for information max player (ammount:4)!!!!
         //if you want to add more players max player limit needed from server
         //for (jsonData.playerLimit.value);
-        const playerList = [];
-        const targetElem = document.getElementById('newGameForm');
 
-        targetElem.innerHTML = '';
-        targetElem.style.display = 'flex';
+        const startButtonCont = document.getElementById('startButtonCont');
+        startButtonCont.innerHTML = '';
+         const newGameForm = document.createElement('form');
+        newGameForm.classList.add('hide')
+        newGameForm.style.display = 'flex';
+        startButtonCont.appendChild(newGameForm);
+
+
         //add player name input form
+        const playerList = [];
         for (let i = 0; i < 2; i++) {
 
             // Create input field
@@ -131,36 +136,39 @@ async function addPlayers() {
             inputNewPlayer.setAttribute('type', 'text');
             inputNewPlayer.setAttribute('id', `player${i + 1}`);
             inputNewPlayer.classList.add('form');
-            //inputNewPlayer.classList.add('hide');
             inputNewPlayer.placeholder = `Player ${i + 1}`;
-            targetElem.appendChild(inputNewPlayer);
+            newGameForm.appendChild(inputNewPlayer);
             playerList.push(inputNewPlayer);
-
         }
         // adds submit button to player name form
 
         const inputButton = document.createElement('button');
         inputButton.setAttribute('type', 'submit');
-        gameName.appendChild(inputButton);
-        //inputButton.classList.add('hide');
-        inputButton.id = 'selectGame';
+        startButtonCont.appendChild(inputButton);
+        inputButton.classList.add('hide');
+        inputButton.id = 'addPlayer';
         inputButton.style.width = '2rem';
         inputButton.innerText = '>';
         setTimeout(() => {
-            gameName.classList.add('show');
-            gameName.classList.add('magentaGlow');
+            inputButton.classList.add('show');
+            newGameForm.classList.add('show')
+            newGameForm.classList.add('magentaGlow');
         }, 600);
 
         // append new player names to new save game
         const playerName1 = playerList[0];
         const playerName2 = playerList[1];
-        const playerNameResponse = await fetch(
-            `http://127.0.0.2:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
-        const jsonData = await playerNameResponse.json();
+        const addPlayerResponse = await fetch(
+            `http://127.0.0.2:3000//add_player/${gameNameRequest}/${playerName1}/${playerName2}`);
+        const jsonData = await addPlayerResponse.json();
         console.log(jsonData);
-        mainGame();
+        document.getElementById('addPlayer').addEventListener('click', mainGame);
+
         /*********************** MAINGAME STARTS FROM HERE**********************/
-    } else {
+    }
+
+
+    else {
         document.getElementById('selectGame').addEventListener('click', mainGame);
     }
 }
