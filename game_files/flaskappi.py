@@ -1,19 +1,19 @@
-from game_files import user_input_processor
-from game_files import classes
-from game_files import functions
+#from game_files import user_input_processor
+import classes
+#from game_files import functions
 from flask import Flask, Response, Request
 import json
-import mysql.connector
+from db_connection import connection
 #from flask_cors import CORS
 
-connection = mysql.connector.connect(
+"""connection = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
     database='kadonnut_testamentti',
     user='game',
     password='pass',
     autocommit=True
-)
+) """
 
 server = Flask(__name__)
 #CORS(server)
@@ -31,18 +31,21 @@ def get_savegame(savegame):
         return response
     else:
         game_data = cursor.fetchall()
-        sql = f"SELECT * FROM player WHERE game = '{game_data[0]}'"
+        sql = f"SELECT * FROM player WHERE game = '{game_data[0][0]}'"
         cursor.execute(sql)
         players = cursor.fetchall()
         player1 = players[0]
         player2 = players[1]
-        print(players[0])
         game = classes.Game.load_game(game_data, player1, player2)
     if savegame == 'testgame':
         response_data = sql_result
         status_code = 200
 
-    # else:
+
+
+
+  #  else:
+
 
     # '''cursor = connection.cursor()
     # cursor.execute(f"select name, playerName from savedGames where name = '{savegame}'")
@@ -72,26 +75,30 @@ def create_game(gamename, player1, player2):
 def do_action(game_id, player_id, action, target):
     cursor = connection.cursor()
     # getting the correct player
+
     cursor.execute(f"SELECT * FROM player WHERE (game={game_id} AND id={player_id})")
-    player_data = cursor.fetchone()
-    cursor.execute(f"SELECT name FROM game WHERE id = '{game_id}'")
-    game = cursor.fetchone()
+    player_data = cursor.fetchall()
+
+    # muunnetaan target cityn id nimeksi
+    city_name = functions.id_to_name(target)
+
+    # tarkistetaan on pelaajalla rahaa matkaan
 
     if action == "hike":
-        functions.hitchhike(target, game_id, player_data)
+        user_input_processor.travel_hitchhike(city_name, player_id)
         return False
     elif action == "sail":
-        functions.sail(target, game_id, player_data)
+        user_input_processor.travel_sail(city_name, player_id)
         return False
     elif action == "fly":
-        functions.fly(target, game_id, player_data)
+        user_input_processor.travel_fly(city_name, player_id)
         return False
     elif action == "work":
-        functions.work("do", player_id)
+        user_input_processor.work("do", player_id)
         return False
 
 
 if __name__ == '__main__':
-    server.run(use_reloader=True, host='127.0.0.2', port=3000)
+    server.run(use_reloader=True, host='127.0.0.1', port=3000)
 
     # testi ip

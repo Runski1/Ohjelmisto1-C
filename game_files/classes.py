@@ -1,12 +1,12 @@
 import random
-from db_connection import connection
+import db_connection
 import json
 
 
 class Game:
     visited = []
     players = []
-    cursor = connection.cursor()
+    cursor = db_connection.connection.cursor()
 
     def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0):
         self.game_name = game_name
@@ -68,13 +68,17 @@ class Game:
         return game_json
 
     def load_game(self, game_data, player1, player2):
-        self.game_id = game_data[0]
-        self.game_name = game_data[1]
-        self.round_counter = game_data[2]
-        self.bag_city = game_data[3]
-        self.visited = game_data[4]
-        self.player1 = Player.load_player(player1)
-        self.player2 = Player.load_player(player2)
+        self.game_id = game_data[0][0]
+        self.game_name = game_data[0][1]
+        self.round_counter = game_data[0][2]
+        self.bag_city = game_data[0][3]
+        self.visited = game_data[0][4]
+        self.player1 = Player(player1[2], player1[7])
+        self.player2 = Player(player2[2], player1[7])
+
+
+
+
 
 
 class Player:
@@ -111,14 +115,3 @@ class Player:
         sql = f"UPDATE player SET location = '{self.location}' WHERE id = '{self.id}'"
         Game.cursor.execute(sql)
 
-    def load_player(self, player_data):
-        self.id = player_data[0]
-        self.player_name = player_data[1]
-        self.money = player_data[2]
-        self.lock_state = player_data[3]
-        self.prizeholder = player_data[4]
-        self.total_dice = player_data[5]
-        self.location = player_data[6]
-        self.game_id = player_data[7]
-        Game.players.append(self)
-        return self
