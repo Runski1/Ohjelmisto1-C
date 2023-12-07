@@ -1,6 +1,6 @@
 #from game_files import user_input_processor
 import classes
-#from game_files import functions
+import functions
 from flask import Flask, Response, Request
 import json
 from db_connection import connection
@@ -75,27 +75,23 @@ def create_game(gamename, player1, player2):
 def do_action(game_id, player_id, action, target):
     cursor = connection.cursor()
     # getting the correct player
-
     cursor.execute(f"SELECT * FROM player WHERE (game={game_id} AND id={player_id})")
-    player_data = cursor.fetchall()
-
-    # muunnetaan target cityn id nimeksi
-    city_name = functions.id_to_name(target)
-
-    # tarkistetaan on pelaajalla rahaa matkaan
+    player_data = cursor.fetchone()
+    cursor.execute(f"SELECT name FROM game WHERE id = '{game_id}'")
+    game = cursor.fetchone()
 
     if action == "hike":
-        user_input_processor.travel_hitchhike(city_name, player_id)
-        return False
+        functions.hitchhike(target, game_id, player_data)
+        return classes.game.json_response()
     elif action == "sail":
-        user_input_processor.travel_sail(city_name, player_id)
-        return False
+        functions.sail(target, game_id, player_data)
+        return classes.game.json_response()
     elif action == "fly":
-        user_input_processor.travel_fly(city_name, player_id)
-        return False
+        functions.fly(target, game_id, player_data)
+        return classes.game.json_response()
     elif action == "work":
-        user_input_processor.work("do", player_id)
-        return False
+        functions.work("do", player_id)
+        return classes.game.json_response()
 
 
 if __name__ == '__main__':
