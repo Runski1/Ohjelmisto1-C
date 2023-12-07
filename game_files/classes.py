@@ -19,13 +19,11 @@ class Game:
         self.player2 = self.babymaker(self.player2_name, self.game_id)
         self.update_db()
 
-
-
     def get_game_id(self, game_name):
         sql = f"SELECT id FROM game WHERE name = '{game_name}'"
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
-       # print(result[0])
+        # print(result[0])
         return result[0]
 
     def update_db(self):
@@ -69,6 +67,15 @@ class Game:
         game_json = json.dumps(game_status)
         return game_json
 
+    def load_game(self, game_data, player1, player2):
+        self.game_id = game_data[0]
+        self.game_name = game_data[1]
+        self.round_counter = game_data[2]
+        self.bag_city = game_data[3]
+        self.visited = game_data[4]
+        self.player1 = Player.load_player(player1)
+        self.player2 = Player.load_player(player2)
+
 
 class Player:
 
@@ -104,3 +111,14 @@ class Player:
         sql = f"UPDATE player SET location = '{self.location}' WHERE id = '{self.id}'"
         Game.cursor.execute(sql)
 
+    def load_player(self, player_data):
+        self.id = player_data[0]
+        self.player_name = player_data[1]
+        self.money = player_data[2]
+        self.lock_state = player_data[3]
+        self.prizeholder = player_data[4]
+        self.total_dice = player_data[5]
+        self.location = player_data[6]
+        self.game_id = player_data[7]
+        Game.players.append(self)
+        return self

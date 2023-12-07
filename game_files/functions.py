@@ -25,31 +25,31 @@ def dice_roll():
     return dice_total
 
 
-def get_current_pp(player_id):
-    query = f"SELECT current_pp FROM player WHERE id='{player_id}'"
+def get_current_pp(game_id, player_id):
+    query = f"SELECT current_pp FROM player WHERE id={player_id} AND game = {game_id}"
     cursor.execute(query)
     result = cursor.fetchone()
     current_pp = result[0]  # queryn tulos tuplesta ulos
     return current_pp  # type(current_pp)=int
 
 
-def add_pp(change_amount, player_id):
-    current_pp = get_current_pp(player_id)  # int
+def add_pp(change_amount, game_id, player_id):
+    current_pp = get_current_pp(game_id, player_id)  # int
     new_pp = current_pp + change_amount  # int
     if new_pp > 0:  # tarkistus ettei eventti voi viedä poletteja nollan alapuolelle
-        query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}'"  # f-string koska int
+        query = f"UPDATE player SET current_pp = {new_pp} WHERE id = {player_id} AND game = {game_id}"  # f-string koska int
         cursor.execute(query)
 
     else:
-        sql = f"UPDATE player SET current_pp = 0 WHERE id = '{player_id}'"
+        sql = f"UPDATE player SET current_pp = 0 WHERE id = {player_id} AND game = {game_id}"
         cursor.execute(sql)
     return
 
 
-def remove_pp(change_amount, player_id):
-    current_pp = get_current_pp(player_id)
+def remove_pp(change_amount, game_id, player_id):
+    current_pp = get_current_pp(game_id, player_id)
     new_pp = current_pp - change_amount
-    query = f"UPDATE player SET current_pp = '{new_pp}' WHERE id='{player_id}'"
+    query = f"UPDATE player SET current_pp = {new_pp} WHERE id={player_id} AND game = {game_id}"
     cursor.execute(query)
     return
 
@@ -81,8 +81,8 @@ def get_location(player_id):
     return location  # type(location)=str"""
 
 
-def set_location(new_location, player_id):  # new location, player id tulee stringinä!
-    sql = "UPDATE player SET location = '" + new_location + "' WHERE player.id = '" + player_id + "'"
+def set_location(new_location, game_id, player_id):  # new location, player id tulee stringinä!
+    sql = f"UPDATE player SET location = {new_location} WHERE id = {player_id} AND game = {game_id}"
     cursor.execute(sql)
 
 
@@ -247,11 +247,11 @@ def item_randomizer():
     return item_name, int(item_value)  # Nämä ovat n. 95% pelkkää arvotonta paskaa
 
 
-def determine_travel_lock_amount(distance, travel_type, player_id):
+def determine_travel_lock_amount(distance, travel_type, game_id, player_id):
     if travel_type == "hike":
         travel_lock_amount = 999
         required_dice = int(distance) * float(config.get('config', 'HikeDistanceMultiplier'))
-        sql = f"UPDATE player SET total_dice = '{required_dice}' WHERE id = {int(player_id)}"
+        sql = f"UPDATE player SET total_dice = '{required_dice}' WHERE id = {int(player_id)} AND game = {game_id}"
         cursor.execute(sql)
     else:  # travel_type == "sail":
         travel_lock_amount = int(floor(int(distance) * float(config.get('config', 'BoatDistanceMultiplier'))))
@@ -259,8 +259,8 @@ def determine_travel_lock_amount(distance, travel_type, player_id):
     return travel_lock_amount
 
 
-def set_lockstate(distance, player_id, counter, travel_type):
-    query = f"SELECT lockstate FROM player WHERE id = '{player_id}'"
+def set_lockstate(distance, game_id, player_id, counter, travel_type):
+    query = f"SELECT lockstate FROM player WHERE id = {player_id} AND game = {game_id}"
     cursor.execute(query)
     result = cursor.fetchone()
     lock_amount = result[0]
@@ -268,7 +268,7 @@ def set_lockstate(distance, player_id, counter, travel_type):
         lock_amount = determine_travel_lock_amount(distance, travel_type, player_id)
     if counter != 0:
         lock_amount = int(lock_amount) + int(counter)
-    query = f"UPDATE player SET lockstate = '{lock_amount}' WHERE id = '{player_id}'"
+    query = f"UPDATE player SET lockstate = {lock_amount} WHERE id = {player_id} AND game = {game_id}"
     cursor.execute(query)
     return
 
@@ -312,6 +312,7 @@ def check_if_in_port(player):
         return True
     else:
         return False
+    classes.
 
 
 def bag_found(player):
@@ -369,29 +370,55 @@ def id_to_name(city_id):
     result = cursor.fetchone()
     return result[0]
 
-def player_loc_id_to_coords(player_data):
-    return
-
 def city_id_to_coords(tgt_id):
     sql = f"SELECT latitude_deg, longitude_deg FROM city WHERE id={tgt_id}"
     cursor.execute(sql)
     coords = cursor.fetchone()
     return coords
-def has_pp_checker(player_data, tgt_id, travel_mode):
-    target_location = city_id_to_coords(tgt_id)
-    player_location = city_id_to_coords(player_data[6])
-    price_multiplier_dict = {
-        "fly": config.get('config', 'FlyPriceMultiplier'),  # HUOM Nämä config-filestä tuodut on stringejä!
-        "sail": config.get('config', 'BoatPriceMultiplier')
-    }
-    price_multiplier = float(price_multiplier_dict[travel_mode])
-    player_pp = player_data[2]
-    distance_from_player = floor(geodesic(player_location, ((target_location[0]), (target_location[1]))).km)
-    price = distance_from_player * price_multiplier
-    if tgt_id != player_data[6] and price <= player_pp:
-        return True
+
+def price_calc(distance, travel_mode):
+    if travel_mode == 'sail':
+        price = distance * float(config.get('config', 'BoatPriceMultiplier'))
     else:
-        return False
+        price = distance * float(config.get('config', 'FlyPriceMultiplier'))
+    return price
+
+def hitchhike(target_id, game_id, player):
+    player_id = player[0]
+    # distance calc
+    player_coords = city_id_to_coords(player[6])
+    tgt_coords = city_id_to_coords(target_id)
+    distance = floor(geodesic(player_coords, tgt_coords).km)
+    # liikkuminen ja lockstate
+    set_location(target_id, game_id, player_id)
+    set_lockstate(distance, game_id, player_id, 0, "hike")
+
+def sail(target_id, game_id, player):
+    player_id = player[0]
+    # distance ja hinta calc
+    player_coords = city_id_to_coords(player[6])
+    tgt_coords = city_id_to_coords(target_id)
+    distance = floor(geodesic(player_coords, tgt_coords).km)
+    price = price_calc(distance, 'sail')
+    # liikkuminen, lockstate ja hinta
+    set_location(target_id, game_id, player_id)
+    remove_pp(price, game_id, player_id)
+    set_lockstate(distance, game_id, player_id, 0, "sail")
+
+def fly(target_id, game_id, player):
+    player_id = player[0]
+    # distance ja hinta calc
+    player_coords = city_id_to_coords(player[6])
+    tgt_coords = city_id_to_coords(target_id)
+    distance = floor(geodesic(player_coords, tgt_coords).km)
+    price = price_calc(distance, 'fly')
+    # liikkuminen, lockstate ja hinta
+    set_location(target_id, game_id, player_id)
+    remove_pp(price, game_id, player_id)
+
+def work(game_id, player_id):
+    salary = random.randint(100, 500)
+    add_pp(salary, game_id, player_id)
 
 if __name__ == "__main__":
     pass
