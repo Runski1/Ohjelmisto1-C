@@ -19,16 +19,17 @@ server = Flask(__name__)
 CORS(server)
 
 savedgames = {}
-@server.route('/get_saveGame/<savegame>')
-def get_savegame(savegame):
-    sql_result = {"gameName": 'testgame', 'players': {'player1': 'ville', 'player2': 'jari'}}
-    if savegame == sql_result["gameName"]:
-        response_data = sql_result
+@server.route('/get_saveGame/<gameName>/')
+def get_savegame(gameName):
+    print(f"Received request for game: {gameName}")
+    if gameName in savedgames:
+        # Return only player data for the requested game
+        response_data = savedgames[gameName]
         status_code = 200
-
     else:
         response_data = {"gameName": "not found"}
         status_code = 200
+
     response_data = json.dumps(response_data)
     response = Response(response=response_data, status=status_code, mimetype="application/json")
 
@@ -39,7 +40,7 @@ def get_savegame(savegame):
 def create_game(gamename, player1, player2):
 
     savedgames[gamename] = {'p1': player1, 'p2': player2}
-    response_data = {'savedgame':gamename,'p1': player1, 'p2': player2}
+    response_data = savedgames
     status_code = 200
 
     response_data = json.dumps(response_data)

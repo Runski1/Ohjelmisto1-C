@@ -188,3 +188,11 @@ button.submit {
     cursor: pointer;
     border: 0.01rem solid rgba(25, 202, 202, 0.5);
 }
+.map{
+    width : 800px;
+    height : 600px;
+}
+.mainGame{
+   width : 70rem;
+    height : auto;
+}
