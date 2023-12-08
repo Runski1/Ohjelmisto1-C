@@ -15,25 +15,24 @@ connection = mysql.connector.connect(
 )
 
 server = Flask(__name__)
+cursor = connection.cursor()
 
 
 @server.route('/get_saveGame/<savegame>')
 def get_savegame(savegame):
-    cursor = connection.cursor()
     sql = f"SELECT * FROM game WHERE name = '{savegame}'"
     cursor.execute(sql)
+    game_data = cursor.fetchall()
 
     if cursor.rowcount > 0:
-        game_data = cursor.fetchall()
         sql = f"SELECT * FROM player WHERE game = '{game_data[0][0]}'"
         cursor.execute(sql)
         players = cursor.fetchall()
         player1 = players[0]
         player2 = players[1]
         game = classes.Game(savegame, player1[1], player2[1])
-        print(game.players)
         response_data = game.json_response()
-        response = Response(response=json.dumps(response_data), status=200, mimetype='application/json')
+        response = Response(response=json.dumps(response_data, default=vars), status=200, mimetype='application/json')
         return response
 
     elif cursor.rowcount == 0:
@@ -66,13 +65,11 @@ def create_game(gamename, player1, player2):
     game = classes.Game(gamename, player1, player2)
     data = game.json_response()
     json_data = json.dumps(data, default=vars)
- #   connection.commit()
     return json_data
 
 
 @server.route('/action/<game_id>/<player_id>/<action>/<target>')
 def do_action(game_id, player_id, action, target):
-    cursor = connection.cursor()
     # getting the correct player
     cursor.execute(f"SELECT * FROM player WHERE game={game_id} AND id={player_id}")
     player_data = cursor.fetchone()
@@ -91,7 +88,6 @@ def do_action(game_id, player_id, action, target):
         functions.search(game_id, player_data)
         return game_name.json_response()
     elif action == "work":
-        print()
         functions.work(game_id, player_id)
         functions.search(game_id, player_data)
         return game_name.json_response()
