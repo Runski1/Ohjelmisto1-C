@@ -5,19 +5,21 @@ import json
 
 class Game:
     cursor = db_connection.connection.cursor()
+    visited = []
+    players = []
 
     def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0):
         self.game_name = game_name
         self.player1_name = player1_name
         self.player2_name = player2_name
         self.round_counter = round_number
-        self.players = []
+        self.players = Game.players
         self.bag_city = bag_city
         self.update_db()
         self.game_id = self.get_game_id(self.game_name)
         self.babymaker(self.player1_name, self.game_id)
         self.babymaker(self.player2_name, self.game_id)
-        self.visited = []
+        self.visited = Game.visited
         self.update_db()
 
     def get_game_id(self, game_name):  # Pelin id saaminen koska olio luodaan ennen tietokantaan tallennusta
@@ -80,6 +82,7 @@ class Game:
         self.players.append(p1)
         p2 = game.player2.set_player_data(player2)
         self.players.append(p2)
+        print(self.players[0].player_name)
         return self.json_response()
 
 
@@ -126,6 +129,3 @@ class Player:
         self.location = data[6]
         self.game_id = data[7]
         return self
-
-
-g3 = Game("peli2", "alan", "turing")

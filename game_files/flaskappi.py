@@ -65,7 +65,7 @@ def create_game(gamename, player1, player2):
 def do_action(game_id, player_id, action, target):
     cursor = connection.cursor()
     # getting the correct player
-    cursor.execute(f"SELECT * FROM player WHERE (game={game_id} AND id={player_id})")
+    cursor.execute(f"SELECT * FROM player WHERE game={game_id} AND id={player_id}")
     player_data = cursor.fetchone()
     game_name = functions.get_game_name(game_id)
 
