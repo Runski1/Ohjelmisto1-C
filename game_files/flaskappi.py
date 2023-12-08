@@ -59,6 +59,7 @@ def create_game(gamename, player1, player2):
     game.update_db()
     json_data = game.json_response()
     connection.commit()
+    return json_data
 
 
 @server.route('/action/<game_id>/<player_id>/<action>/<target>')
