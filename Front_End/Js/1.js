@@ -221,7 +221,7 @@ function mainGame(gameName) {
     flyButton.innerText = 'fly';
     hikeButton.innerText = 'hike';
     sailButton.innerText = 'sail';
-    searchButton.innerText = 'work';
+    searchButton.innerHTML = '$&nbsp;&nbsp;&nbsp;work&nbsp;&nbsp;&nbsp;$';
 
     nameCont.appendChild(player1Name);
     nameCont.appendChild(player2Name);
