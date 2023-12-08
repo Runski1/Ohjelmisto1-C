@@ -163,7 +163,7 @@ button.submit {
 
 
 .actionButtons {
-     font-family: 'Chakra Petch-BOLD';
+
     position: relative;
     background-color: rgba(0, 0, 0, 0.7);
     font-size: 0.8rem;
@@ -183,9 +183,9 @@ button.submit {
      font-family: 'Chakra Petch-BOLD';
      position: relative;
     background-color: rgba(0, 0, 0, 0.7);
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     color: rgba(0, 255, 255);
-    padding: 1rem;
+    padding: 0.6rem;
     width: 19.95rem;
     text-align: center;
     transition-duration: 0.4s;
@@ -201,4 +201,8 @@ button.submit {
 .mainGame{
    width : 70rem;
     height : auto;
+}
+.icon{
+    width: 1.2rem;
+    height: 1.2rem;
 }
