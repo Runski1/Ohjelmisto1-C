@@ -235,7 +235,7 @@ function mainGame(gameName) {
         plane.classList.add('icon')
         walk.classList.add('icon')
         ship.classList.add('icon')
-        searchButton.innerHTML = '$ work $';
+        searchButton.innerHTML = '$&ensp;&ensp;&ensp;&ensp;work&ensp;&ensp;&ensp;&ensp;$';
 
         nameCont.appendChild(player1Name);
         nameCont.appendChild(player2Name);
