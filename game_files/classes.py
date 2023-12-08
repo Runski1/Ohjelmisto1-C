@@ -15,6 +15,7 @@ class Game:
         self.round_counter = round_number
         self.players = Game.players
         self.bag_city = bag_city
+        self.generate_bag()
         self.update_db()
         self.game_id = self.get_game_id(self.game_name)
         self.babymaker(self.player1_name, self.game_id)
@@ -29,7 +30,6 @@ class Game:
         return result[0][0]
 
     def update_db(self):  # Datan tallennus tietokantaan
-        self.bag_city = self.generate_bag()
         visited_json = json.dumps(self.visited)
         query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
                  f" VALUES('{self.game_name}', '{self.round_counter}', '{self.bag_city}', '{visited_json}')")
@@ -50,7 +50,7 @@ class Game:
         result = Game.cursor.fetchall()
         for city in result:
             city_id.append(city[0])
-        return random.choice(city_id)
+        self.bag_city = random.choice(city_id)
 
     def json_response(self):
         game_status = {
