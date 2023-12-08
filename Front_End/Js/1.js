@@ -93,59 +93,56 @@ async function selectGame() {
 
         if (savedGameData.gameName === 'not found') {
           setTimeout(() => {
-          // If the saved game is not found, create a new game and update gameContainer
+            // If the saved game is not found, create a new game and update gameContainer
 
-          const gameContainer = document.getElementById('gameContainer');
-          gameContainer.innerHTML = '';
+            const gameContainer = document.getElementById('gameContainer');
+            gameContainer.innerHTML = '';
 
-          const newGameForm = document.createElement('form');
-          newGameForm.classList.add('hide');
-          newGameForm.style.display = 'flex';
-          gameContainer.appendChild(newGameForm);
+            const newGameForm = document.createElement('form');
+            newGameForm.classList.add('hide');
+            newGameForm.style.display = 'flex';
+            gameContainer.appendChild(newGameForm);
 
-          const playerList = [];
+            const playerList = [];
 
-          for (let i = 0; i < 2; i++) {
-            const inputNewPlayer = document.createElement('input');
-            inputNewPlayer.type = 'text';
-            inputNewPlayer.id = `player${i + 1}`;
-            inputNewPlayer.classList.add('form');
-            inputNewPlayer.placeholder = `Player ${i + 1}`;
-            newGameForm.appendChild(inputNewPlayer);
-            playerList.push(inputNewPlayer);
-          }
+            for (let i = 0; i < 2; i++) {
+              const inputNewPlayer = document.createElement('input');
+              inputNewPlayer.type = 'text';
+              inputNewPlayer.id = `player${i + 1}`;
+              inputNewPlayer.classList.add('form');
+              inputNewPlayer.placeholder = `Player ${i + 1}`;
+              newGameForm.appendChild(inputNewPlayer);
+              playerList.push(inputNewPlayer);
+            }
 
-          const inputButton = document.createElement('button');
-          inputButton.type = 'submit';
-          gameContainer.appendChild(inputButton);
-          inputButton.classList.add('hide');
-          inputButton.id = 'addPlayer';
+            const inputButton = document.createElement('button');
+            inputButton.type = 'submit';
+            gameContainer.appendChild(inputButton);
+            inputButton.classList.add('hide');
+            inputButton.id = 'addPlayer';
 
-          inputButton.style.width = '2rem';
-          inputButton.innerText = '>';
+            inputButton.style.width = '2rem';
+            inputButton.innerText = '>';
 
-          setTimeout(() => {
-            inputButton.classList.add('show');
-            newGameForm.classList.add('show');
-            newGameForm.classList.add('magentaGlow');
-          }, 200);
+            setTimeout(() => {
+              inputButton.classList.add('show');
+              newGameForm.classList.add('show');
+              newGameForm.classList.add('magentaGlow');
+            }, 200);
 
-          inputButton.addEventListener('click', async function(event) {
-            event.preventDefault();
-            const playerName1 = document.getElementById('player1').value;
-            const playerName2 = document.getElementById('player2').value;
-            // add players to savegame
-            await playerSaveData(gameName, playerName1, playerName2);
-            await mainGame(gameName);
+            inputButton.addEventListener('click', async function(event) {
+              event.preventDefault();
+              const playerName1 = document.getElementById('player1').value;
+              const playerName2 = document.getElementById('player2').value;
+              // add players to savegame
+              await playerSaveData(gameName, playerName1, playerName2);
+              await mainGame(gameName);
 
-          });}, 400);
+            });
+          }, 400);
         } else {
-          // If the saved game is found, add an event listener for the "selectGame" button
-          document.getElementById('selectGame').
-              addEventListener('click', async function(event) {
-                event.preventDefault();
-                await mainGame(gameName);
-              });
+
+          await mainGame(gameName);
 
         }
 
