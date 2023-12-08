@@ -3,7 +3,16 @@ import classes
 import functions
 from flask import Flask, Response
 import json
-from db_connection import connection
+import mysql.connector
+
+connection = mysql.connector.connect(
+    host='127.0.0.1',
+    port=3306,
+    database='kadonnut_testamentti',
+    user='game',
+    password='pass',
+    autocommit=True
+)
 
 server = Flask(__name__)
 
@@ -55,9 +64,9 @@ def get_savegame(savegame):
 @server.route('/add_player/<gamename>/<player1>/<player2>/')
 def create_game(gamename, player1, player2):
     game = classes.Game(gamename, player1, player2)
-    game.update_db()
-    json_data = game.json_response()
-    connection.commit()
+    data = game.json_response()
+    json_data = json.dumps(data, default=vars)
+ #   connection.commit()
     return json_data
 
 

@@ -5,7 +5,7 @@ import json
 
 class Game:
     cursor = db_connection.connection.cursor()
-    visited = []
+    visited = ["16"]
     players = []
 
     def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0):
@@ -15,13 +15,15 @@ class Game:
         self.round_counter = round_number
         self.players = Game.players
         self.bag_city = bag_city
+        self.babymaker(self.player1_name)
+        self.babymaker(self.player2_name)
+        self.visited = Game.visited
         self.generate_bag()
         self.update_db()
         self.game_id = self.get_game_id(self.game_name)
-        self.babymaker(self.player1_name, self.game_id)
-        self.babymaker(self.player2_name, self.game_id)
-        self.visited = Game.visited
-        self.update_db()
+        self.players[0].game = self.game_id
+        self.players[1].game = self.game_id
+        self.update_players()
 
     def get_game_id(self, game_name):  # Pelin id saaminen koska olio luodaan ennen tietokantaan tallennusta
         sql = f"SELECT id FROM game WHERE name = '{game_name}'"
@@ -34,23 +36,25 @@ class Game:
         query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
                  f" VALUES('{self.game_name}', '{self.round_counter}', '{self.bag_city}', '{visited_json}')")
         self.cursor.execute(query)
+        self.update_players()
 
+    def update_players(self):
         for player in self.players:
             player.update_db()
 
-    def babymaker(self, player, game_id):
-        baby = Player(player, game_id)
+    def babymaker(self, player):
+        baby = Player(player)
         self.players.append(baby)
         return self
 
     def generate_bag(self):
-        city_id = []
+        citys = []
         sql = f"SELECT id FROM city"
         Game.cursor.execute(sql)
         result = Game.cursor.fetchall()
         for city in result:
-            city_id.append(city[0])
-        self.bag_city = random.choice(city_id)
+            citys.append(city[0])
+        self.bag_city = random.choice(citys)
 
     def json_response(self):
         game_status = {
@@ -69,7 +73,7 @@ class Game:
 
     def load_game(self, game_data, player1, player2):  # Tallennetun pelin lataus tietokannasta
         game = Game(self.game_name, player1[1], player2[1])
-        game.game_id = game_data[0][0]
+        game.game = game_data[0][0]
         game.game_name = game_data[0][1]
         game.round_counter = game_data[0][2]
         game.bag_city = game_data[0][3]
@@ -82,13 +86,11 @@ class Game:
         self.players.append(p1)
         p2 = game.player2.set_player_data(player2)
         self.players.append(p2)
-        print(self.players[0].player_name)
         return self.json_response()
 
 
 class Player:
-
-    def __init__(self, player_name, game_id, money=2000, location=16, lock_state=0, prizeholder=0, total_dice=0):
+    def __init__(self, player_name, game_id=1, money=2000, location=16, lock_state=0, prizeholder=0, total_dice=0):
         self.player_name = player_name
         self.game_id = game_id
         self.money = money
