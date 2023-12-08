@@ -13,11 +13,8 @@ def get_savegame(savegame):
     cursor = connection.cursor()
     sql = f"SELECT * FROM game WHERE name = '{savegame}'"
     cursor.execute(sql)
-    if cursor.rowcount == 0:
-        response_data = {"gameName": None}
-        response = Response(response=json.dumps(response_data), status=200, mimetype='application/json')
-        return response
-    elif cursor.rowcount > 0:
+
+    if cursor.rowcount > 0:
         game_data = cursor.fetchall()
         sql = f"SELECT * FROM player WHERE game = '{game_data[0][0]}'"
         cursor.execute(sql)
@@ -29,6 +26,12 @@ def get_savegame(savegame):
         response_data = game.json_response()
         response = Response(response=json.dumps(response_data), status=200, mimetype='application/json')
         return response
+
+    elif cursor.rowcount == 0:
+        response_data = {"gameName": None}
+        response = Response(response=json.dumps(response_data), status=200, mimetype='application/json')
+        return response
+
 
 
 #  else:
