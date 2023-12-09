@@ -197,7 +197,8 @@ def print_available_cities(travel_mode, city_list, player_id):
     print(f"You have {get_current_pp(player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
 '''
 
-def get_cities_in_range(travel_mode, player):
+
+def get_cities_in_range(player):
     price_multiplier_dict = {
         "fly": config.get('config', 'FlyPriceMultiplier'),  # HUOM Nämä config-filestä tuodut on stringejä!
         "boat": config.get('config', 'BoatPriceMultiplier'),
@@ -208,21 +209,34 @@ def get_cities_in_range(travel_mode, player):
         "boat": config.get('config', 'MaxDistanceBoat'),
         "hike": config.get('config', 'MaxDistanceHike')
     }
-    price_multiplier = float(price_multiplier_dict[travel_mode])
-    max_distance = int(max_distance_dict[travel_mode])
-    player_location = player[8]
+    travel_modes = ["fly", "boat", "hike"]
+    sail_cities_in_range = []
+    fly_cities_in_range = []
+    hike_cities_in_range = []
+    player_location = player[6]
     cities = get_city_data()
-    player_coords = ((cities[player[8] - 1][3]), (cities[player[8] - 1][4]))
-    if travel_mode == "boat":
-        cities = get_ports(cities)
+    boat_cities = get_ports(cities)
+    player_coords = city_id_to_coords(player[6])
     player_pp = player[2]
-    cities_in_range = []
-    for city in cities:
-        distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
-        price = distance_from_player * price_multiplier
-        if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
-            cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
-    return cities_in_range
+    for mode in travel_modes:
+        price_multiplier = float(price_multiplier_dict[mode])
+        max_distance = int(max_distance_dict[mode])
+        if mode == "boat":
+            for city in boat_cities:
+                distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
+                price = distance_from_player * price_multiplier
+                if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
+                    sail_cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
+        else:
+            for city in cities:
+                distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
+                price = distance_from_player * price_multiplier
+                if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
+                    if mode == "fly":
+                        fly_cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
+                    elif mode == "hike":
+                        hike_cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
+    return hike_cities_in_range, fly_cities_in_range, sail_cities_in_range
 
 
 
@@ -326,6 +340,12 @@ def bag_found(game_id, player):
     # WIP WIP WIP
     game_name = get_game_name(game_id)
     game_inst = classes.Game.get_classes(game_name)
+
+    player_inst = classes.Player.get_players(player)
+    print(player_inst)
+    print(player_inst[0].player_name)
+    print(player_inst[0].prizeholder)
+
     query = f"SELECT COUNT(*) FROM player WHERE prizeholder = '1'"
     cursor.execute(query)
     bagman = cursor.fetchone()
@@ -485,7 +505,13 @@ def get_game_id(game_name):
     return id_tuple[0]
 
 def get_player_index(game_id, player):
-    pass
+    game_inst = classes.Game.get_classes(get_game_name(game_id))
+    print(game_inst[0].players)
+    for i in game_inst[0].players:
+        print(i)
+        if i.id == player[0]:
+            print(i)
+            return i
 
 
 if __name__ == "__main__":

@@ -79,6 +79,9 @@ def do_action(game_name, player_id, action, target):
         # functions.search(game_id, player_data)
         functions.add_to_round_counter(game_id)
         return game_inst[0].json_response()
+    elif action == "test":
+        functions.bag_found(game_id, player_data)
+        return game_inst[0].json_response()
 
 
 if __name__ == '__main__':
