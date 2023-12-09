@@ -2,7 +2,10 @@
     font-family: 'Chakra Petch';
     src: url('../Fonts/Chakra_Petch/ChakraPetch-LightItalic.ttf') format('truetype');
 }
-
+@font-face {
+    font-family: 'Chakra Petch-BOLD';
+    src: url('../Fonts/Chakra_Petch/ChakraPetch-Bold.ttf') format('truetype');
+}
 * {
     font-family: 'Chakra Petch';
 
@@ -41,6 +44,7 @@ body {
 
     flex-direction: column;
     padding: 1rem;
+    padding-bottom: 3rem;
     margin: 1rem;
     background-color: rgba(0, 0, 0, 0);
 }
@@ -62,6 +66,10 @@ body {
     /* margin-right: 6rem; */
     /* margin-left: 6rem; */
 }
+#map {
+    height:600px;
+    width: 800px;
+  }
 
 button {
 
@@ -159,6 +167,7 @@ button.submit {
 
 
 .actionButtons {
+
     position: relative;
     background-color: rgba(0, 0, 0, 0.7);
     font-size: 0.8rem;
@@ -170,21 +179,34 @@ button.submit {
     text-decoration: none;
     overflow: hidden;
     cursor: pointer;
-    border: 0.01rem solid #19caca;
+    border: 0.01rem solid rgba(68, 82, 82, 0.51);
 
 
 }
 .workButton{
+     font-family: 'Chakra Petch';
      position: relative;
     background-color: rgba(0, 0, 0, 0.7);
-    font-size: 0.8rem;
-    color: rgb(0, 255, 255);
-    padding: 1rem;
+    font-size: 1.2rem;
+    color: rgba(0, 255, 255);
+    padding: 0.5rem;
     width: 19.95rem;
     text-align: center;
     transition-duration: 0.4s;
     text-decoration: none;
     overflow: hidden;
     cursor: pointer;
-    border: 0.01rem solid #19caca;
+    border: 0.01rem solid rgba(68, 82, 82, 0.51);
+}
+.map{
+    width : 800px;
+    height : 600px;
+}
+.mainGame{
+   width : 70rem;
+    height : auto;
+}
+.icon{
+    width: 1.2rem;
+    height: 1.2rem;
 }

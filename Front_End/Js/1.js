@@ -40,7 +40,7 @@ function startScreen() {
     });
 }
 
-function selectGame() {
+async function selectGame() {
     setTimeout(() => {
         const targetElem = document.getElementById('gameContainer');
         targetElem.innerHTML = '';
@@ -48,15 +48,15 @@ function selectGame() {
         // Create and add the "New game" Form
         const newGameForm = document.createElement('form');
         newGameForm.id = 'newGameForm';
-        newGameForm.classList.add('hide')
+        newGameForm.classList.add('hide');
         targetElem.appendChild(newGameForm);
 
         // Create input field for game name
         const inputNewGame = document.createElement('input');
-        inputNewGame.setAttribute('type', 'text');
-        inputNewGame.setAttribute('id', 'gameName');
-        inputNewGame.setAttribute('name', 'gameName');
-        inputNewGame.setAttribute('action', '');
+        inputNewGame.type = 'text';
+        inputNewGame.id = 'gameName';
+        inputNewGame.name = 'gameName';
+        inputNewGame.action = '';
         inputNewGame.classList.add('form');
         inputNewGame.placeholder = 'Enter New/Saved Game Name';
 
@@ -65,7 +65,7 @@ function selectGame() {
 
         // Create submit button
         const inputButton = document.createElement('button');
-        inputButton.setAttribute('type', 'submit');
+        inputButton.type = 'submit';
         targetElem.appendChild(inputButton);
         inputButton.classList.add('hide');
         inputButton.id = 'selectGame';
@@ -74,155 +74,179 @@ function selectGame() {
 
         // Add the 'show' class with a transition
         setTimeout(() => {
-            newGameForm.classList.add('magentaGlow', 'show')
+            newGameForm.classList.add('magentaGlow', 'show');
             inputButton.classList.add('show');
-
 
             // Add event listener for "Enter" key press on the input field
             inputNewGame.addEventListener('keypress', function (event) {
-                // If the user presses the "Enter" key on the keyboard
                 if (event.key === 'Enter') {
-                    // Cancel the default action, if needed
                     event.preventDefault();
-                    // Trigger the button element with a click
                     inputButton.click();
-
                 }
             });
 
             // Add event listener for button click
-            inputButton.addEventListener('click', function (event) {
+            inputButton.addEventListener('click', async function (event) {
                 event.preventDefault();
-                addPlayers();
+                const gameName = document.getElementById('gameName').value;
+                const savedGameData = await get_saveGame(gameName);
+
+                if (savedGameData.gameName === null) {
+                    setTimeout(() => {
+                        // If the saved game is not found, create a new game and update gameContainer
+
+                        const gameContainer = document.getElementById('gameContainer');
+                        gameContainer.innerHTML = '';
+
+                        const newGameForm = document.createElement('form');
+                        newGameForm.classList.add('hide');
+                        newGameForm.style.display = 'flex';
+                        gameContainer.appendChild(newGameForm);
+
+                        const playerList = [];
+
+                        for (let i = 0; i < 2; i++) {
+                            const inputNewPlayer = document.createElement('input');
+                            inputNewPlayer.type = 'text';
+                            inputNewPlayer.id = `player${i + 1}`;
+                            inputNewPlayer.classList.add('form');
+                            inputNewPlayer.placeholder = `Player ${i + 1}`;
+                            newGameForm.appendChild(inputNewPlayer);
+                            playerList.push(inputNewPlayer);
+                        }
+
+                        const inputButton = document.createElement('button');
+                        inputButton.type = 'submit';
+                        gameContainer.appendChild(inputButton);
+                        inputButton.classList.add('hide');
+                        inputButton.id = 'addPlayer';
+
+                        inputButton.style.width = '2rem';
+                        inputButton.innerText = '>';
+
+                        setTimeout(() => {
+                            inputButton.classList.add('show');
+                            newGameForm.classList.add('show');
+                            newGameForm.classList.add('magentaGlow');
+                        }, 200);
+
+                        inputButton.addEventListener('click', async function (event) {
+                            event.preventDefault();
+                            const playerName1 = document.getElementById('player1').value;
+                            const playerName2 = document.getElementById('player2').value;
+                            // add players to savegame
+                            await playerSaveData(gameName, playerName1, playerName2);
+                            await mainGame(gameName);
+
+                        });
+                    }, 400);
+                } else {
+
+                    await mainGame(gameName);
+
+                }
+
             });
-        }, 0);
+        }, 200);
     }, 300);
 }
 
-async function addPlayers() {
-
-    // gets value of entered game name
-    const gameName = document.getElementById('gameName');
-    const gameNameRequest = gameName.value;
+async function get_saveGame(gameName) {
     // makes json request from Flask-server
 
     const gameNameResponse = await fetch(
-        `http://127.0.0.2:3000/get_saveGame/${gameNameRequest}`);
+        `http://127.0.0.2:3000/get_saveGame/${gameName}`);
     const jsonData = await gameNameResponse.json();
     console.log(jsonData);
-    // if saved game not found makes new game and updates gameContainer
-
-    if (jsonData.gameName == 'not found') {
-
-        //add new player form for information max player (ammount:4)!!!!
-        //if you want to add more players max player limit needed from server
-        //for (jsonData.playerLimit.value);
-
-        const gameContainer = document.getElementById('gameContainer');
-        gameContainer.innerHTML = '';
-        const newGameForm = document.createElement('form');
-        newGameForm.classList.add('hide')
-        newGameForm.style.display = 'flex';
-        gameContainer.appendChild(newGameForm);
-
-
-        //add player name input form
-        const playerList = [];
-        for (let i = 0; i < 2; i++) {
-
-            // Create input field
-
-            const inputNewPlayer = document.createElement('input');
-            inputNewPlayer.setAttribute('type', 'text');
-            inputNewPlayer.setAttribute('id', `player${i + 1}`);
-            inputNewPlayer.classList.add('form');
-            inputNewPlayer.placeholder = `Player ${i + 1}`;
-            newGameForm.appendChild(inputNewPlayer);
-            playerList.push(inputNewPlayer);
-        }
-        // adds submit button to player name form
-
-        const inputButton = document.createElement('button');
-        inputButton.setAttribute('type', 'submit');
-        gameContainer.appendChild(inputButton);
-        inputButton.classList.add('hide');
-        inputButton.id = 'addPlayer';
-        inputButton.style.width = '2rem';
-        inputButton.innerText = '>';
-        setTimeout(() => {
-            inputButton.classList.add('show');
-            newGameForm.classList.add('show')
-            newGameForm.classList.add('magentaGlow');
-        }, 200);
-
-        // append new player names to new save game
-        const playerName1 = playerList[0];
-        const playerName2 = playerList[1];
-        const addPlayerResponse = await fetch(
-            `http://127.0.0.2:3000//add_player/${gameNameRequest}/${playerName1}/${playerName2}`);
-        const jsonData = await addPlayerResponse.json();
-        console.log(jsonData);
-        document.getElementById('addPlayer').addEventListener('click', mainGame);
-
-        /*********************** MAINGAME STARTS FROM HERE**********************/
-    } else {
-        document.getElementById('selectGame').addEventListener('click', mainGame);
-    }
+    return jsonData;
 }
 
-/*async function playerData {
+async function playerSaveData(gameName, playerName1, playerName2) {
+    const addPlayerResponse = await fetch(
+        `http://127.0.0.2:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
+    const jsonData = await addPlayerResponse.json();
+    console.log('saved games list:', jsonData);
+    //palauttaa pelin nimen jsonData.game.game_name);
+}
 
-}*/
-
-function mainGame() {
-    setTimeout(() => {
-
-        const gameContainer = document.getElementById('gameContainer');
-        // Clear the gamecontainer content
-        gameContainer.innerHTML = '';
+function mainGame(gameName) {}  // Don't forget to replace <YOUR_ACCESS_TOKEN> by your real access token!
+const accessToken = 'c6moPjpSN7QLOooqQRQkhGSswG714yj1foLNEIYWMqAcvVJVqx1LFPDqpl9tCvet';
+const map = L.map('map').setView([48.7965913, 2.3210938], 3);
+L.tileLayer(
+  `https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=${accessToken}`, {
+    attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank" class="jawg-attrib">&copy; <b>Jawg</b>Maps</a> | <a href="https://www.openstreetmap.org/copyright" title="OpenStreetMap is open data licensed under ODbL" target="_blank" class="osm-attrib">&copy; OSM contributors</a>',
+    maxZoom: 22
+  }
+).addTo(map);TML = '';
 
         // Set the body height to 100%
         document.body.style.height = '100%';
+        gameContainer.classList.add('mainGame');
 
-        gameContainer.style.width = '70rem';
-        gameContainer.style.height = 'auto';
         //gameContainer.style.border = '1px solid #19caca';
 
         //make map // map is 800x600 = 50rem x 37.5rem
 
         const mapFrame = document.createElement('div');
-        mapFrame.style.width = '800';
-        mapFrame.style.height = '600';
         const mapImg = document.createElement('img');
         mapImg.src = '../img/placeholdermap_800x600.png';
         mapFrame.appendChild(mapImg);
         gameContainer.appendChild(mapFrame);
+        mapFrame.classList.add('map');
         mapFrame.classList.add('hide');
-        const uiCont = document.createElement('div');
-        gameContainer.appendChild(uiCont);
+        //const nameCont = document.createElement('div');
+
+        //gameContainer.appendChild(uiCont);
 
         // add player action buttons
 
         const actionButtonCont = document.createElement('div');
         gameContainer.appendChild(actionButtonCont);
+        actionButtonCont.classList.add('actionButtonCont');
+        const nameCont = document.createElement('div');
+        actionButtonCont.appendChild(nameCont);
         const flyButton = document.createElement('button');
         const hikeButton = document.createElement('button');
         const sailButton = document.createElement('button');
         const searchButton = document.createElement('button');
+        const player1Name = document.createElement('p');
+        const player2Name = document.createElement('p');
 
+
+        console.log('p1', get_saveGame(gameName).players.player1, 'p2',
+            get_saveGame(gameName).players.player2);
+
+        //player1Name.textContent = get_saveGame(gameName).p1;
+        //player2Name.textContent = get_saveGame(gameName).p2;
         flyButton.classList.add('actionButtons');
         hikeButton.classList.add('actionButtons');
         sailButton.classList.add('actionButtons');
         searchButton.classList.add('workButton');
-        flyButton.innerText = 'fly'
-        hikeButton.innerText = 'hike'
-        sailButton.innerText = 'sail'
-        searchButton.innerText = 'work'
+
+
+        const plane = document.createElement('img');
+        const walk = document.createElement('img');
+        const ship = document.createElement('img');
+
+        plane.src = '../img/plane_cyan.png';
+        walk.src = '../img/walking_cyan.png';
+        ship.src = '../img/ship_cyan.png';
+
+        flyButton.appendChild(plane);
+        hikeButton.appendChild(walk);
+        sailButton.appendChild(ship);
+
+        plane.classList.add('icon')
+        walk.classList.add('icon')
+        ship.classList.add('icon')
+        searchButton.innerHTML = '$&ensp;&ensp;&ensp;&ensp;work&ensp;&ensp;&ensp;&ensp;$';
+
+        nameCont.appendChild(player1Name);
+        nameCont.appendChild(player2Name);
         actionButtonCont.appendChild(flyButton);
         actionButtonCont.appendChild(hikeButton);
         actionButtonCont.appendChild(sailButton);
         actionButtonCont.appendChild(searchButton);
-
 
         setTimeout(() => {
             gameContainer.classList.add('lightblueGlow');
@@ -230,20 +254,21 @@ function mainGame() {
             mapFrame.classList.add('show');
 
         }, 600);
+        player1Name.classList.add('magentaGLow');
+
+        /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
+     attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+     minZoom: 0,
+     maxZoom: 22,
+     subdomains: 'abcd',
+     accessToken: '<your accessToken>'*/
     }, 600);
 
 
-    /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
-      attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      minZoom: 0,
-      maxZoom: 22,
-      subdomains: 'abcd',
-      accessToken: '<your accessToken>'*/
 }
 
 /*********************** PROGRAM STARTS FROM HERE**********************/
 startScreen();
-
 document.getElementById('enterGameButton').addEventListener('click', selectGame);
 
 //**const video_Background = document.createElement('video');
