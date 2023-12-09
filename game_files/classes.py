@@ -5,6 +5,7 @@ import json
 
 class Game:
     cursor = db_connection.connection.cursor()
+    instances = []
 
     def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0):
         self.visited = ["16"]
@@ -20,6 +21,8 @@ class Game:
         self.babymaker(self.player1_name, self.game_id)
         self.babymaker(self.player2_name, self.game_id)
         self.update_db()
+        Game.instances.append(self)
+        print(Game.instances)
 
     def get_game_id(self, game_name):  # Pelin id saaminen koska olio luodaan ennen tietokantaan tallennusta
         sql = f"SELECT id FROM game WHERE name = '{game_name}'"
@@ -71,8 +74,8 @@ class Game:
                 "visited": self.visited
             },
             "players": {
-                "player1": self.players[0],
-                "player2": self.players[1]
+                "player1": self.players[0].player_name,
+                "player2": self.players[1].player_name
             }
         }
         return game_status
@@ -93,6 +96,10 @@ class Game:
         p2 = game.player2.set_player_data(player2)
         self.players.append(p2)
         return self.json_response()
+
+    @classmethod
+    def get_classes(cls, game_name):
+        return [inst for inst in cls.instances if inst.game_name == game_name]
 
 
 class Player:

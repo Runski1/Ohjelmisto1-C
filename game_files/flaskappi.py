@@ -55,23 +55,25 @@ def do_action(game_id, player_id, action, target):
     cursor.execute(f"SELECT * FROM player WHERE game={game_id} AND id={player_id}")
     player_data = cursor.fetchone()
     game_name = functions.get_game_name(game_id)
+    game_inst = classes.Game.get_classes(game_name)
 
     if action == "hike":
         functions.hitchhike(target, game_id, player_data)
-        functions.search(game_id, player_data)
-        return game_name.json_response()
+        functions.search(game_id, player_data, target)
+        return game_inst[0].json_response()
     elif action == "sail":
         functions.sail(target, game_id, player_data)
-        functions.search(game_id, player_data)
-        return game_name.json_response()
+        functions.search(game_id, player_data, target)
+        return game_inst[0].json_response()
     elif action == "fly":
         functions.fly(target, game_id, player_data)
-        functions.search(game_id, player_data)
-        return game_name.json_response()
+        functions.search(game_id, player_data, target)
+        print(game_inst[0].json_response())
+        return game_inst[0].json_response()
     elif action == "work":
         functions.work(game_id, player_id)
-        functions.search(game_id, player_data)
-        return game_name.json_response()
+        # functions.search(game_id, player_data)
+        return game_inst[0].json_response()
 
 
 if __name__ == '__main__':
