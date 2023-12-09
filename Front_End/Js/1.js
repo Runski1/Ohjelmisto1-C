@@ -91,7 +91,7 @@ async function selectGame() {
                 const gameName = document.getElementById('gameName').value;
                 const savedGameData = await get_saveGame(gameName);
 
-                if (savedGameData.gameName === 'not found') {
+                if (savedGameData.gameName === null) {
                     setTimeout(() => {
                         // If the saved game is not found, create a new game and update gameContainer
 
@@ -165,7 +165,8 @@ async function playerSaveData(gameName, playerName1, playerName2) {
     const addPlayerResponse = await fetch(
         `http://127.0.0.2:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
     const jsonData = await addPlayerResponse.json();
-    console.log('kaikki tallennukset', jsonData);
+    console.log('saved games list:', jsonData);
+    //palauttaa pelin nimen jsonData.game.game_name);
 }
 
 function mainGame(gameName) {
@@ -207,13 +208,13 @@ function mainGame(gameName) {
         const searchButton = document.createElement('button');
         const player1Name = document.createElement('p');
         const player2Name = document.createElement('p');
-        //  getSaveGame = {'savedGame':gamename,'p1': player1, 'p2': player2}
 
-        console.log('p1', get_saveGame(gameName).p1, 'p2',
-            get_saveGame(gameName).p2);
 
-        player1Name.textContent = get_saveGame(gameName).p1;
-        player2Name.textContent = get_saveGame(gameName).p2;
+        console.log('p1', get_saveGame(gameName).players.player1, 'p2',
+            get_saveGame(gameName).players.player2);
+
+        //player1Name.textContent = get_saveGame(gameName).p1;
+        //player2Name.textContent = get_saveGame(gameName).p2;
         flyButton.classList.add('actionButtons');
         hikeButton.classList.add('actionButtons');
         sailButton.classList.add('actionButtons');
@@ -251,14 +252,16 @@ function mainGame(gameName) {
 
         }, 600);
         player1Name.classList.add('magentaGLow');
+
+        /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
+     attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+     minZoom: 0,
+     maxZoom: 22,
+     subdomains: 'abcd',
+     accessToken: '<your accessToken>'*/
     }, 600);
 
-    /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
-      attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      minZoom: 0,
-      maxZoom: 22,
-      subdomains: 'abcd',
-      accessToken: '<your accessToken>'*/
+
 }
 
 /*********************** PROGRAM STARTS FROM HERE**********************/

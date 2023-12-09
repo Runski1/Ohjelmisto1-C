@@ -2,6 +2,7 @@
 import classes
 import functions
 from flask import Flask, Response
+from flask_cors import CORS
 import json
 import mysql.connector
 
@@ -15,10 +16,11 @@ connection = mysql.connector.connect(
 )
 
 server = Flask(__name__)
+CORS(server)
 cursor = connection.cursor()
 
 
-@server.route('/get_saveGame/<savegame>')
+@server.route('/get_saveGame/<savegame>/')
 def get_savegame(savegame):
     sql = f"SELECT * FROM game WHERE name = '{savegame}'"
     cursor.execute(sql)
@@ -65,10 +67,11 @@ def create_game(gamename, player1, player2):
     game = classes.Game(gamename, player1, player2)
     data = game.json_response()
     json_data = json.dumps(data, default=vars)
+    print(json_data)
     return json_data
 
 
-@server.route('/action/<game_id>/<player_id>/<action>/<target>')
+@server.route('/action/<game_id>/<player_id>/<action>/<target>/')
 def do_action(game_id, player_id, action, target):
     # getting the correct player
     cursor.execute(f"SELECT * FROM player WHERE game={game_id} AND id={player_id}")
@@ -94,6 +97,6 @@ def do_action(game_id, player_id, action, target):
 
 
 if __name__ == '__main__':
-    server.run(use_reloader=True, host='127.0.0.1', port=3000)
+    server.run(use_reloader=True, host='127.0.0.2', port=3000)
 
     # testi ip
