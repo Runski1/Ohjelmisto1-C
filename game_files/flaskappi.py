@@ -45,7 +45,7 @@ def create_game(gamename, player1, player2):
     game = classes.Game(gamename, player1, player2)
     data = game.json_response()
     json_data = json.dumps(data, default=vars)
-    response = Response(response=json_data, status=200, mimetype='application/json')
+    response = Response(json_data, status=200, mimetype='application/json')
     return response
 
 
