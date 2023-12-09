@@ -36,19 +36,30 @@ def get_current_pp(game_id, player_id):
 
 
 def add_pp(change_amount, game_id, player_id):
+    sql = f"SELECT * FROM player WHERE game = '{game_id}' AND id = '{player_id}'"
+    cursor.execute(sql)
+    player = cursor.fetchone()
+    player_object = classes.Player.get_players(player)
     current_pp = get_current_pp(game_id, player_id)  # int
     new_pp = current_pp + change_amount  # int
     if new_pp > 0:  # tarkistus ettei eventti voi viedä poletteja nollan alapuolelle
         query = f"UPDATE player SET current_pp = {new_pp} WHERE id = {player_id} AND game = {game_id}"  # f-string koska int
         cursor.execute(query)
+        player_object[0].money += change_amount
 
     else:
         sql = f"UPDATE player SET current_pp = 0 WHERE id = {player_id} AND game = {game_id}"
         cursor.execute(sql)
+        player_object[0].money = 0
     return
 
 
 def remove_pp(change_amount, game_id, player_id):
+    sql = f"SELECT * FROM player WHERE game = '{game_id}' AND id = '{player_id}'"
+    cursor.execute(sql)
+    player = cursor.fetchone()
+    player_object = classes.Player.get_players(player)
+    player_object[0].money -= change_amount
     current_pp = get_current_pp(game_id, player_id)
     new_pp = current_pp - change_amount
     query = f"UPDATE player SET current_pp = {new_pp} WHERE id={player_id} AND game = {game_id}"
@@ -84,8 +95,12 @@ def get_location(player_id):
 
 def set_location(new_location, game_id, player_id):  # new location, player id tulee stringinä!
     sql = f"UPDATE player SET location = {new_location} WHERE id = {player_id} AND game = {game_id}"
-
     cursor.execute(sql)
+    sql = f"SELECT * FROM player WHERE game = '{game_id}' AND id = '{player_id}'"
+    cursor.execute(sql)
+    player = cursor.fetchone()
+    player_name = classes.Player.get_players(player)
+    player_name[0].location = new_location
 
 
 def set_searched(game_id, location):
