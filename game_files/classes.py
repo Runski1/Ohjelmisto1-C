@@ -5,17 +5,15 @@ import json
 
 class Game:
     cursor = db_connection.connection.cursor()
-    visited = ["16"]
-    players = []
 
     def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0):
+        self.visited = ["16"]
+        self.players = []
         self.game_name = game_name
         self.player1_name = player1_name
         self.player2_name = player2_name
         self.round_counter = round_number
-        self.players = Game.players
         self.bag_city = bag_city
-        self.visited = Game.visited
         self.generate_bag()
         self.update_db()
         self.game_id = self.get_game_id(self.game_name)

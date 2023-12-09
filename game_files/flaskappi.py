@@ -45,7 +45,8 @@ def create_game(gamename, player1, player2):
     game = classes.Game(gamename, player1, player2)
     data = game.json_response()
     json_data = json.dumps(data, default=vars)
-    return json_data
+    response = Response(json_data, status=200, mimetype='application/json')
+    return response
 
 
 @server.route('/action/<game_id>/<player_id>/<action>/<target>/')
