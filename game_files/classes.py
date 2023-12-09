@@ -127,6 +127,7 @@ class Game:
 
 
 class Player:
+    player_instances = []
     def __init__(self, player_name, game_id, money=2000, location=16, lock_state=0, prizeholder=0, total_dice=0):
         self.player_name = player_name
         self.game_id = game_id
@@ -155,6 +156,7 @@ class Player:
             print(result)
             self.id = result[0]
             self.update_db()
+        Player.player_instances.append(self)
 
 
     def update_db(self):
@@ -189,3 +191,7 @@ class Player:
                 return True
 
         return False
+
+    @classmethod
+    def get_players(cls, player_data):
+        return [inst for inst in cls.player_instances if inst.player_name == player_data[1] and inst.game_id == player_data[7]]
