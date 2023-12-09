@@ -220,7 +220,7 @@ function mainGame(gameName) {
         //get_saveGame(gameName).players.player_name.player2);
         currentPlayer.textContent = `Current player:`;
 
-        async function printPlayer() {
+        async function printPlayername() {
 
             const saveGame = await get_saveGame(gameName);
             const player1 = saveGame.players.player1.screen_name;
