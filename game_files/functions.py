@@ -83,14 +83,12 @@ def get_location(player_id):
 
 def set_location(new_location, game_id, player_id):  # new location, player id tulee stringinä!
     sql = f"UPDATE player SET location = {new_location} WHERE id = {player_id} AND game = {game_id}"
-
-
     cursor.execute(sql)
 
 
 def set_searched(game_id, location):
     game = get_game_name(game_id)
-    eval(game).visited.append(location)
+    game.visited.append(location)
     visited_json = json.dumps(game.visited)
     sql = f"UPDATE game SET visited = {visited_json} WHERE id = {game_id}"
     cursor.execute(sql)
