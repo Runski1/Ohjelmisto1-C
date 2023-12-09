@@ -168,16 +168,13 @@ async function playerSaveData(gameName, playerName1, playerName2) {
     console.log('saved games list:', jsonData);
     //palauttaa pelin nimen jsonData.game.game_name);
 }
+//asd
+function mainGame(gameName) {
+    setTimeout(() => {
 
-function mainGame(gameName) {}  // Don't forget to replace <YOUR_ACCESS_TOKEN> by your real access token!
-const accessToken = 'c6moPjpSN7QLOooqQRQkhGSswG714yj1foLNEIYWMqAcvVJVqx1LFPDqpl9tCvet';
-const map = L.map('map').setView([48.7965913, 2.3210938], 3);
-L.tileLayer(
-  `https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=${accessToken}`, {
-    attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank" class="jawg-attrib">&copy; <b>Jawg</b>Maps</a> | <a href="https://www.openstreetmap.org/copyright" title="OpenStreetMap is open data licensed under ODbL" target="_blank" class="osm-attrib">&copy; OSM contributors</a>',
-    maxZoom: 22
-  }
-).addTo(map);TML = '';
+        const gameContainer = document.getElementById('gameContainer');
+        // Clear the gamecontainer content
+        gameContainer.innerHTML = '';
 
         // Set the body height to 100%
         document.body.style.height = '100%';
