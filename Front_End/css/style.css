@@ -66,6 +66,10 @@ body {
     /* margin-right: 6rem; */
     /* margin-left: 6rem; */
 }
+#map {
+    height:600px;
+    width: 800px;
+  }
 
 button {
 
