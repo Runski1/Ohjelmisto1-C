@@ -157,7 +157,9 @@ async function get_saveGame(gameName) {
     const gameNameResponse = await fetch(
         `http://127.0.0.2:3000/get_saveGame/${gameName}`);
     const jsonData = await gameNameResponse.json();
-    console.log(jsonData);
+    console.log("get savegame", jsonData);
+    console.log("player 1", jsonData.players.player1.player_name);
+    console.log("player 2", jsonData.players.player2.player_name);
     return jsonData;
 }
 
@@ -165,11 +167,14 @@ async function playerSaveData(gameName, playerName1, playerName2) {
     const addPlayerResponse = await fetch(
         `http://127.0.0.2:3000//add_player/${gameName}/${playerName1}/${playerName2}`);
     const jsonData = await addPlayerResponse.json();
-    console.log('saved games list:', jsonData);
+    //console.log('saved games list:', jsonData.gameName);
+    //console.log('pelaaja1', jsonData.players.player2.player_name);
     //palauttaa pelin nimen jsonData.game.game_name);
 }
+
 //asd
 function mainGame(gameName) {
+
     setTimeout(() => {
 
         const gameContainer = document.getElementById('gameContainer');
@@ -191,7 +196,7 @@ function mainGame(gameName) {
         gameContainer.appendChild(mapFrame);
         mapFrame.classList.add('map');
         mapFrame.classList.add('hide');
-        //const nameCont = document.createElement('div');
+
 
         //gameContainer.appendChild(uiCont);
 
@@ -200,21 +205,40 @@ function mainGame(gameName) {
         const actionButtonCont = document.createElement('div');
         gameContainer.appendChild(actionButtonCont);
         actionButtonCont.classList.add('actionButtonCont');
+        const infoCont = document.createElement('div');
+
+        infoCont.classList.add('infoContainer');
         const nameCont = document.createElement('div');
-        actionButtonCont.appendChild(nameCont);
+        nameCont.classList.add('nameContainer');
+
         const flyButton = document.createElement('button');
         const hikeButton = document.createElement('button');
         const sailButton = document.createElement('button');
         const searchButton = document.createElement('button');
-        const player1Name = document.createElement('p');
-        const player2Name = document.createElement('p');
+        const currentPlayer = document.createElement('p');
+        const currentPlayerName = document.createElement('p');
+        currentPlayer.classList.add('staticCurrentPlayer');
+
+        //console.log('p1', get_saveGame(gameName).players.player_name.player1, 'p2',
+        //get_saveGame(gameName).players.player_name.player2);
+        currentPlayer.textContent = `Current player:`;
+
+        async function printPlayername() {
+
+            const saveGame = await get_saveGame(gameName);
+            const player1 = saveGame.players.player1.player_name;
+            const player2 = saveGame.players.player2.player_name;
+            if (saveGame.game.round_counter % 2 == 1) {
+
+                currentPlayerName.textContent = player2;
+            } else {
+                currentPlayerName.textContent = player1;
+            }
 
 
-        console.log('p1', get_saveGame(gameName).players.player1, 'p2',
-            get_saveGame(gameName).players.player2);
+        }
 
-        //player1Name.textContent = get_saveGame(gameName).p1;
-        //player2Name.textContent = get_saveGame(gameName).p2;
+        printPlayername();
         flyButton.classList.add('actionButtons');
         hikeButton.classList.add('actionButtons');
         sailButton.classList.add('actionButtons');
@@ -238,12 +262,15 @@ function mainGame(gameName) {
         ship.classList.add('icon')
         searchButton.innerHTML = '$&ensp;&ensp;&ensp;&ensp;work&ensp;&ensp;&ensp;&ensp;$';
 
-        nameCont.appendChild(player1Name);
-        nameCont.appendChild(player2Name);
+
         actionButtonCont.appendChild(flyButton);
         actionButtonCont.appendChild(hikeButton);
         actionButtonCont.appendChild(sailButton);
         actionButtonCont.appendChild(searchButton);
+        actionButtonCont.appendChild(infoCont);
+        infoCont.appendChild(nameCont)
+        nameCont.appendChild(currentPlayer);
+        nameCont.appendChild(currentPlayerName);
 
         setTimeout(() => {
             gameContainer.classList.add('lightblueGlow');
@@ -251,7 +278,7 @@ function mainGame(gameName) {
             mapFrame.classList.add('show');
 
         }, 600);
-        player1Name.classList.add('magentaGLow');
+
 
         /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
      attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
