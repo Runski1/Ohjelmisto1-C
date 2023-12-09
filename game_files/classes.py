@@ -15,15 +15,15 @@ class Game:
         self.round_counter = round_number
         self.players = Game.players
         self.bag_city = bag_city
-        self.babymaker(self.player1_name)
-        self.babymaker(self.player2_name)
         self.visited = Game.visited
         self.generate_bag()
         self.update_db()
         self.game_id = self.get_game_id(self.game_name)
-        self.players[0].game = self.game_id
-        self.players[1].game = self.game_id
+        self.babymaker(self.player1_name, self.game_id)
+        self.babymaker(self.player2_name, self.game_id)
         self.update_players()
+        self.update_db()
+        print("hello")
 
     def get_game_id(self, game_name):  # Pelin id saaminen koska olio luodaan ennen tietokantaan tallennusta
         sql = f"SELECT id FROM game WHERE name = '{game_name}'"
@@ -32,18 +32,28 @@ class Game:
         return result[0][0]
 
     def update_db(self):  # Datan tallennus tietokantaan
-        visited_json = json.dumps(self.visited)
-        query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
-                 f" VALUES('{self.game_name}', '{self.round_counter}', '{self.bag_city}', '{visited_json}')")
-        self.cursor.execute(query)
-        self.update_players()
+        sql = f"SELECT name FROM game WHERE name = '{self.game_name}'"
+        self.cursor.execute(sql)
+        result = self.cursor.fetchone()
+        if self.cursor.rowcount > 0:
+            visited_json = json.dumps(self.visited)
+            query = (f"UPDATE game SET round_counter = '{self.round_counter}', visited = '{visited_json}'"
+                     f" WHERE name = '{self.game_name}'")
+            self.cursor.execute(query)
+            self.update_players()
+        else:
+            visited_json = json.dumps(self.visited)
+            query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
+                     f" VALUES('{self.game_name}', '{self.round_counter}', '{self.bag_city}', '{visited_json}')")
+            self.cursor.execute(query)
+            self.update_players()
 
     def update_players(self):
         for player in self.players:
             player.update_db()
 
-    def babymaker(self, player):
-        baby = Player(player)
+    def babymaker(self, player, game_id):
+        baby = Player(player, game_id)
         self.players.append(baby)
         return self
 
@@ -90,7 +100,7 @@ class Game:
 
 
 class Player:
-    def __init__(self, player_name, game_id=1, money=2000, location=16, lock_state=0, prizeholder=0, total_dice=0):
+    def __init__(self, player_name, game_id, money=2000, location=16, lock_state=0, prizeholder=0, total_dice=0):
         self.player_name = player_name
         self.game_id = game_id
         self.money = money
@@ -98,16 +108,28 @@ class Player:
         self.lock_state = lock_state
         self.prizeholder = prizeholder
         self.total_dice = total_dice
+        flag = self.check_if_exist()
+        if flag:
+            query = (f"INSERT INTO player (screen_name, current_pp, lockstate, prizeholder,"
+                     f" total_dice, location, game) VALUES ('{self.player_name}', '{self.money}', '{self.lock_state}',"
+                     f" '{self.prizeholder}', '{self.total_dice}', '{self.location}', '{self.game_id}')")
 
-        query = (f"INSERT INTO player (screen_name, current_pp, lockstate, prizeholder,"
-                 f" total_dice, location, game) VALUES ('{self.player_name}', '{self.money}', '{self.lock_state}',"
-                 f" '{self.prizeholder}', '{self.total_dice}', '{self.location}', '{self.game_id}')")
+            Game.cursor.execute(query)
+            query = f"SELECT id FROM player WHERE screen_name = '{self.player_name}' AND game = '{self.game_id}'"
+            Game.cursor.execute(query)
+            result = Game.cursor.fetchall()
+            self.id = result[0][0]
 
-        Game.cursor.execute(query)
-        query = f"SELECT id FROM player WHERE screen_name = '{self.player_name}'"
-        Game.cursor.execute(query)
-        result = Game.cursor.fetchall()
-        self.id = result[0][0]
+        else:
+            sql = f"SELECT id FROM player WHERE screen_name = '{self.player_name}' AND game = {self.game_id}"
+            print("hello")
+
+            Game.cursor.execute(sql)
+            print("hello")
+            result = Game.cursor.fetchone()
+            self.id = result[0]
+            self.update_db()
+
 
     def update_db(self):
         sql = f"UPDATE player SET current_pp = '{self.money}' WHERE id = '{self.id}'"
@@ -131,3 +153,12 @@ class Player:
         self.location = data[6]
         self.game_id = data[7]
         return self
+
+    def check_if_exist(self):
+        sql = f"SELECT screen_name FROM player WHERE game = '{self.game_id}'"
+        Game.cursor.execute(sql)
+        result = Game.cursor.fetchone()
+        if Game.cursor.rowcount > 0:
+            return False
+        else:
+            return True
