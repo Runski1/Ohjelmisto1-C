@@ -210,3 +210,16 @@ button.submit {
     width: 1.2rem;
     height: 1.2rem;
 }
+.infoContainer{
+    color: rgba(0, 255, 255);
+    font-size: 1rem;
+
+
+}
+.nameContainer{
+    display: flex;
+    justify-content: space-between
+}
+staticCurrentPlayer{
+    width: auto;
+}
