@@ -21,7 +21,6 @@ class Game:
         self.game_id = self.get_game_id(self.game_name)
         self.babymaker(self.player1_name, self.game_id)
         self.babymaker(self.player2_name, self.game_id)
-        self.update_players()
         self.update_db()
 
     def get_game_id(self, game_name):  # Pelin id saaminen koska olio luodaan ennen tietokantaan tallennusta
@@ -108,7 +107,7 @@ class Player:
         self.prizeholder = prizeholder
         self.total_dice = total_dice
         flag = self.check_if_exist()
-        if flag == False:
+        if not flag:
             query = (f"INSERT INTO player (screen_name, current_pp, lockstate, prizeholder,"
                      f" total_dice, location, game) VALUES ('{self.player_name}', '{self.money}', '{self.lock_state}',"
                      f" '{self.prizeholder}', '{self.total_dice}', '{self.location}', '{self.game_id}')")
@@ -119,12 +118,14 @@ class Player:
             result = Game.cursor.fetchall()
             self.id = result[0][0]
 
-        elif flag == True:
-            print(self.player_name, self.game_id)
-            sql = f"SELECT * FROM player WHERE screen_name = '{self.player_name}' AND game = '{self.game_id}'"
+        else:
+            sql = f"SELECT id FROM player WHERE screen_name = '{self.player_name}' AND game = {self.game_id}"
             Game.cursor.execute(sql)
+            print("hello")
             result = Game.cursor.fetchone()
-           # self.set_player_data(result)
+            print(result)
+            self.id = result[0]
+            self.update_db()
 
 
     def update_db(self):
@@ -154,7 +155,8 @@ class Player:
         sql = f"SELECT * FROM player WHERE game = '{self.game_id}'"
         Game.cursor.execute(sql)
         result = Game.cursor.fetchall()
-        if result[0][1] == self.player_name or result[1][1] == self.player_name:
-            return True
-        else:
-            return False
+        for row in result:
+            if row[1] == self.player_name:
+                return True
+
+        return False
