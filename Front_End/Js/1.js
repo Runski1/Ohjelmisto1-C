@@ -157,9 +157,6 @@ async function get_saveGame(gameName) {
     const gameNameResponse = await fetch(
         `http://127.0.0.2:3000/get_saveGame/${gameName}`);
     const jsonData = await gameNameResponse.json();
-    console.log("get savegame", jsonData);
-    console.log("player 1", jsonData.players.player1.player_name);
-    console.log("player 2", jsonData.players.player2.player_name);
     return jsonData;
 }
 
@@ -223,11 +220,11 @@ function mainGame(gameName) {
         //get_saveGame(gameName).players.player_name.player2);
         currentPlayer.textContent = `Current player:`;
 
-        async function printPlayername() {
+        async function printPlayer() {
 
             const saveGame = await get_saveGame(gameName);
-            const player1 = saveGame.players.player1.player_name;
-            const player2 = saveGame.players.player2.player_name;
+            const player1 = saveGame.players.player1.screen_name;
+            const player2 = saveGame.players.player2.screen_name;
             if (saveGame.game.round_counter % 2 == 1) {
 
                 currentPlayerName.textContent = player2;
@@ -239,6 +236,8 @@ function mainGame(gameName) {
         }
 
         printPlayername();
+
+
         flyButton.classList.add('actionButtons');
         hikeButton.classList.add('actionButtons');
         sailButton.classList.add('actionButtons');
