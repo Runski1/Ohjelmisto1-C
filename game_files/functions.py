@@ -149,12 +149,11 @@ def get_round_number():
     return result
 
 
-"""
 def add_to_round_counter(game_id):
     game_name = get_game_name(game_id)
     game_inst = classes.Game.get_classes(game_name)
-    game_inst.round_counter += 1
-"""
+    game_inst[0].round_counter += 1
+    return
 
 
 def get_city_data():
@@ -334,16 +333,19 @@ def check_if_in_port(player):
 
 
 def bag_found(game_id, player):
+    # WIP WIP WIP
     game_name = get_game_name(game_id)
     game_inst = classes.Game.get_classes(game_name)
     query = f"SELECT COUNT(*) FROM player WHERE prizeholder = '1'"
     cursor.execute(query)
     bagman = cursor.fetchone()
+
     query = f"UPDATE player SET prizeholder = 1 WHERE id ={player[0]} AND game = {game_id}"
     cursor.execute(query)
 
     query = f"UPDATE game SET bag_city = '0' WHERE id = {game_id}"
     cursor.execute(query)
+
     if bagman[0] == 0:
         game_inst[0].generate_bag()
         # end_game_email()
@@ -474,12 +476,26 @@ def search(game_id, player_data, tgt_id):
             remove_pp(item_value, game_id, player_data[0])  # player 0 on id
         elif item_value >= 0:
             add_pp(item_value, game_id, player_data[0])
+            game_inst[0].last_turn_rand_item[0] = item_name
+            game_inst[0].last_turn_rand_item[1] = item_value
+            game_inst[0].last_turn_rand_item[2] = player_data[0]
 
 
 def get_game_name(game_id):
     cursor.execute(f"SELECT name FROM game WHERE id = {game_id}")
     game_tuple = cursor.fetchone()
     return game_tuple[0]
+
+
+def get_game_id(game_name):
+    print(game_name)
+    cursor.execute(f"SELECT id FROM game WHERE name = '{game_name}'")
+    id_tuple = cursor.fetchone()
+    print(id_tuple)
+    return id_tuple[0]
+
+def get_player_index(game_id, player):
+    pass
 
 
 if __name__ == "__main__":
