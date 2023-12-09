@@ -23,7 +23,6 @@ class Game:
         self.babymaker(self.player2_name, self.game_id)
         self.update_players()
         self.update_db()
-        print("hello")
 
     def get_game_id(self, game_name):  # Pelin id saaminen koska olio luodaan ennen tietokantaan tallennusta
         sql = f"SELECT id FROM game WHERE name = '{game_name}'"
@@ -109,7 +108,7 @@ class Player:
         self.prizeholder = prizeholder
         self.total_dice = total_dice
         flag = self.check_if_exist()
-        if flag:
+        if flag == False:
             query = (f"INSERT INTO player (screen_name, current_pp, lockstate, prizeholder,"
                      f" total_dice, location, game) VALUES ('{self.player_name}', '{self.money}', '{self.lock_state}',"
                      f" '{self.prizeholder}', '{self.total_dice}', '{self.location}', '{self.game_id}')")
@@ -120,15 +119,12 @@ class Player:
             result = Game.cursor.fetchall()
             self.id = result[0][0]
 
-        else:
-            sql = f"SELECT id FROM player WHERE screen_name = '{self.player_name}' AND game = {self.game_id}"
-            print("hello")
-
+        elif flag == True:
+            print(self.player_name, self.game_id)
+            sql = f"SELECT * FROM player WHERE screen_name = '{self.player_name}' AND game = '{self.game_id}'"
             Game.cursor.execute(sql)
-            print("hello")
             result = Game.cursor.fetchone()
-            self.id = result[0]
-            self.update_db()
+           # self.set_player_data(result)
 
 
     def update_db(self):
@@ -155,10 +151,10 @@ class Player:
         return self
 
     def check_if_exist(self):
-        sql = f"SELECT screen_name FROM player WHERE game = '{self.game_id}'"
+        sql = f"SELECT * FROM player WHERE game = '{self.game_id}'"
         Game.cursor.execute(sql)
-        result = Game.cursor.fetchone()
-        if Game.cursor.rowcount > 0:
-            return False
-        else:
+        result = Game.cursor.fetchall()
+        if result[0][1] == self.player_name or result[1][1] == self.player_name:
             return True
+        else:
+            return False
