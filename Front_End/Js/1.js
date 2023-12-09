@@ -169,7 +169,7 @@ async function playerSaveData(gameName, playerName1, playerName2) {
     //palauttaa pelin nimen jsonData.game.game_name);
 }
 
-function mainGame(gameName)  // Don't forget to replace <YOUR_ACCESS_TOKEN> by your real access token!
+function mainGame(gameName) {}  // Don't forget to replace <YOUR_ACCESS_TOKEN> by your real access token!
 const accessToken = 'c6moPjpSN7QLOooqQRQkhGSswG714yj1foLNEIYWMqAcvVJVqx1LFPDqpl9tCvet';
 const map = L.map('map').setView([48.7965913, 2.3210938], 3);
 L.tileLayer(
