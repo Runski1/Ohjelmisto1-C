@@ -1,6 +1,6 @@
 'use strict';
 
-import { cityData } from "./cities.js";
+import {cityData} from "./cities.js";
 
 function startScreen() {
     const targetElem = document.body;
@@ -131,7 +131,12 @@ async function selectGame() {
                             newGameForm.classList.add('show');
                             newGameForm.classList.add('magentaGlow');
                         }, 200);
-
+                        newGameForm.addEventListener('keypress', function (event) {
+                            if (event.key === 'Enter') {
+                                event.preventDefault();
+                                inputButton.click();
+                            }
+                        });
                         inputButton.addEventListener('click', async function (event) {
                             event.preventDefault();
                             const playerName1 = document.getElementById('player1').value;
@@ -198,8 +203,8 @@ function mainGame(gameName) {
         const map = L.map('map').setView([50.1103, 30.5697], 3);
         L.tileLayer(
             `https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=${accessToken}`, {
-              attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank" class="jawg-attrib">&copy; <b>Jawg</b>Maps</a> | <a href="https://www.openstreetmap.org/copyright" title="OpenStreetMap is open data licensed under ODbL" target="_blank" class="osm-attrib">&copy; OSM contributors</a>',
-              maxZoom: 22
+                attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank" class="jawg-attrib">&copy; <b>Jawg</b>Maps</a> | <a href="https://www.openstreetmap.org/copyright" title="OpenStreetMap is open data licensed under ODbL" target="_blank" class="osm-attrib">&copy; OSM contributors</a>',
+                maxZoom: 22
             }
         ).addTo(map);
         // Adding different markers
@@ -229,11 +234,10 @@ function mainGame(gameName) {
         });
         // Here we should render all map markers
         console.log(cityData)
-        for (let city of cityData){
-        let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
-        marker.bindPopup(city.name)
+        for (let city of cityData) {
+            let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
+            marker.bindPopup(city.name)
         }
-        
 
 
         //gameContainer.appendChild(uiCont);
@@ -243,6 +247,7 @@ function mainGame(gameName) {
         const actionButtonCont = document.createElement('div');
         gameContainer.appendChild(actionButtonCont);
         actionButtonCont.classList.add('actionButtonCont');
+        actionButtonCont.classList.add('hide')
         const infoCont = document.createElement('div');
 
         infoCont.classList.add('infoContainer');
@@ -336,8 +341,9 @@ function mainGame(gameName) {
             handleButtonClick(sailButton, hikeButton, flyButton);
         });
 
-
+        flyButton.click();
         setTimeout(() => {
+            actionButtonCont.classList.add('show')
             gameContainer.classList.add('lightblueGlow');
             gameContainer.classList.add('show');
             mapFrame.classList.add('show');

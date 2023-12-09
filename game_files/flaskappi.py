@@ -3,6 +3,7 @@ import functions
 from flask import Flask, Response
 import json
 import mysql.connector
+#from flask_cors import CORS
 connection = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
@@ -13,6 +14,7 @@ connection = mysql.connector.connect(
 )
 
 server = Flask(__name__)
+#CORS(server)
 cursor = connection.cursor()
 
 
