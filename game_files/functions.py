@@ -326,6 +326,12 @@ def bag_found(game_id, player):
     # WIP WIP WIP
     game_name = get_game_name(game_id)
     game_inst = classes.Game.get_classes(game_name)
+
+    player_inst = classes.Player.get_players(player)
+    print(player_inst)
+    print(player_inst[0].player_name)
+    print(player_inst[0].prizeholder)
+
     query = f"SELECT COUNT(*) FROM player WHERE prizeholder = '1'"
     cursor.execute(query)
     bagman = cursor.fetchone()
@@ -485,7 +491,13 @@ def get_game_id(game_name):
     return id_tuple[0]
 
 def get_player_index(game_id, player):
-    pass
+    game_inst = classes.Game.get_classes(get_game_name(game_id))
+    print(game_inst[0].players)
+    for i in game_inst[0].players:
+        print(i)
+        if i.id == player[0]:
+            print(i)
+            return i
 
 
 if __name__ == "__main__":
