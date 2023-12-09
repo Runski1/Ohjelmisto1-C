@@ -196,7 +196,7 @@ def print_available_cities(travel_mode, city_list, player_id):
                   f"{Fore.BLUE}{city[4]:^6.0f} EP {Fore.GREEN}{visited_status:>15}{Fore.RESET}")
     print(f"You have {get_current_pp(player_id)} PP.")  # viimeiseksi tuloste pelaajan rahamäärästä
 '''
-'''
+
 def get_cities_in_range(travel_mode, player):
     price_multiplier_dict = {
         "fly": config.get('config', 'FlyPriceMultiplier'),  # HUOM Nämä config-filestä tuodut on stringejä!
@@ -223,7 +223,7 @@ def get_cities_in_range(travel_mode, player):
         if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
             cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
     return cities_in_range
-'''
+
 
 
 def lock_reduce(player):

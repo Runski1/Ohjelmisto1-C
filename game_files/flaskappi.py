@@ -71,6 +71,7 @@ def do_action(game_name, player_id, action, target):
         functions.fly(target, game_id, player_data)
         functions.search(game_id, player_data, target)
         functions.add_to_round_counter(game_id)
+        player_inst = classes.Player.get_players(player_data)
         print(game_inst[0].json_response())
         return game_inst[0].json_response()
     elif action == "work":
