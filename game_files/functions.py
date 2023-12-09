@@ -9,12 +9,14 @@ from config import config
 from prize_found_event import end_game_email
 from colorama import Fore
 import classes
+
 cursor = connection.cursor()
 
 # Testaan, auttaako cursorin tappaminen ja uudelleen luominen jokaisessa funktiossa
 # mysql.connector.errors.DatabaseError: 2014 (HY000): Commands out of sync; you can't run this command now
 # -erroriin
 visited = []
+
 
 def dice_roll():
     input("Press Enter to roll dice: ")
@@ -72,28 +74,29 @@ def format_database_for_new_game():
 
 
 def get_location(player_id):
-
-  """  sql = (f"SELECT name FROM city INNER JOIN player ON city.id = player.location WHERE "
-           f"player.id = '{player_id}'")  # player id tulee inttinä
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    location = result[0]  # location tuplesta ulos
-    return location  # type(location)=str"""
+    """  sql = (f"SELECT name FROM city INNER JOIN player ON city.id = player.location WHERE "
+             f"player.id = '{player_id}'")  # player id tulee inttinä
+      cursor.execute(sql)
+      result = cursor.fetchone()
+      location = result[0]  # location tuplesta ulos
+      return location  # type(location)=str"""
 
 
 def set_location(new_location, game_id, player_id):  # new location, player id tulee stringinä!
     sql = f"UPDATE player SET location = {new_location} WHERE id = {player_id} AND game = {game_id}"
 
-
     cursor.execute(sql)
 
 
 def set_searched(game_id, location):
-    game = get_game_name(game_id)
-    eval(game).visited.append(location)
-    visited_json = json.dumps(game.visited)
+    game_name = get_game_name(game_id)
+    game_inst = classes.Game.get_classes(game_name)
+    print(game_inst)
+    game_inst[0].visited.append(location)
+    visited_json = json.dumps(str(game_inst[0].visited))
     sql = f"UPDATE game SET visited = {visited_json} WHERE id = {game_id}"
     cursor.execute(sql)
+    print(game_inst[0].visited)
 
 
 """def lock_check(player_id):  # Printer ei tarvitse tätä enää, tarvitseeko joku muu?
@@ -125,7 +128,7 @@ def printer(player):
     return True
 
 
-def get_player_data_as_list(): #KÄYTETÄÄN KUN LADATAAN VANHA PELI
+def get_player_data_as_list():  # KÄYTETÄÄN KUN LADATAAN VANHA PELI
     # SQL-kyselyllä kaikki player-taulusta
     sql = "SELECT * FROM player"
     cursor.execute(sql)
@@ -146,8 +149,11 @@ def get_round_number():
     return result
 
 
-def add_to_round_counter():
-    classes.g1.round_counter += 1
+def add_to_round_counter(game_id):
+    game_name = get_game_name(game_id)
+    game_inst = classes.Game.get_classes(game_name)
+    game_inst[0].round_counter += 1
+    return
 
 
 def get_city_data():
@@ -166,6 +172,7 @@ def get_ports(cities):
         if city[7] == 1:
             port_cities.append(city)
     return port_cities
+
 
 '''
 def print_available_cities(travel_mode, city_list, player_id):
@@ -218,27 +225,27 @@ def get_cities_in_range(travel_mode, player):
     return cities_in_range
 '''
 
+
 def lock_reduce(player):
     if int(player.lock_state) > 0:
         print(f"You need to roll {player.total_dice} more to reach your destination.")
         roll = dice_roll()
         player.total_dice -= roll
-    #    sql = f"UPDATE player SET total_dice = total_dice - {roll} WHERE id = '{player[0]}'"
+        #    sql = f"UPDATE player SET total_dice = total_dice - {roll} WHERE id = '{player[0]}'"
         if player.total_dice > 0:
             print(f"You need to roll {player.total_dice} more next round.")
         else:
             print("You reached your destination! You can do actions next turn.")
-       #     cursor.execute(sql)
-        #    sql = f"UPDATE player SET lockstate = '0' WHERE id = '{player[0]}'"
-      #      cursor.execute(sql)
+            #     cursor.execute(sql)
+            #    sql = f"UPDATE player SET lockstate = '0' WHERE id = '{player[0]}'"
+            #      cursor.execute(sql)
             input("<Press ENTER to continue>")
     else:
         player.lock_state -= 1
- #       sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
+        #       sql = f"UPDATE player SET lockstate = lockstate -1 WHERE id = '{player[0]}'"
         print("Player lock updated.")
- #   cursor.execute(sql)
+    #   cursor.execute(sql)
     return
-
 
 
 def item_randomizer():
@@ -285,7 +292,6 @@ def set_lockstate(distance, game_id, player_id, counter, travel_type):
         result.append(city[0])
     return result"""
 
-
 """def generate_main_bag():
     city_id = []
     city_data = get_city_data()
@@ -293,7 +299,6 @@ def set_lockstate(distance, game_id, player_id, counter, travel_type):
         city_id.append(city[0])
     random_city = random.choice(city_id)
     return random_city"""
-
 
 """def generate_additional_bags():
     not_visited_cities = get_not_visited_city_ids()
@@ -318,31 +323,42 @@ def check_if_in_port(player):
 
 
 def bag_found(game_id, player):
+    # WIP WIP WIP
+    game_name = get_game_name(game_id)
+    game_inst = classes.Game.get_classes(game_name)
     query = f"SELECT COUNT(*) FROM player WHERE prizeholder = '1'"
     cursor.execute(query)
     bagman = cursor.fetchone()
+
     query = f"UPDATE player SET prizeholder = 1 WHERE id ={player[0]} AND game = {game_id}"
     cursor.execute(query)
-    game = get_game_name(game_id)
-    query = f"UPDATE game SET bag_city = '0' WHERE name = {classes.game.game_name}"
+
+    query = f"UPDATE game SET bag_city = '0' WHERE id = {game_id}"
     cursor.execute(query)
+
     if bagman[0] == 0:
-        classes.game.generate_bag()
-        #end_game_email()
+        game_inst[0].generate_bag()
+        # end_game_email()
 
 
-def is_city_bag_city(player):
-  #  sql = f"SELECT bag_city FROM game WHERE name = '{classes.g1.game_name}'"
-   # cursor.execute(sql)
-   # result = cursor.fetchall()
-    if classes.g1.bag_city == player[6]:
+def is_city_bag_city(game_id, tgt_id):
+    game_name = get_game_name(game_id)
+    game_inst = classes.Game.get_classes(game_name)
+    if game_inst[0].bag_city == int(tgt_id):
+        print("Is bag city")
         return True
     else:
+        print("Is not bag city")
         return False
-  #  if result[0][0] == player[6]:
-  #      return True
-  #  else:
-   #     return False
+
+
+#  sql = f"SELECT bag_city FROM game WHERE name = '{classes.g1.game_name}'"
+# cursor.execute(sql)
+# result = cursor.fetchall()
+#  if result[0][0] == player[6]:
+#      return True
+#  else:
+#     return False
 
 
 def print_city_status(player):
@@ -366,11 +382,13 @@ def print_city_status(player):
                   f"{visited_status:>15}{Fore.RESET}")
     return True
 
+
 def id_to_name(city_id):
     sql = f"SELECT name from city WHERE id={city_id}"
     cursor.execute(sql)
     result = cursor.fetchone()
     return result[0]
+
 
 def city_id_to_coords(tgt_id):
     sql = f"SELECT latitude_deg, longitude_deg FROM city WHERE id={tgt_id}"
@@ -378,12 +396,14 @@ def city_id_to_coords(tgt_id):
     coords = cursor.fetchone()
     return coords
 
+
 def price_calc(distance, travel_mode):
     if travel_mode == 'sail':
         price = distance * float(config.get('config', 'BoatPriceMultiplier'))
     else:
         price = distance * float(config.get('config', 'FlyPriceMultiplier'))
     return price
+
 
 def hitchhike(target_id, game_id, player):
     player_id = player[0]
@@ -394,6 +414,7 @@ def hitchhike(target_id, game_id, player):
     # liikkuminen ja lockstate
     set_location(target_id, game_id, player_id)
     set_lockstate(distance, game_id, player_id, 0, "hike")
+
 
 def sail(target_id, game_id, player):
     player_id = player[0]
@@ -407,6 +428,7 @@ def sail(target_id, game_id, player):
     remove_pp(price, game_id, player_id)
     set_lockstate(distance, game_id, player_id, 0, "sail")
 
+
 def fly(target_id, game_id, player):
     player_id = player[0]
     # distance ja hinta calc
@@ -418,27 +440,53 @@ def fly(target_id, game_id, player):
     set_location(target_id, game_id, player_id)
     remove_pp(price, game_id, player_id)
 
+
 def work(game_id, player_id):
     salary = random.randint(100, 500)
     add_pp(salary, game_id, player_id)
 
-def search(game_id, player_data):
-    set_searched(game_id, player_data[6])
-    if is_city_bag_city(player_data[6]):
+
+def search(game_id, player_data, tgt_id):
+    game_inst = classes.Game.get_classes(get_game_name(game_id))
+    if game_inst[0].visited.count(tgt_id) == 0:
+        print("searching")
+        set_searched(game_id, tgt_id)
+    else:
+        return
+
+    if is_city_bag_city(game_id, tgt_id):
         bag_found(game_id, player_data)
+        print("AAAAAAAAAAAAAA, bägi löyty!")
         pass
     else:
+        print("Looking for loot")
         item_name, item_value = item_randomizer()
-        #print(f'Nah! No grandma`s luggage in here! But you found {item_name} and it`s worth {item_value}')
+        # print(f'Nah! No grandma`s luggage in here! But you found {item_name} and it`s worth {item_value}')
         if item_value <= 0:  # Tällä hetkellä tietokannassa ei ole itemeitä mistä menettää rahaa. Voisi lisätä...? :)
             remove_pp(item_value, game_id, player_data[0])  # player 0 on id
         elif item_value >= 0:
             add_pp(item_value, game_id, player_data[0])
+            game_inst[0].last_turn_rand_item[0] = item_name
+            game_inst[0].last_turn_rand_item[1] = item_value
+            game_inst[0].last_turn_rand_item[2] = player_data[0]
+
 
 def get_game_name(game_id):
     cursor.execute(f"SELECT name FROM game WHERE id = {game_id}")
     game_tuple = cursor.fetchone()
     return game_tuple[0]
+
+
+def get_game_id(game_name):
+    print(game_name)
+    cursor.execute(f"SELECT id FROM game WHERE name = '{game_name}'")
+    id_tuple = cursor.fetchone()
+    print(id_tuple)
+    return id_tuple[0]
+
+def get_player_index(game_id, player):
+    pass
+
 
 if __name__ == "__main__":
     pass

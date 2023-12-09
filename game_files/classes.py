@@ -5,6 +5,7 @@ import json
 
 class Game:
     cursor = db_connection.connection.cursor()
+    instances = []
 
     def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0):
         self.visited = ["16"]
@@ -20,6 +21,9 @@ class Game:
         self.babymaker(self.player1_name, self.game_id)
         self.babymaker(self.player2_name, self.game_id)
         self.update_db()
+        Game.instances.append(self)
+        print(Game.instances)
+        self.last_turn_rand_item = [None, None, None]
 
     def get_game_id(self, game_name):  # Pelin id saaminen koska olio luodaan ennen tietokantaan tallennusta
         sql = f"SELECT id FROM game WHERE name = '{game_name}'"
@@ -68,11 +72,34 @@ class Game:
                 "game_name": self.game_name,
                 "round_counter": self.round_counter,
                 "bag_city": self.bag_city,
-                "visited": self.visited
+                "visited": self.visited,
             },
             "players": {
-                "player1": self.players[0],
-                "player2": self.players[1]
+                "player1": {
+                    "player_id": self.players[0].id,
+                    "screen_name": self.players[0].player_name,
+                    "current_pp": self.players[0].money,
+                    "lock_state": self.players[0].lock_state,
+                    "prizeholder": self.players[0].prizeholder,
+                    "total_dice": self.players[0].total_dice,
+                    "location": self.players[0].location,
+                    "game_id": self.players[0].game_id
+                },
+                "player2": {
+                    "player_id": self.players[1].id,
+                    "screen_name": self.players[1].player_name,
+                    "current_pp": self.players[1].money,
+                    "lock_state": self.players[1].lock_state,
+                    "prizeholder": self.players[1].prizeholder,
+                    "total_dice": self.players[1].total_dice,
+                    "location": self.players[1].location,
+                    "game_id": self.players[1].game_id
+                },
+                "last_turn_item": {
+                    "string": self.last_turn_rand_item[0],
+                    "value": self.last_turn_rand_item[1],
+                    "player_id": self.last_turn_rand_item[2]
+                }
             }
         }
         return game_status
@@ -93,6 +120,10 @@ class Game:
         p2 = game.player2.set_player_data(player2)
         self.players.append(p2)
         return self.json_response()
+
+    @classmethod
+    def get_classes(cls, game_name):
+        return [inst for inst in cls.instances if inst.game_name == game_name]
 
 
 class Player:
