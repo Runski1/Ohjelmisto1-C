@@ -1,40 +1,19 @@
 'use strict';
-function mainGame() {
-    setTimeout(() => {
-  
-      const targetELem = document.getElementById('startButtonCont');
-      targetELem.classList.add('mainGameContainer');
-      // Clear the gamecontainer content
-      targetELem.innerHTML = '';
-  
-      // Set the body height to 100%
-      document.body.style.height = '100%';
-      // kartta on 800x600 = 50remx37.5rem
-      targetELem.style.width = '70rem';
-      targetELem.style.height = '47.5rem';
-      targetELem.style.border = '1px solid #19caca';
-  
-      setTimeout(() => {
-        targetELem.classList.add('lightblueGlow');
-        targetELem.classList.add('show');
-      }, 600);
-  
-    }, 600);
-  
-    const targetElem = document.getElementById('enterGame');
-    const mapFrame = document.createElement('div');
-    mapFrame.style.width = '800px';
-    mapFrame.style.height = '600px';
-    targetElem.appendChild(mapFrame);
-    const mapImg = document.createElement('img');
-    mapFrame.appendChild(mapImg);
-    mapImg.src = '../img/placeholdermap_800x600.png';
-  
-    /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
-      attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      minZoom: 0,
-      maxZoom: 22,
-      subdomains: 'abcd',
-      accessToken: '<your accessToken>'*/
+import { cityData } from "./cities.js";
+// We'll use import functionality to get citydata from another file
+// Don't forget to replace <YOUR_ACCESS_TOKEN> by your real access token!
+const accessToken = 'c6moPjpSN7QLOooqQRQkhGSswG714yj1foLNEIYWMqAcvVJVqx1LFPDqpl9tCvet';
+// We can set view to player coords aswell
+const map = L.map('map').setView([53.551086, 9.993682], 4);
+L.tileLayer(
+  `https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=${accessToken}`, {
+    attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank" class="jawg-attrib">&copy; <b>Jawg</b>Maps</a> | <a href="https://www.openstreetmap.org/copyright" title="OpenStreetMap is open data licensed under ODbL" target="_blank" class="osm-attrib">&copy; OSM contributors</a>',
+    maxZoom: 22
   }
-  mainGame()
+).addTo(map);
+// Here we should render all map markers
+console.log(cityData)
+for (let city of cityData){
+  let marker = L.marker([city.latitude_deg, city.longitude_deg]).addTo(map);
+  marker.bindPopup(city.name)
+}

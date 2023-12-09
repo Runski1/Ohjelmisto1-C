@@ -17,7 +17,7 @@ server = Flask(__name__)
 cursor = connection.cursor()
 
 
-@server.route('/get_saveGame/<savegame>')
+@server.route('/get_saveGame/<savegame>/')
 def get_savegame(savegame):
     sql = f"SELECT * FROM game WHERE name = '{savegame}'"
     cursor.execute(sql)
@@ -48,7 +48,7 @@ def create_game(gamename, player1, player2):
     return json_data
 
 
-@server.route('/action/<game_id>/<player_id>/<action>/<target>')
+@server.route('/action/<game_id>/<player_id>/<action>/<target>/')
 def do_action(game_id, player_id, action, target):
     # getting the correct player
     cursor.execute(f"SELECT * FROM player WHERE game={game_id} AND id={player_id}")
