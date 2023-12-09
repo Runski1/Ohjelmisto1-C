@@ -215,23 +215,27 @@ def get_cities_in_range(player):
     hike_cities_in_range = []
     player_location = player[6]
     cities = get_city_data()
+    boat_cities = get_ports(cities)
     player_coords = city_id_to_coords(player[6])
+    player_pp = player[2]
     for mode in travel_modes:
         price_multiplier = float(price_multiplier_dict[mode])
         max_distance = int(max_distance_dict[mode])
         if mode == "boat":
-            cities = get_ports(cities)
-        player_pp = player[2]
-        for city in cities:
-            distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
-            price = distance_from_player * price_multiplier
-            if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
-                if mode == "boat":
+            for city in boat_cities:
+                distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
+                price = distance_from_player * price_multiplier
+                if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
                     sail_cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
-                elif mode == "fly":
-                    fly_cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
-                elif mode == "hike":
-                    hike_cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
+        else:
+            for city in cities:
+                distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
+                price = distance_from_player * price_multiplier
+                if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
+                    if mode == "fly":
+                        fly_cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
+                    elif mode == "hike":
+                        hike_cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
     return hike_cities_in_range, fly_cities_in_range, sail_cities_in_range
 
 
