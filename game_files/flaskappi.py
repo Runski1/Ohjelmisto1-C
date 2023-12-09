@@ -3,7 +3,6 @@ import functions
 from flask import Flask, Response
 import json
 import mysql.connector
-from flask_cors import CORS
 connection = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
@@ -14,7 +13,6 @@ connection = mysql.connector.connect(
 )
 
 server = Flask(__name__)
-CORS(server)
 cursor = connection.cursor()
 
 
@@ -83,4 +81,4 @@ def do_action(game_name, player_id, action, target):
 
 
 if __name__ == '__main__':
-    server.run(use_reloader=False, host='127.0.0.2', port=3000)
+    server.run(use_reloader=False, host='127.0.0.1', port=3000)
