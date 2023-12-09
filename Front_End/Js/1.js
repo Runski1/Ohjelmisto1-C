@@ -157,6 +157,7 @@ async function get_saveGame(gameName) {
     const gameNameResponse = await fetch(
         `http://127.0.0.2:3000/get_saveGame/${gameName}`);
     const jsonData = await gameNameResponse.json();
+    console.log(jsonData)
     return jsonData;
 }
 
@@ -215,6 +216,7 @@ function mainGame(gameName) {
         const currentPlayer = document.createElement('p');
         const currentPlayerName = document.createElement('p');
         currentPlayer.classList.add('staticCurrentPlayer');
+        const PlayerData = document.createElement('p');
 
         //console.log('p1', get_saveGame(gameName).players.player_name.player1, 'p2',
         //get_saveGame(gameName).players.player_name.player2);
@@ -225,15 +227,19 @@ function mainGame(gameName) {
             const saveGame = await get_saveGame(gameName);
             const player1 = saveGame.players.player1.screen_name;
             const player2 = saveGame.players.player2.screen_name;
+            const player1Data = saveGame.players.player1.current_pp;
+            const player2Data = saveGame.players.player2.current_pp;
             if (saveGame.game.round_counter % 2 == 1) {
-
                 currentPlayerName.textContent = player2;
+                PlayerData.textContent = player2Data + ' PP';
             } else {
                 currentPlayerName.textContent = player1;
+                PlayerData.textContent = player1Data + ' PP';
             }
 
 
         }
+
 
         printPlayername();
 
@@ -270,12 +276,31 @@ function mainGame(gameName) {
         infoCont.appendChild(nameCont)
         nameCont.appendChild(currentPlayer);
         nameCont.appendChild(currentPlayerName);
+        infoCont.appendChild(PlayerData);
+
+        function handleButtonClick(selectedButton, otherButton1, otherButton2) {
+            selectedButton.classList.add('selected');
+            otherButton1.classList.remove('selected');
+            otherButton2.classList.remove('selected');
+        }
+
+        flyButton.addEventListener("click", function () {
+            handleButtonClick(flyButton, hikeButton, sailButton);
+        });
+
+        hikeButton.addEventListener("click", function () {
+            handleButtonClick(hikeButton, flyButton, sailButton);
+        });
+
+        sailButton.addEventListener("click", function () {
+            handleButtonClick(sailButton, hikeButton, flyButton);
+        });
+
 
         setTimeout(() => {
             gameContainer.classList.add('lightblueGlow');
             gameContainer.classList.add('show');
             mapFrame.classList.add('show');
-
         }, 600);
 
 
