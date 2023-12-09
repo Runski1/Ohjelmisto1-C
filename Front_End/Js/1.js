@@ -244,10 +244,11 @@ function mainGame(gameName) {
 
         // add player action buttons
 
-        const actionButtonCont = document.createElement('div');
-        gameContainer.appendChild(actionButtonCont);
-        actionButtonCont.classList.add('actionButtonCont');
-        actionButtonCont.classList.add('hide')
+
+        const sideBar = document.createElement('div');
+        gameContainer.appendChild(sideBar);
+        sideBar.classList.add('sideBar');
+        sideBar.classList.add('hide')
         const infoCont = document.createElement('div');
 
         infoCont.classList.add('infoContainer');
@@ -313,11 +314,11 @@ function mainGame(gameName) {
         searchButton.innerHTML = '$&ensp;&ensp;&ensp;&ensp;work&ensp;&ensp;&ensp;&ensp;$';
 
 
-        actionButtonCont.appendChild(flyButton);
-        actionButtonCont.appendChild(hikeButton);
-        actionButtonCont.appendChild(sailButton);
-        actionButtonCont.appendChild(searchButton);
-        actionButtonCont.appendChild(infoCont);
+        sideBar.appendChild(flyButton);
+        sideBar.appendChild(hikeButton);
+        sideBar.appendChild(sailButton);
+        sideBar.appendChild(searchButton);
+        sideBar.appendChild(infoCont);
         infoCont.appendChild(nameCont)
         nameCont.appendChild(currentPlayer);
         nameCont.appendChild(currentPlayerName);
@@ -343,7 +344,7 @@ function mainGame(gameName) {
 
         flyButton.click();
         setTimeout(() => {
-            actionButtonCont.classList.add('show')
+            sideBar.classList.add('show')
             gameContainer.classList.add('lightblueGlow');
             gameContainer.classList.add('show');
             mapFrame.classList.add('show');
