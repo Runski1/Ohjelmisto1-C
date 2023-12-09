@@ -212,15 +212,21 @@ button.submit {
     height: 1.2rem;
 }
 .infoContainer{
+    padding: 0.5rem;
     color: rgba(0, 255, 255);
     font-size: 1rem;
 
 
 }
 .nameContainer{
+        padding: 0rem 0rem 1rem 0rem;
     display: flex;
     justify-content: space-between
 }
 staticCurrentPlayer{
     width: auto;
+}
+.selected{
+    background-color: rgb(195 20 174 / 81%);
+
 }
