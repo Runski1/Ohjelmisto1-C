@@ -86,4 +86,4 @@ def do_action(game_name, player_id, action, target):
 
 
 if __name__ == '__main__':
-    server.run(use_reloader=False, host='127.0.0.1', port=3000)
+    server.run(use_reloader=True, host='127.0.0.1', port=3000)
