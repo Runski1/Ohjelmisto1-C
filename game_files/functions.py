@@ -344,6 +344,8 @@ def bag_found(game_id, player):
     player_inst = classes.Player.get_players(player)
     print(player_inst)
     print(player_inst[0].player_name)
+    print("Prizeholder updated to 1:")
+    player_inst[0].prizeholder = 1
     print(player_inst[0].prizeholder)
 
     query = f"SELECT COUNT(*) FROM player WHERE prizeholder = '1'"
