@@ -1,6 +1,9 @@
 import random
 import db_connection
 import json
+from geopy.distance import geodesic
+from math import floor
+from config import config
 
 
 class Game:
@@ -83,7 +86,12 @@ class Game:
                     "prizeholder": self.players[0].prizeholder,
                     "total_dice": self.players[0].total_dice,
                     "location": self.players[0].location,
-                    "game_id": self.players[0].game_id
+                    "game_id": self.players[0].game_id,
+                    "cities_in_range": {
+                        "hike": self.players[0].hike_cities_in_range,
+                        "fly": self.players[0].fly_cities_in_range,
+                        "sail": self.players[0].sail_cities_in_range
+                    }
                 },
                 "player2": {
                     "player_id": self.players[1].id,
@@ -93,7 +101,12 @@ class Game:
                     "prizeholder": self.players[1].prizeholder,
                     "total_dice": self.players[1].total_dice,
                     "location": self.players[1].location,
-                    "game_id": self.players[1].game_id
+                    "game_id": self.players[1].game_id,
+                    "cities_in_range": {
+                        "hike": self.players[1].hike_cities_in_range,
+                        "fly": self.players[1].fly_cities_in_range,
+                        "sail": self.players[1].sail_cities_in_range
+                    }
                 },
                 "last_turn_item": {
                     "string": self.last_turn_rand_item[0],
@@ -128,6 +141,7 @@ class Game:
 
 class Player:
     player_instances = []
+
     def __init__(self, player_name, game_id, money=2000, location=16, lock_state=0, prizeholder=0, total_dice=0):
         self.player_name = player_name
         self.game_id = game_id
@@ -156,8 +170,11 @@ class Player:
             print(result)
             self.id = result[0]
             self.update_db()
+        self.hike_cities_in_range = []
+        self.fly_cities_in_range = []
+        self.sail_cities_in_range = []
+        self.get_cities_in_range()
         Player.player_instances.append(self)
-
 
     def update_db(self):
         sql = f"UPDATE player SET current_pp = '{self.money}' WHERE id = '{self.id}'"
@@ -194,4 +211,72 @@ class Player:
 
     @classmethod
     def get_players(cls, player_data):
-        return [inst for inst in cls.player_instances if inst.player_name == player_data[1] and inst.game_id == player_data[7]]
+        return [inst for inst in cls.player_instances if
+                inst.player_name == player_data[1] and inst.game_id == player_data[7]]
+
+    def get_cities_in_range(self):
+        price_multiplier_dict = {
+            "fly": config.get('config', 'FlyPriceMultiplier'),  # HUOM Nämä config-filestä tuodut on stringejä!
+            "boat": config.get('config', 'BoatPriceMultiplier'),
+            "hike": config.get('config', 'HikePriceMultiplier')
+        }
+        max_distance_dict = {
+            "fly": config.get('config', 'MaxDistanceFly'),
+            "boat": config.get('config', 'MaxDistanceBoat'),
+            "hike": config.get('config', 'MaxDistanceHike')
+        }
+        travel_modes = ["fly", "boat", "hike"]
+        sail_cities_in_range = []
+        fly_cities_in_range = []
+        hike_cities_in_range = []
+        player_location = self.location
+        cities = self.get_city_data()
+        boat_cities = self.get_ports(cities)
+        player_coords = self.city_id_to_coords()
+        player_pp = self.money
+        for mode in travel_modes:
+            price_multiplier = float(price_multiplier_dict[mode])
+            max_distance = int(max_distance_dict[mode])
+            if mode == "boat":
+                for city in boat_cities:
+                    distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
+                    price = distance_from_player * price_multiplier
+                    if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
+                        sail_cities_in_range.append([city[0], city[1], city[2], distance_from_player, price])
+            else:
+                for city in cities:
+                    distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
+                    price = distance_from_player * price_multiplier
+                    if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
+                        if mode == "fly":
+                            fly_cities_in_range.append(
+                                [city[0], city[1], city[2], distance_from_player, price])
+                        elif mode == "hike":
+                            hike_cities_in_range.append(
+                                [city[0], city[1], city[2], distance_from_player, price])
+
+        self.hike_cities_in_range = hike_cities_in_range
+        self.fly_cities_in_range = fly_cities_in_range
+        self.sail_cities_in_range = sail_cities_in_range
+
+    def get_city_data(self):
+        sql = "SELECT * from city"
+        Game.cursor.execute(sql)
+        all_from_city = Game.cursor.fetchall()
+        all_data_from_city_as_list = []
+        for i in range(len(all_from_city)):
+            all_data_from_city_as_list.append((list(all_from_city[i])))
+        return all_data_from_city_as_list
+
+    def get_ports(self, cities):
+        port_cities = []
+        for city in cities:
+            if city[5] == 1:
+                port_cities.append(city)
+        return port_cities
+
+    def city_id_to_coords(self):
+        sql = f"SELECT latitude_deg, longitude_deg FROM city WHERE id={self.location}"
+        Game.cursor.execute(sql)
+        coords = Game.cursor.fetchone()
+        return coords
