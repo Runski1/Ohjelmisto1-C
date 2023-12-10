@@ -263,7 +263,7 @@ function mainGame(gameName) {
         //get_saveGame(gameName).players.player_name.player2);
         currentPlayer.textContent = `Current player:`;
 
-        async function printPlayername() {
+        async function printPlayername(selectedButton) {
 
             const gameState = await get_saveGame(gameName);
             const player1 = gameState.players.player1;
@@ -276,17 +276,58 @@ function mainGame(gameName) {
             }
             currentPlayerName.textContent = currentPlayer.screen_name;
             PlayerData.textContent = currentPlayer.current_pp + ' PP';
+
+            // First we unpack cities in range in three arrays
+            let flyCities = [];
+            let hikeCities = [];
+            let sailCities = [];
+            for (let flyCity of currentPlayer.cities_in_range.fly) {
+                flyCities.push(flyCity[0]);
+            }
+            for (let hikeCity of currentPlayer.cities_in_range.hike) {
+                hikeCities.push(hikeCity[0]);
+            }
+            for (let sailCity of currentPlayer.cities_in_range.sail) {
+                sailCities.push(sailCity[0]);
+            }
+            console.log('These are cities to hike', hikeCities);
+            console.log('these are cities to fly', flyCities);
+            console.log('these are cities to sail', sailCities);
+            console.log('citydata', cityData)
             // Here we render all markers on map
             for (let city of cityData) {
-                let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greenMarker}).addTo(map);
-                marker.bindPopup(city.name)
+                if (selectedButton === hikeButton) {
+                    if (hikeCities.includes(Number(city.id))) { // city.id is string by default
+                        let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
+                        marker.bindPopup(city.name);
+                        console.log('hike')
+                    } else {
+                        let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
+                    }
+                } else if (selectedButton === sailButton) {
+                    if (sailCities.includes(Number(city.id))) { // city.id is string by default
+                        let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
+                        marker.bindPopup(city.name);
+                        console.log('sail');
+                    } else {
+                        let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
+                    }
+                } else {
+                    if (flyCities.includes(Number(city.id))) { // city.id is string by default
+                        let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
+                        marker.bindPopup(city.name);
+                        console.log('fly');
+                    } else {
+                        let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
+                    }
+                }
             }
 
 
         }
 
 
-        printPlayername();
+        
 
 
         flyButton.classList.add('actionButtons');
@@ -331,14 +372,17 @@ function mainGame(gameName) {
 
         flyButton.addEventListener("click", function () {
             handleButtonClick(flyButton, hikeButton, sailButton);
+            printPlayername(flyButton);
         });
 
         hikeButton.addEventListener("click", function () {
             handleButtonClick(hikeButton, flyButton, sailButton);
+            printPlayername(hikeButton);
         });
 
         sailButton.addEventListener("click", function () {
             handleButtonClick(sailButton, hikeButton, flyButton);
+            printPlayername(sailButton);
         });
 
         flyButton.click();
@@ -348,7 +392,6 @@ function mainGame(gameName) {
             gameContainer.classList.add('show');
             mapFrame.classList.add('show');
         }, 600);
-
 
         /*const map =L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
      attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
