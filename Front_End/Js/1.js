@@ -232,12 +232,7 @@ function mainGame(gameName) {
             popupAnchor: [-5, -15],
             shadowSize: [20, 20]
         });
-        // Here we should render all map markers
-        console.log(cityData)
-        for (let city of cityData) {
-            let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
-            marker.bindPopup(city.name)
-        }
+       
 
 
         //gameContainer.appendChild(uiCont);
@@ -270,17 +265,21 @@ function mainGame(gameName) {
 
         async function printPlayername() {
 
-            const saveGame = await get_saveGame(gameName);
-            const player1 = saveGame.players.player1.screen_name;
-            const player2 = saveGame.players.player2.screen_name;
-            const player1Data = saveGame.players.player1.current_pp;
-            const player2Data = saveGame.players.player2.current_pp;
-            if (saveGame.game.round_counter % 2 == 1) {
-                currentPlayerName.textContent = player2;
-                PlayerData.textContent = player2Data + ' PP';
+            const gameState = await get_saveGame(gameName);
+            const player1 = gameState.players.player1;
+            const player2 = gameState.players.player2;
+            let currentPlayer
+            if (gameState.game.round_counter % 2 == 1) {
+                currentPlayer = player2
             } else {
-                currentPlayerName.textContent = player1;
-                PlayerData.textContent = player1Data + ' PP';
+                currentPlayer = player1
+            }
+            currentPlayerName.textContent = currentPlayer.screen_name;
+            PlayerData.textContent = currentPlayer.current_pp + ' PP';
+            // Here we render all markers on map
+            for (let city of cityData) {
+                let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greenMarker}).addTo(map);
+                marker.bindPopup(city.name)
             }
 
 
