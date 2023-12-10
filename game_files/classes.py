@@ -25,7 +25,6 @@ class Game:
         self.babymaker(self.player2_name, self.game_id)
         self.update_db()
         Game.instances.append(self)
-        print(Game.instances)
         self.last_turn_rand_item = [None, None, None]
 
     def get_game_id(self, game_name):  # Pelin id saaminen koska olio luodaan ennen tietokantaan tallennusta
@@ -37,7 +36,7 @@ class Game:
     def update_db(self):  # Datan tallennus tietokantaan
         sql = f"SELECT name FROM game WHERE name = '{self.game_name}'"
         self.cursor.execute(sql)
-        result = self.cursor.fetchone()
+        self.cursor.fetchone()
         if self.cursor.rowcount > 0:
             visited_json = json.dumps(self.visited)
             query = (f"UPDATE game SET round_counter = '{self.round_counter}', visited = '{visited_json}'"
@@ -53,7 +52,13 @@ class Game:
 
     def update_players(self):
         for player in self.players:
-            player.update_db()
+            sql = f"SELECT * FROM player WHERE screen_name = '{player.player_name}'"
+            self.cursor.execute(sql)
+            data = self.cursor.fetchone()
+            if self.cursor.rowcount > 0:
+                player.set_player_data(data)
+            else:
+                player.update_db()
 
     def babymaker(self, player, game_id):
         baby = Player(player, game_id)
@@ -162,14 +167,13 @@ class Player:
             result = Game.cursor.fetchall()
             self.id = result[0][0]
 
-        else:
-            sql = f"SELECT id FROM player WHERE screen_name = '{self.player_name}' AND game = {self.game_id}"
+        elif flag:
+            sql = f"SELECT * FROM player WHERE screen_name = '{self.player_name}' AND game = {self.game_id}"
             Game.cursor.execute(sql)
-            print("hello")
             result = Game.cursor.fetchone()
-            print(result)
             self.id = result[0]
-            self.update_db()
+            self.set_player_data(result)
+     #       self.update_db()
         self.hike_cities_in_range = []
         self.fly_cities_in_range = []
         self.sail_cities_in_range = []
