@@ -306,6 +306,7 @@ function mainGame(gameName) {
             console.log('citydata', cityData)
             console.log('typeof visitedlist number:', typeof(visitedList[0]))
             // Here we render all markers on map
+            // SORRY BOIS HAVE FUN
             for (let city of cityData) {
                 if (currentPlayer.location == Number(city.id)){
                     let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: playerMarker}).addTo(map);
@@ -313,10 +314,10 @@ function mainGame(gameName) {
                     if (hikeCities.includes(Number(city.id))) { // city.id is string by default
                         if (visitedList.includes(city.id)) {
                             let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greenMarker}).addTo(map);
-                            marker.bindPopup(city.name);
+                            marker.bindPopup(`<a href="">Hike to ${city.name}</a>`);
                         } else {
                             let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
-                            marker.bindPopup(city.name);
+                            marker.bindPopup(`<a href="">Hike to ${city.name}</a>`);
                         }
                     } else {
                         let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
@@ -325,10 +326,10 @@ function mainGame(gameName) {
                     if (sailCities.includes(Number(city.id))) { // city.id is string by default
                         if (visitedList.includes(city.id)) {
                             let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greenMarker}).addTo(map);
-                            marker.bindPopup(city.name);
+                            marker.bindPopup(`<a href="">Sail to ${city.name}</a>`);
                         } else {
                             let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
-                            marker.bindPopup(city.name);
+                            marker.bindPopup(`<a href="">Sail to ${city.name}</a>`);
                         }
                     } else {
                         let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
@@ -338,10 +339,10 @@ function mainGame(gameName) {
                     if (flyCities.includes(Number(city.id))) { // city.id is string by default
                         if (visitedList.includes(city.id)) {
                             let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greenMarker}).addTo(map);
-                            marker.bindPopup(city.name);
+                            marker.bindPopup(`<a href="">Fly to ${city.name}</a>`);
                         } else {
                             let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
-                            marker.bindPopup(city.name);
+                            marker.bindPopup(`<a href="">Fly to ${city.name}</a>`);
                         }
                     } else {
                         let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
