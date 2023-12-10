@@ -232,6 +232,15 @@ function mainGame(gameName) {
             popupAnchor: [-5, -15],
             shadowSize: [20, 20]
         });
+        var playerMarker = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+          });
+        
        
 
 
@@ -268,6 +277,7 @@ function mainGame(gameName) {
             const gameState = await get_saveGame(gameName);
             const player1 = gameState.players.player1;
             const player2 = gameState.players.player2;
+            const visitedList = gameState.game.visited;
             let currentPlayer
             if (gameState.game.round_counter % 2 == 1) {
                 currentPlayer = player2
@@ -294,29 +304,45 @@ function mainGame(gameName) {
             console.log('these are cities to fly', flyCities);
             console.log('these are cities to sail', sailCities);
             console.log('citydata', cityData)
+            console.log('typeof visitedlist number:', typeof(visitedList[0]))
             // Here we render all markers on map
             for (let city of cityData) {
-                if (selectedButton === hikeButton) {
+                if (currentPlayer.location == Number(city.id)){
+                    let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: playerMarker}).addTo(map);
+                } else if (selectedButton === hikeButton) {
                     if (hikeCities.includes(Number(city.id))) { // city.id is string by default
-                        let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
-                        marker.bindPopup(city.name);
-                        console.log('hike')
+                        if (visitedList.includes(city.id)) {
+                            let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greenMarker}).addTo(map);
+                            marker.bindPopup(city.name);
+                        } else {
+                            let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
+                            marker.bindPopup(city.name);
+                        }
                     } else {
                         let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
                     }
                 } else if (selectedButton === sailButton) {
                     if (sailCities.includes(Number(city.id))) { // city.id is string by default
-                        let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
-                        marker.bindPopup(city.name);
-                        console.log('sail');
+                        if (visitedList.includes(city.id)) {
+                            let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greenMarker}).addTo(map);
+                            marker.bindPopup(city.name);
+                        } else {
+                            let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
+                            marker.bindPopup(city.name);
+                        }
                     } else {
                         let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
                     }
+                    
                 } else {
                     if (flyCities.includes(Number(city.id))) { // city.id is string by default
-                        let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
-                        marker.bindPopup(city.name);
-                        console.log('fly');
+                        if (visitedList.includes(city.id)) {
+                            let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greenMarker}).addTo(map);
+                            marker.bindPopup(city.name);
+                        } else {
+                            let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
+                            marker.bindPopup(city.name);
+                        }
                     } else {
                         let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
                     }
