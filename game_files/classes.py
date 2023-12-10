@@ -10,13 +10,14 @@ class Game:
     cursor = db_connection.connection.cursor()
     instances = []
 
-    def __init__(self, game_name, player1_name, player2_name, round_number=0, bag_city=0):
+    def __init__(self, game_name, player1_name, player2_name, round_counter=0, bag_city=0):
+
         self.visited = ["16"]
         self.players = []
         self.game_name = game_name
         self.player1_name = player1_name
         self.player2_name = player2_name
-        self.round_counter = round_number
+        self.round_counter = round_counter
         self.bag_city = bag_city
         self.generate_bag()
         self.update_db()
@@ -34,12 +35,13 @@ class Game:
         return result[0][0]
 
     def update_db(self):  # Datan tallennus tietokantaan
-        sql = f"SELECT name FROM game WHERE name = '{self.game_name}'"
+        sql = f"SELECT * FROM game WHERE name = '{self.game_name}'"
         self.cursor.execute(sql)
-        self.cursor.fetchone()
+        data = self.cursor.fetchone()
         if self.cursor.rowcount > 0:
-            visited_json = json.dumps(self.visited)
-            query = (f"UPDATE game SET round_counter = '{self.round_counter}', visited = '{visited_json}'"
+            self.round_counter = data[2]
+            visited_json = json.dumps(data[4])
+            query = (f"UPDATE game SET round_counter = {data[2]}, visited = {visited_json}"
                      f" WHERE name = '{self.game_name}'")
             self.cursor.execute(query)
             self.update_players()
@@ -173,7 +175,6 @@ class Player:
             result = Game.cursor.fetchone()
             self.id = result[0]
             self.set_player_data(result)
-     #       self.update_db()
         self.hike_cities_in_range = []
         self.fly_cities_in_range = []
         self.sail_cities_in_range = []
