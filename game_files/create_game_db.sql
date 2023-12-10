@@ -270,6 +270,6 @@ INSERT INTO kadonnut_testamentti.random_items (id, item_description, value) VALU
 INSERT INTO kadonnut_testamentti.random_items (id, item_description, value) VALUES (167, 'Jet-Powered Skateboard', 650);
 INSERT INTO kadonnut_testamentti.random_items (id, item_description, value) VALUES (168, 'Time-Traveling Toaster', 2000);
 INSERT INTO kadonnut_testamentti.random_items (id, item_description, value) VALUES (169, 'Unicorn-Powered Car', 1200);
-INSERT INTO kadonnut_testamentti.game (id, name, round_counter, bag_city, visited) VALUES (1,'test', 0, 32, '');
+INSERT INTO kadonnut_testamentti.game (id, name, round_counter, bag_city, visited) VALUES (1,'test', 0, 32, '["16"]');
 INSERT INTO kadonnut_testamentti.player (id, screen_name, current_pp, lockstate, prizeholder, total_dice, location, game) VALUES (1, 'Alan', 2000, 0, 0, 0, 16, 1);
 INSERT INTO kadonnut_testamentti.player (id, screen_name, current_pp, lockstate, prizeholder, total_dice, location, game) VALUES (2, 'Turing', 2000, 0, 0, 0, 16, 1);

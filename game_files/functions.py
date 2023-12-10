@@ -100,6 +100,7 @@ def set_location(new_location, game_id, player_id):  # new location, player id t
     cursor.execute(sql)
     player = cursor.fetchone()
     player_name = classes.Player.get_players(player)
+    print(player_name)
     player_name[0].location = new_location
 
 

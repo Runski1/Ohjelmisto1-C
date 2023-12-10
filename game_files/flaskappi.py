@@ -3,7 +3,7 @@ import functions
 from flask import Flask, Response
 import json
 import mysql.connector
-#from flask_cors import CORS
+from flask_cors import CORS
 connection = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
@@ -14,7 +14,7 @@ connection = mysql.connector.connect(
 )
 
 server = Flask(__name__)
-#CORS(server)
+CORS(server)
 cursor = connection.cursor()
 
 
@@ -22,19 +22,10 @@ cursor = connection.cursor()
 def get_savegame(savegame):
     sql = f"SELECT * FROM game WHERE name = '{savegame}'"
     cursor.execute(sql)
-    game_data = cursor.fetchall()
-
+    cursor.fetchall()
     if cursor.rowcount > 0:
-        sql = f"SELECT * FROM player WHERE game = '{game_data[0][0]}'"
-        cursor.execute(sql)
-        players = cursor.fetchall()
-        player1 = players[0]
-        player2 = players[1]
-        game = classes.Game(savegame, player1[1], player2[1])
-        response_data = game.json_response()
-        response = Response(response=json.dumps(response_data, default=vars), status=200, mimetype='application/json')
-        return response
-
+        game_inst = classes.Game.get_classes(savegame)
+        return game_inst[0].json_response()
     elif cursor.rowcount == 0:
         response_data = {"gameName": None}
         response = Response(response=json.dumps(response_data), status=200, mimetype='application/json')
@@ -86,4 +77,24 @@ def do_action(game_name, player_id, action, target):
 
 
 if __name__ == '__main__':
-    server.run(use_reloader=True, host='127.0.0.1', port=3000)
+    query = "SELECT * FROM game"
+    cursor.execute(query)
+    gametable = cursor.fetchall()
+    for row in gametable:
+        game_id = row[0]
+        game_name = row[1]
+        round_counter = row[2]
+        bag_city = row[3]
+        visited = json.loads(row[4].replace("'", "\""))
+        query = f"SELECT * FROM player WHERE game = {game_id}"
+        cursor.execute(query)
+        players = cursor.fetchall()
+        playernames = []
+        for player in players:
+            player_screen_name = player[1]
+            player_game = player[6]
+            playernames.append(player_screen_name)
+        classes.Game(game_name, playernames[0], playernames[1], round_counter, bag_city, visited, game_id)
+    server.run(use_reloader=True, host='127.0.0.2', port=3000)
+    # (self, game_name, player1_name, player2_name, round_counter=0, bag_city=0, visited=None, game_id=0)
+
