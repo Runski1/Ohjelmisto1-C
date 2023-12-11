@@ -278,12 +278,25 @@ function mainGame(gameName) {
             const player2 = gameState.players.player2;
             const visitedList = gameState.game.visited;
             let currentPlayer
+            let notCurrentPlayer
             if (gameState.game.round_counter % 2 == 1) {
                 currentPlayer = player2
+                notCurrentPlayer = player1
             } else {
                 currentPlayer = player1
+                notCurrentPlayer = player2
             }
             currentPlayerName.textContent = currentPlayer.screen_name;
+
+            if (gameState.game.last_turn_item.work_salary != null){
+                alert(`${notCurrentPlayer} have earned ${gameState.game.last_turn_item.work_salary} PP`)
+            }
+
+            if (gameState.game.last_turn_item.string != null){
+                 alert(`${notCurrentPlayer} have found ${gameState.game.last_turn_item.string} and
+                 its worth ${gameState.game.last_turn_item.value}`)
+            }
+
             PlayerData.textContent = currentPlayer.current_pp + ' PP';
 
             // First we unpack cities in range in three arrays
@@ -306,10 +319,7 @@ function mainGame(gameName) {
             console.log('typeof visitedlist number:', typeof(visitedList[0]))
             // Here we render all markers on map
             // SORRY BOIS HAVE FUN
-            if (selectedButton == workButton){
-                gameState.game.last_turn_item.work_salary;
 
-            }
 
             for (let city of cityData) {
                 if (currentPlayer.location == Number(city.id)){
@@ -415,21 +425,26 @@ function mainGame(gameName) {
 
         flyButton.addEventListener("click", async function () {
             handleButtonClick(flyButton, hikeButton, sailButton);
-            gameData = await get_saveGame(gameName);
+            let gameData = await get_saveGame(gameName);
             refreshPlayerData(flyButton, gameData);
         });
 
         hikeButton.addEventListener("click", async function () {
             handleButtonClick(hikeButton, flyButton, sailButton);
-            gameData = await get_saveGame(gameName);
+            let gameData = await get_saveGame(gameName);
             refreshPlayerData(hikeButton, gameData);
         });
 
         sailButton.addEventListener("click", async function () {
             handleButtonClick(sailButton, hikeButton, flyButton);
-            gameData = await get_saveGame(gameName);
+            let gameData = await get_saveGame(gameName);
             refreshPlayerData(sailButton, gameData);
         });
+        workButton.addEventListener("click", async function () {
+            let gameData = await get_saveGame(gameName);
+
+        });
+
         flyButton.click();
         setTimeout(() => {
             sideBar.classList.add('show')
