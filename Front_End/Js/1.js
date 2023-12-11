@@ -272,7 +272,7 @@ function mainGame(gameName) {
         //get_saveGame(gameName).players.player_name.player2);
         currentPlayer.textContent = `Current player:`;
 
-        async function printPlayername(selectedButton) {
+        async function refreshPlayerData(selectedButton) {
 
             const gameState = await get_saveGame(gameName);
             const player1 = gameState.players.player1;
@@ -399,17 +399,17 @@ function mainGame(gameName) {
 
         flyButton.addEventListener("click", function () {
             handleButtonClick(flyButton, hikeButton, sailButton);
-            printPlayername(flyButton);
+            refreshPlayerData(flyButton);
         });
 
         hikeButton.addEventListener("click", function () {
             handleButtonClick(hikeButton, flyButton, sailButton);
-            printPlayername(hikeButton);
+            refreshPlayerData(hikeButton);
         });
 
         sailButton.addEventListener("click", function () {
             handleButtonClick(sailButton, hikeButton, flyButton);
-            printPlayername(sailButton);
+            refreshPlayerData(sailButton);
         });
 
         flyButton.click();
