@@ -166,6 +166,8 @@ def get_round_number():
 
 
 def add_to_round_counter(game_id):
+    sql = f"UPDATE round_counter FROM game SET round_counter = round_counter +1 WHERE id = '{game_id}'"
+    cursor.execute(sql)
     game_name = get_game_name(game_id)
     game_inst = classes.Game.get_classes(game_name)
     game_inst[0].round_counter += 1
@@ -253,7 +255,6 @@ def get_cities_in_range(player):
                     elif mode == "hike":
                         hike_cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
     return hike_cities_in_range, fly_cities_in_range, sail_cities_in_range
-
 
 
 def lock_reduce(player):
@@ -521,6 +522,7 @@ def get_game_id(game_name):
     id_tuple = cursor.fetchone()
     print(id_tuple)
     return id_tuple[0]
+
 
 def get_player_index(game_id, player):
     game_inst = classes.Game.get_classes(get_game_name(game_id))
