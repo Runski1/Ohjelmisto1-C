@@ -232,7 +232,7 @@ function mainGame(gameName) {
             popupAnchor: [-5, -15],
             shadowSize: [20, 20]
         });
-        var playerMarker = new L.Icon({
+        let playerMarker = new L.Icon({
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
             iconSize: [25, 41],
@@ -262,7 +262,7 @@ function mainGame(gameName) {
         const flyButton = document.createElement('button');
         const hikeButton = document.createElement('button');
         const sailButton = document.createElement('button');
-        const searchButton = document.createElement('button');
+        const workButton = document.createElement('button');
         const currentPlayer = document.createElement('p');
         const currentPlayerName = document.createElement('p');
         currentPlayer.classList.add('staticCurrentPlayer');
@@ -278,12 +278,25 @@ function mainGame(gameName) {
             const player2 = gameState.players.player2;
             const visitedList = gameState.game.visited;
             let currentPlayer
+            let notCurrentPlayer
             if (gameState.game.round_counter % 2 == 1) {
                 currentPlayer = player2
+                notCurrentPlayer = player1
             } else {
                 currentPlayer = player1
+                notCurrentPlayer = player2
             }
             currentPlayerName.textContent = currentPlayer.screen_name;
+
+            if (gameState.game.last_turn_item.work_salary != null){
+                alert(`${notCurrentPlayer} have earned ${gameState.game.last_turn_item.work_salary} PP`)
+            }
+
+            if (gameState.game.last_turn_item.string != null){
+                 alert(`${notCurrentPlayer} have found ${gameState.game.last_turn_item.string} and
+                 its worth ${gameState.game.last_turn_item.value}`)
+            }
+
             PlayerData.textContent = currentPlayer.current_pp + ' PP';
 
             // First we unpack cities in range in three arrays
@@ -306,6 +319,8 @@ function mainGame(gameName) {
             console.log('typeof visitedlist number:', typeof(visitedList[0]))
             // Here we render all markers on map
             // SORRY BOIS HAVE FUN
+
+
             for (let city of cityData) {
                 if (currentPlayer.location == Number(city.id)){
                     let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: playerMarker}).addTo(map);
@@ -340,15 +355,15 @@ function mainGame(gameName) {
                             let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greenMarker}).addTo(map);
                             marker.bindPopup(`<b>Fly to ${city.name}</b>`);
                             marker.on('click', function (event) {
-                                let response = await fetch(`http://127.0.0.2:3000/action/${gameName}/${currentPlayer.player_id}/fly/${city.id}`)
-                                refreshPlayerData(flyButton);
+                                playerAction(gameName, currentPlayer.player_id, "fly", city.id)
+                                
                             });
                         } else {
                             let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
                             marker.bindPopup(`<b>Fly to ${city.name}</b>`);
                             marker.on('click', function (event) {
-                                fetch(`http://127.0.0.2:3000/action/${gameName}/${currentPlayer.player_id}/fly/${city.id}`)
-                                refreshPlayerData(flyButton);
+                                playerAction(gameName, currentPlayer.player_id, "fly", city.id)
+                                
                             });
                         }
                     } else {
@@ -360,8 +375,10 @@ function mainGame(gameName) {
 
         }
         async function playerAction(gameName, playerId, action, cityId){
+            console.log('playerAction: ', gameName, playerId, action, cityId)
             let gameData = await fetch(`127.0.0.2:3000/action/${gameName}/${playerId}/${action}/${cityId}`);
-            refreshPlayerData(flybutton, gameData);
+            console.log(gameData);
+            await refreshPlayerData(flybutton, gameData);
         }
 
 
@@ -371,7 +388,7 @@ function mainGame(gameName) {
         flyButton.classList.add('actionButtons');
         hikeButton.classList.add('actionButtons');
         sailButton.classList.add('actionButtons');
-        searchButton.classList.add('workButton');
+        workButton.classList.add('workButton');
 
 
         const plane = document.createElement('img');
@@ -389,13 +406,13 @@ function mainGame(gameName) {
         plane.classList.add('icon')
         walk.classList.add('icon')
         ship.classList.add('icon')
-        searchButton.innerHTML = '$&ensp;&ensp;&ensp;&ensp;work&ensp;&ensp;&ensp;&ensp;$';
+        workButton.innerHTML = '$&ensp;&ensp;&ensp;&ensp;work&ensp;&ensp;&ensp;&ensp;$';
 
 
         sideBar.appendChild(flyButton);
         sideBar.appendChild(hikeButton);
         sideBar.appendChild(sailButton);
-        sideBar.appendChild(searchButton);
+        sideBar.appendChild(workButton);
         sideBar.appendChild(infoCont);
         infoCont.appendChild(nameCont)
         nameCont.appendChild(currentPlayer);
@@ -410,20 +427,24 @@ function mainGame(gameName) {
 
         flyButton.addEventListener("click", async function () {
             handleButtonClick(flyButton, hikeButton, sailButton);
-            gameData = await get_saveGame(gameName);
+            let gameData = await get_saveGame(gameName);
             refreshPlayerData(flyButton, gameData);
         });
 
         hikeButton.addEventListener("click", async function () {
             handleButtonClick(hikeButton, flyButton, sailButton);
-            gameData = await get_saveGame(gameName);
+            let gameData = await get_saveGame(gameName);
             refreshPlayerData(hikeButton, gameData);
         });
 
         sailButton.addEventListener("click", async function () {
             handleButtonClick(sailButton, hikeButton, flyButton);
-            gameData = await get_saveGame(gameName);
+            let gameData = await get_saveGame(gameName);
             refreshPlayerData(sailButton, gameData);
+        });
+        workButton.addEventListener("click", async function () {
+            let gameData = await get_saveGame(gameName);
+
         });
 
         flyButton.click();
