@@ -287,6 +287,11 @@ function mainGame(gameName) {
                 notCurrentPlayer = player2
             }
             currentPlayerName.textContent = currentPlayer.screen_name;
+            if (selectedButton == workButton){
+                let playerId = currentPlayer.player_id;
+                let cityId = currentPlayer.location;
+                playerAction(gameName, playerId, 'work', cityId);
+            }
 
             if (gameState.game.last_turn_item.work_salary != null){
                 alert(`${notCurrentPlayer} have earned ${gameState.game.last_turn_item.work_salary} PP`)
@@ -442,9 +447,11 @@ function mainGame(gameName) {
             let gameData = await get_saveGame(gameName);
             refreshPlayerData(sailButton, gameData);
         });
+
+
         workButton.addEventListener("click", async function () {
             let gameData = await get_saveGame(gameName);
-
+            refreshPlayerData(workButton, gameData);
         });
 
         flyButton.click();
