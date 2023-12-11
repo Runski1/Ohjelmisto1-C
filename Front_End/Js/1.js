@@ -319,6 +319,13 @@ function mainGame(gameName) {
       });
       // Here we render all markers on map
       for (let city of cityData) {
+        if (currentPlayer.location == Number(city.id) && city.port_city == "1") {
+          let playerInPort = true
+        }
+      }
+      let playerInPort
+
+      for (let city of cityData) {
         if (currentPlayer.location == Number(city.id)) {
           let marker = L.marker([city.latitude_deg, city.longitude_deg],
               {icon: playerMarker}).addTo(map);
@@ -348,7 +355,7 @@ function mainGame(gameName) {
                 {icon: greyMarker}).addTo(map);
           }
         } else if (selectedButton === sailButton) {
-          if (sailCities.includes(Number(city.id))) { // city.id is string by default
+          if (sailCities.includes(Number(city.id)) && playerInPort == true) { // city.id is string by default
             if (visitedList.includes(city.id)) {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: greenMarker}).addTo(map);
