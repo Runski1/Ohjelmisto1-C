@@ -262,7 +262,7 @@ function mainGame(gameName) {
         const flyButton = document.createElement('button');
         const hikeButton = document.createElement('button');
         const sailButton = document.createElement('button');
-        const searchButton = document.createElement('button');
+        const workButton = document.createElement('button');
         const currentPlayer = document.createElement('p');
         const currentPlayerName = document.createElement('p');
         currentPlayer.classList.add('staticCurrentPlayer');
@@ -307,6 +307,11 @@ function mainGame(gameName) {
             console.log('typeof visitedlist number:', typeof(visitedList[0]))
             // Here we render all markers on map
             // SORRY BOIS HAVE FUN
+            if (selectedButton == workButton){
+                gameState.game.last_turn_item.work_salary;
+
+            }
+
             for (let city of cityData) {
                 if (currentPlayer.location == Number(city.id)){
                     let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: playerMarker}).addTo(map);
@@ -360,7 +365,7 @@ function mainGame(gameName) {
         flyButton.classList.add('actionButtons');
         hikeButton.classList.add('actionButtons');
         sailButton.classList.add('actionButtons');
-        searchButton.classList.add('workButton');
+        workButton.classList.add('workButton');
 
 
         const plane = document.createElement('img');
@@ -378,13 +383,13 @@ function mainGame(gameName) {
         plane.classList.add('icon')
         walk.classList.add('icon')
         ship.classList.add('icon')
-        searchButton.innerHTML = '$&ensp;&ensp;&ensp;&ensp;work&ensp;&ensp;&ensp;&ensp;$';
+        workButton.innerHTML = '$&ensp;&ensp;&ensp;&ensp;work&ensp;&ensp;&ensp;&ensp;$';
 
 
         sideBar.appendChild(flyButton);
         sideBar.appendChild(hikeButton);
         sideBar.appendChild(sailButton);
-        sideBar.appendChild(searchButton);
+        sideBar.appendChild(workButton);
         sideBar.appendChild(infoCont);
         infoCont.appendChild(nameCont)
         nameCont.appendChild(currentPlayer);
@@ -411,7 +416,6 @@ function mainGame(gameName) {
             handleButtonClick(sailButton, hikeButton, flyButton);
             refreshPlayerData(sailButton);
         });
-
         flyButton.click();
         setTimeout(() => {
             sideBar.classList.add('show')
