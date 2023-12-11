@@ -10,10 +10,9 @@ class Game:
     cursor = db_connection.connection.cursor()
     instances = []
 
-    def __init__(self, game_name, player1_name, player2_name, round_counter=0, bag_city=0, visited=None, game_id=0):
+    def __init__(self, game_name, player1_name, player2_name, round_counter=0, bag_city=None, visited=None, game_id=0):
         if visited is None:
             self.visited = ["16"]
-            print(f"Visited set to: {self.visited}")
         else:
             self.visited = visited
         self.players = []
@@ -22,17 +21,16 @@ class Game:
         self.player2_name = player2_name
         self.round_counter = round_counter
         self.bag_city = bag_city
-        self.generate_bag()
         self.game_id = game_id
+        self.generate_bag()
         if self.game_id == 0:
-            print("Game id is 0")
             self.update_db()
             self.game_id = self.get_game_id(self.game_name)
         self.babymaker(self.player1_name, self.game_id)
         self.babymaker(self.player2_name, self.game_id)
         self.update_db()
         Game.instances.append(self)
-        self.last_turn_rand_item = [None, None, None]
+        self.last_turn_income = [None, None, None, None]
 
     def get_game_id(self, game_name):  # Pelin id saaminen koska olio luodaan ennen tietokantaan tallennusta
         sql = f"SELECT id FROM game WHERE name = '{game_name}'"
@@ -74,15 +72,23 @@ class Game:
         return self
 
     def generate_bag(self):
-        citys = []
-        sql = f"SELECT id FROM city"
-        Game.cursor.execute(sql)
-        result = Game.cursor.fetchall()
-        for city in result:
-            citys.append(city[0])
-        self.bag_city = random.choice(citys)
+        sql = f"SELECT * FROM game WHERE id = '{self.game_id}'"
+        self.cursor.execute(sql)
+        game_data = self.cursor.fetchone()
+        if game_data[3] is not None:
+            self.bag_city = game_data[3]
+        else:
+            citys = []
+            sql = f"SELECT id FROM city"
+            Game.cursor.execute(sql)
+            result = Game.cursor.fetchall()
+            for city in result:
+                citys.append(city[0])
+            self.bag_city = random.choice(citys)
 
     def json_response(self):
+        self.players[0].get_cities_in_range()
+        self.players[1].get_cities_in_range()
         game_status = {
             "game": {
                 "game_name": self.game_name,
@@ -122,9 +128,10 @@ class Game:
                     }
                 },
                 "last_turn_item": {
-                    "string": self.last_turn_rand_item[0],
-                    "value": self.last_turn_rand_item[1],
-                    "player_id": self.last_turn_rand_item[2]
+                    "string": self.last_turn_income[0],
+                    "value": self.last_turn_income[1],
+                    "player_id": self.last_turn_income[2],
+                    "work_salary": self.last_turn_income[3]
                 }
             }
         }

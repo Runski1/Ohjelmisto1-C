@@ -166,6 +166,8 @@ def get_round_number():
 
 
 def add_to_round_counter(game_id):
+    sql = f"UPDATE round_counter FROM game SET round_counter = round_counter +1 WHERE id = '{game_id}'"
+    cursor.execute(sql)
     game_name = get_game_name(game_id)
     game_inst = classes.Game.get_classes(game_name)
     game_inst[0].round_counter += 1
@@ -253,7 +255,6 @@ def get_cities_in_range(player):
                     elif mode == "hike":
                         hike_cities_in_range.append([city[0], city[1], city[2], distance_from_player, price, city[6]])
     return hike_cities_in_range, fly_cities_in_range, sail_cities_in_range
-
 
 
 def lock_reduce(player):
@@ -479,9 +480,15 @@ def fly(target_id, game_id, player):
     remove_pp(price, game_id, player_id)
 
 
-def work(game_id, player_id):
+def work(game_id, player_data):
+    game_inst = classes.Game.get_classes(get_game_name(game_id))
     salary = random.randint(100, 500)
-    add_pp(salary, game_id, player_id)
+    game_inst[0].last_turn_income[0] = None
+    game_inst[0].last_turn_income[1] = None
+    game_inst[0].last_turn_income[2] = player_data[0]
+    game_inst[0].last_turn_income[3] = salary
+    print(game_inst[0].last_turn_income)
+    add_pp(salary, game_id, player_data[0])
 
 
 def search(game_id, player_data, tgt_id):
@@ -504,9 +511,10 @@ def search(game_id, player_data, tgt_id):
             remove_pp(item_value, game_id, player_data[0])  # player 0 on id
         elif item_value >= 0:
             add_pp(item_value, game_id, player_data[0])
-            game_inst[0].last_turn_rand_item[0] = item_name
-            game_inst[0].last_turn_rand_item[1] = item_value
-            game_inst[0].last_turn_rand_item[2] = player_data[0]
+            game_inst[0].last_turn_income[0] = item_name
+            game_inst[0].last_turn_income[1] = item_value
+            game_inst[0].last_turn_income[2] = player_data[0]
+            game_inst[0].last_turn_income[3] = None
 
 
 def get_game_name(game_id):
@@ -521,6 +529,7 @@ def get_game_id(game_name):
     id_tuple = cursor.fetchone()
     print(id_tuple)
     return id_tuple[0]
+
 
 def get_player_index(game_id, player):
     game_inst = classes.Game.get_classes(get_game_name(game_id))
