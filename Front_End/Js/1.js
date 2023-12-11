@@ -284,6 +284,9 @@ function mainGame(gameName) {
         currentPlayer = player1;
         notCurrentPlayer = player2;
       }
+      if (currentPlayer.prizeholder == 1) {
+        document.getElementById('gameContainer').innerHTML = '<img src="../img/youwan.jpeg">'
+      }
       currentPlayerName.textContent = currentPlayer.screen_name;
       if (selectedButton == workButton) {
         let playerId = currentPlayer.player_id;
@@ -318,12 +321,12 @@ function mainGame(gameName) {
         }
       });
       // Here we render all markers on map
+      let playerInPort = false;
       for (let city of cityData) {
         if (currentPlayer.location == Number(city.id) && city.port_city == "1") {
-          let playerInPort = true
+          playerInPort = true;
         }
       }
-      let playerInPort
 
       for (let city of cityData) {
         if (currentPlayer.location == Number(city.id)) {
@@ -437,7 +440,7 @@ function mainGame(gameName) {
 
       if (gameState.players.last_turn_item.string !== null) {
         alert(
-            `${notCurrentPlayer} have found ${gameState.players.last_turn_item.string} and
+            `${notCurrentPlayer.screen_name} have found ${gameState.players.last_turn_item.string} and
                  its worth ${gameState.players.last_turn_item.value}`);
       }
     }
