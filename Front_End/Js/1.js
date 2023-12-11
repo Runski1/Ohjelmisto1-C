@@ -377,12 +377,12 @@ function mainGame(gameName) {
           }
         }
       }
-      if (gameState.game.last_turn_item.work_salary !== null) {
+      if (gameState.players.last_turn_item.work_salary !== null) {
         alert(
             `${notCurrentPlayer} have earned ${gameState.game.last_turn_item.work_salary} PP`);
       }
 
-      if (gameState.game.last_turn_item.string !== null) {
+      if (gameState.players.last_turn_item.string !== null) {
         alert(
             `${notCurrentPlayer} have found ${gameState.game.last_turn_item.string} and
                  its worth ${gameState.game.last_turn_item.value}`);
@@ -395,7 +395,7 @@ function mainGame(gameName) {
       let gameData = await fetch(
           `127.0.0.2:3000/action/${gameName}/${playerId}/${action}/${cityId}`);
       console.log(gameData);
-      await refreshPlayerData(flybutton, gameData);
+      await refreshPlayerData(flyButton, gameData);
     }
 
     flyButton.classList.add('actionButtons');
