@@ -272,9 +272,8 @@ function mainGame(gameName) {
         //get_saveGame(gameName).players.player_name.player2);
         currentPlayer.textContent = `Current player:`;
 
-        async function refreshPlayerData(selectedButton) {
-
-            const gameState = await get_saveGame(gameName);
+        async function refreshPlayerData(selectedButton, gameState) {
+            console.log("refreshPlayerdata");
             const player1 = gameState.players.player1;
             const player2 = gameState.players.player2;
             const visitedList = gameState.game.visited;
@@ -344,10 +343,18 @@ function mainGame(gameName) {
                     if (flyCities.includes(Number(city.id))) { // city.id is string by default
                         if (visitedList.includes(city.id)) {
                             let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greenMarker}).addTo(map);
-                            marker.bindPopup(`<a href="http://127.0.0.2:3000/action/${gameName}/${currentPlayer.player_id}/fly/${city.id}">Fly to ${city.name}</a>`);
+                            marker.bindPopup(`<b>Fly to ${city.name}</b>`);
+                            marker.on('click', function (event) {
+                                let response = await fetch(`http://127.0.0.2:3000/action/${gameName}/${currentPlayer.player_id}/fly/${city.id}`)
+                                refreshPlayerData(flyButton);
+                            });
                         } else {
                             let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
-                            marker.bindPopup(`<a href="http://127.0.0.2:3000/action/${gameName}/${currentPlayer.player_id}/fly/${city.id}">Fly to ${city.name}</a>`);
+                            marker.bindPopup(`<b>Fly to ${city.name}</b>`);
+                            marker.on('click', function (event) {
+                                fetch(`http://127.0.0.2:3000/action/${gameName}/${currentPlayer.player_id}/fly/${city.id}`)
+                                refreshPlayerData(flyButton);
+                            });
                         }
                     } else {
                         let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greyMarker}).addTo(map);
@@ -356,6 +363,10 @@ function mainGame(gameName) {
             }
 
 
+        }
+        async function playerAction(gameName, playerId, action, cityId){
+            let gameData = await fetch(`127.0.0.2:3000/action/${gameName}/${playerId}/${action}/${cityId}`);
+            refreshPlayerData(flybutton, gameData);
         }
 
 
@@ -402,19 +413,22 @@ function mainGame(gameName) {
             otherButton2.classList.remove('selected');
         }
 
-        flyButton.addEventListener("click", function () {
+        flyButton.addEventListener("click", async function () {
             handleButtonClick(flyButton, hikeButton, sailButton);
-            refreshPlayerData(flyButton);
+            gameData = await get_saveGame(gameName);
+            refreshPlayerData(flyButton, gameData);
         });
 
-        hikeButton.addEventListener("click", function () {
+        hikeButton.addEventListener("click", async function () {
             handleButtonClick(hikeButton, flyButton, sailButton);
-            refreshPlayerData(hikeButton);
+            gameData = await get_saveGame(gameName);
+            refreshPlayerData(hikeButton, gameData);
         });
 
-        sailButton.addEventListener("click", function () {
+        sailButton.addEventListener("click", async function () {
             handleButtonClick(sailButton, hikeButton, flyButton);
-            refreshPlayerData(sailButton);
+            gameData = await get_saveGame(gameName);
+            refreshPlayerData(sailButton, gameData);
         });
         flyButton.click();
         setTimeout(() => {
