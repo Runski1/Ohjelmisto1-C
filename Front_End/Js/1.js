@@ -381,22 +381,23 @@ function mainGame(gameName) {
       }
       if (gameState.players.last_turn_item.work_salary !== null) {
         alert(
-            `${notCurrentPlayer} have earned ${gameState.game.last_turn_item.work_salary} PP`);
+            `${notCurrentPlayer} have earned ${gameState.players.last_turn_item.work_salary} PP`);
       }
 
       if (gameState.players.last_turn_item.string !== null) {
         alert(
-            `${notCurrentPlayer} have found ${gameState.game.last_turn_item.string} and
-                 its worth ${gameState.game.last_turn_item.value}`);
+            `${notCurrentPlayer} have found ${gameState.players.last_turn_item.string} and
+                 its worth ${gameState.players.last_turn_item.value}`);
       }
 
     }
 
     async function playerAction(gameName, playerId, action, cityId) {
       console.log('playerAction: ', gameName, playerId, action, cityId);
-      let gameData = await fetch(
+      let response = await fetch(
           `http://127.0.0.2:3000/action/${gameName}/${playerId}/${action}/${cityId}`);
-      console.log("gamedata: ", gameData);
+      console.log("response: ", response);
+      gameData = await response.json();
       await refreshPlayerData(flyButton, gameData);
     }
 
