@@ -166,7 +166,7 @@ def get_round_number():
 
 
 def add_to_round_counter(game_id):
-    sql = f"UPDATE round_counter FROM game SET round_counter = round_counter +1 WHERE id = '{game_id}'"
+    sql = f"UPDATE game SET round_counter = round_counter +1 WHERE id = '{game_id}'"
     cursor.execute(sql)
     game_name = get_game_name(game_id)
     game_inst = classes.Game.get_classes(game_name)
