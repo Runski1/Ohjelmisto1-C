@@ -32,7 +32,7 @@ class Game:
         self.babymaker(self.player2_name, self.game_id)
         self.update_db()
         Game.instances.append(self)
-        self.last_turn_rand_item = [None, None, None]
+        self.last_turn_income = [None, None, None, None]
 
     def get_game_id(self, game_name):  # Pelin id saaminen koska olio luodaan ennen tietokantaan tallennusta
         sql = f"SELECT id FROM game WHERE name = '{game_name}'"
@@ -122,9 +122,10 @@ class Game:
                     }
                 },
                 "last_turn_item": {
-                    "string": self.last_turn_rand_item[0],
-                    "value": self.last_turn_rand_item[1],
-                    "player_id": self.last_turn_rand_item[2]
+                    "string": self.last_turn_income[0],
+                    "value": self.last_turn_income[1],
+                    "player_id": self.last_turn_income[2],
+                    "work_salary": self.last_turn_income[3]
                 }
             }
         }

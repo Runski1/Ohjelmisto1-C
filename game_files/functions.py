@@ -479,9 +479,15 @@ def fly(target_id, game_id, player):
     remove_pp(price, game_id, player_id)
 
 
-def work(game_id, player_id):
+def work(game_id, player_data):
+    game_inst = classes.Game.get_classes(get_game_name(game_id))
     salary = random.randint(100, 500)
-    add_pp(salary, game_id, player_id)
+    game_inst[0].last_turn_income[0] = None
+    game_inst[0].last_turn_income[1] = None
+    game_inst[0].last_turn_income[2] = player_data[0]
+    game_inst[0].last_turn_income[3] = salary
+    print(game_inst[0].last_turn_income)
+    add_pp(salary, game_id, player_data[0])
 
 
 def search(game_id, player_data, tgt_id):
@@ -504,9 +510,10 @@ def search(game_id, player_data, tgt_id):
             remove_pp(item_value, game_id, player_data[0])  # player 0 on id
         elif item_value >= 0:
             add_pp(item_value, game_id, player_data[0])
-            game_inst[0].last_turn_rand_item[0] = item_name
-            game_inst[0].last_turn_rand_item[1] = item_value
-            game_inst[0].last_turn_rand_item[2] = player_data[0]
+            game_inst[0].last_turn_income[0] = item_name
+            game_inst[0].last_turn_income[1] = item_value
+            game_inst[0].last_turn_income[2] = player_data[0]
+            game_inst[0].last_turn_income[3] = None
 
 
 def get_game_name(game_id):
