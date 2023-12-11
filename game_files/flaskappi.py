@@ -67,7 +67,7 @@ def do_action(game_name, player_id, action, target):
         classes.Player.get_players(player_data)
         return game_inst[0].json_response()
     elif action == "work":
-        functions.work(game_id, player_id)
+        functions.work(game_id, player_data)
         # functions.search(game_id, player_data)
         functions.add_to_round_counter(game_id)
         return game_inst[0].json_response()
