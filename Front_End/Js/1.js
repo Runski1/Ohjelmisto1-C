@@ -397,7 +397,7 @@ function mainGame(gameName) {
       let response = await fetch(
           `http://127.0.0.2:3000/action/${gameName}/${playerId}/${action}/${cityId}`);
       console.log("response: ", response);
-      gameData = await response.json();
+      let gameData = await response.json();
       await refreshPlayerData(flyButton, gameData);
     }
 
