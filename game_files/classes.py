@@ -252,13 +252,13 @@ class Player:
             if mode == "boat":
                 for city in boat_cities:
                     distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
-                    price = distance_from_player * price_multiplier
+                    price = floor(distance_from_player * price_multiplier)
                     if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
                         sail_cities_in_range.append([city[0], city[1], city[2], distance_from_player, price])
             else:
                 for city in cities:
                     distance_from_player = floor(geodesic(player_coords, ((city[3]), (city[4]))).km)
-                    price = distance_from_player * price_multiplier
+                    price = floor(distance_from_player * price_multiplier)
                     if city[0] != player_location and distance_from_player <= max_distance and price <= player_pp:
                         if mode == "fly":
                             fly_cities_in_range.append(
