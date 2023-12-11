@@ -232,7 +232,7 @@ function mainGame(gameName) {
             popupAnchor: [-5, -15],
             shadowSize: [20, 20]
         });
-        var playerMarker = new L.Icon({
+        let playerMarker = new L.Icon({
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
             iconSize: [25, 41],
@@ -355,15 +355,15 @@ function mainGame(gameName) {
                             let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: greenMarker}).addTo(map);
                             marker.bindPopup(`<b>Fly to ${city.name}</b>`);
                             marker.on('click', function (event) {
-                                let response = await fetch(`http://127.0.0.2:3000/action/${gameName}/${currentPlayer.player_id}/fly/${city.id}`)
-                                refreshPlayerData(flyButton);
+                                playerAction(gameName, currentPlayer.player_id, "fly", city.id)
+                                
                             });
                         } else {
                             let marker = L.marker([city.latitude_deg, city.longitude_deg], {icon: redMarker}).addTo(map);
                             marker.bindPopup(`<b>Fly to ${city.name}</b>`);
                             marker.on('click', function (event) {
-                                fetch(`http://127.0.0.2:3000/action/${gameName}/${currentPlayer.player_id}/fly/${city.id}`)
-                                refreshPlayerData(flyButton);
+                                playerAction(gameName, currentPlayer.player_id, "fly", city.id)
+                                
                             });
                         }
                     } else {
@@ -375,8 +375,10 @@ function mainGame(gameName) {
 
         }
         async function playerAction(gameName, playerId, action, cityId){
+            console.log('playerAction: ', gameName, playerId, action, cityId)
             let gameData = await fetch(`127.0.0.2:3000/action/${gameName}/${playerId}/${action}/${cityId}`);
-            refreshPlayerData(flybutton, gameData);
+            console.log(gameData);
+            await refreshPlayerData(flybutton, gameData);
         }
 
 
