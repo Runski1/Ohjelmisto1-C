@@ -312,9 +312,13 @@ function mainGame(gameName) {
       console.log('these are cities to sail', sailCities);
       console.log('citydata', cityData);
       console.log('typeof visitedlist number:', typeof (visitedList[0]));
+      // Markerclear from chatGPT
+      map.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+          map.removeLayer(layer);
+        }
+      });
       // Here we render all markers on map
-      // SORRY BOIS HAVE FUN
-
       for (let city of cityData) {
         if (currentPlayer.location == Number(city.id)) {
           let marker = L.marker([city.latitude_deg, city.longitude_deg],
@@ -324,13 +328,19 @@ function mainGame(gameName) {
             if (visitedList.includes(city.id)) {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: greenMarker}).addTo(map);
-              marker.bindPopup(
-                  `<a href="http://127.0.0.2:3000/action/${gameName}/${currentPlayer.player_id}/hike/${city.id}">Hike to ${city.name}</a>`);
+              marker.bindPopup(`<b>Hike to ${city.name}</b>`);
+              marker.on('click', function(event) {
+                playerAction(gameName, currentPlayer.player_id, 'hike', city.id);
+
+              });
             } else {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: redMarker}).addTo(map);
-              marker.bindPopup(
-                  `<a href="http://127.0.0.2:3000/action/${gameName}/${currentPlayer.player_id}/hike/${city.id}">Hike to ${city.name}</a>`);
+              marker.bindPopup(`<b>Hike to ${city.name}</b>`);
+              marker.on('click', function(event) {
+                playerAction(gameName, currentPlayer.player_id, 'hike', city.id);
+
+              });
             }
           } else {
             let marker = L.marker([city.latitude_deg, city.longitude_deg],
@@ -341,13 +351,19 @@ function mainGame(gameName) {
             if (visitedList.includes(city.id)) {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: greenMarker}).addTo(map);
-              marker.bindPopup(
-                  `<a href="http://127.0.0.2:3000/action/${gameName}/${currentPlayer.player_id}/sail/${city.id}">Sail to ${city.name}</a>`);
+              marker.bindPopup(`<b>Sail to ${city.name}</b>`);
+              marker.on('click', function(event) {
+                playerAction(gameName, currentPlayer.player_id, 'sail', city.id);
+
+              });
             } else {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: redMarker}).addTo(map);
-              marker.bindPopup(
-                  `<a href="http://127.0.0.2:3000/action/${gameName}/${currentPlayer.player_id}/sail/${city.id}">Sail to ${city.name}</a>`);
+              marker.bindPopup(`<b>Sail to ${city.name}</b>`);
+              marker.on('click', function(event) {
+                playerAction(gameName, currentPlayer.player_id, 'sail', city.id);
+
+              });
             }
           } else {
             let marker = L.marker([city.latitude_deg, city.longitude_deg],
@@ -397,7 +413,7 @@ function mainGame(gameName) {
       let response = await fetch(
           `http://127.0.0.2:3000/action/${gameName}/${playerId}/${action}/${cityId}`);
       console.log("response: ", response);
-      gameData = await response.json();
+      let gameData = await response.json();
       await refreshPlayerData(flyButton, gameData);
     }
 
