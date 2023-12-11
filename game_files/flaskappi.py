@@ -4,6 +4,7 @@ from flask import Flask, Response
 import json
 import mysql.connector
 from flask_cors import CORS
+
 connection = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
@@ -75,6 +76,22 @@ def do_action(game_name, player_id, action, target):
         functions.bag_found(game_id, player_data)
         return game_inst[0].json_response()
 
+    @server.route('/end_game/<game>/')  # Loppuun pelatun pelin tyhjennys tietokannasta
+    def nuke_me_papi(game):
+        print(game)
+        print("Uuuhh Nuke me PAPI!")
+        sql = f"SELECT * FROM game WHERE name = '{game}'"
+        cursor.execute(sql)
+        game_data = cursor.fetchone()
+        print(game_data)
+        sql = f"DELETE FROM player WHERE game = '{game_data[0]}'"
+        cursor.execute(sql)
+        sql = f"DELETE FROM game WHERE id = '{game_data[0]}'"
+        cursor.execute(sql)
+        response = {
+            "endlife": "Game removed from the universe"
+        }
+        return Response(json.dumps(response), status=200, mimetype='application/json')
 
 if __name__ == '__main__':
     query = "SELECT * FROM game"
@@ -97,4 +114,3 @@ if __name__ == '__main__':
         classes.Game(game_name, playernames[0], playernames[1], round_counter, bag_city, visited, game_id)
     server.run(use_reloader=True, host='127.0.0.2', port=3000)
     # (self, game_name, player1_name, player2_name, round_counter=0, bag_city=0, visited=None, game_id=0)
-
