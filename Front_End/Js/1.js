@@ -89,9 +89,8 @@ function starTrek() {// Create container for the start screen
         event.preventDefault();
         mySound.pause();
         starTrek.classList.remove('show')
-
         selectGame(); // Make sure to define the selectGame() function
-    });
+    }, {once: true});  // VERY IMPORTANT LOL
     setTimeout(() => {
         starTrek.classList.remove('show')
         document.getElementById('logo').classList.add('show')
