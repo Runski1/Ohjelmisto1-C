@@ -284,9 +284,7 @@ function mainGame(gameName) {
         currentPlayer = player1;
         notCurrentPlayer = player2;
       }
-      if (currentPlayer.prizeholder == 1) {
-        document.getElementById('gameContainer').innerHTML = '<img src="../img/youwan.jpeg">'
-      }
+
       currentPlayerName.textContent = currentPlayer.screen_name;
       if (selectedButton == workButton) {
         let playerId = currentPlayer.player_id;
@@ -323,7 +321,8 @@ function mainGame(gameName) {
       // Here we render all markers on map
       let playerInPort = false;
       for (let city of cityData) {
-        if (currentPlayer.location == Number(city.id) && city.port_city == "1") {
+        if (currentPlayer.location == Number(city.id) && city.port_city ==
+            '1') {
           playerInPort = true;
         }
       }
@@ -437,16 +436,21 @@ function mainGame(gameName) {
         currentPlayer = player1;
         notCurrentPlayer = player2;
       }
-      if (gameState.players.last_turn_item.work_salary !== null) {
-        alert(
-            `${notCurrentPlayer} have earned ${gameState.players.last_turn_item.work_salary} PP`);
+      if (notCurrentPlayer.prizeholder == 1) {
+        alert(`${notCurrentPlayer.screen_name} YOU HAVE FOUND OLD GRAMMAS LOST TESTAMENT`);
+        endEvent(gameName);
       }
+      else if (gameState.players.last_turn_item.work_salary !== null) {
+        alert(`${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} PP`);
+      }
+
 
       if (gameState.players.last_turn_item.string !== null) {
         alert(
             `${notCurrentPlayer.screen_name} have found ${gameState.players.last_turn_item.string} and
                  its worth ${gameState.players.last_turn_item.value}`);
       }
+
     }
 
     flyButton.classList.add('actionButtons');
@@ -527,6 +531,19 @@ function mainGame(gameName) {
   }, 600);
 
 }
+
+
+async function endEvent(gameName) {
+  document.getElementById(
+      'gameContainer').innerHTML = '<img src="../img/youwan.jpeg">';
+  const nukeResponse = await fetch(
+      `http://127.0.0.2:3000/end_game/${gameName}/`);
+  const jsonData = await nukeResponse.json();
+  console.log(jsonData, gameName, 'Database removed');
+  setTimeout(() => {
+    startScreen()
+     }, 5000);
+  }
 
 /*********************** PROGRAM STARTS FROM HERE**********************/
 startScreen();
