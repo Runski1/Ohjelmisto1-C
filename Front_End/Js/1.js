@@ -437,9 +437,9 @@ function mainGame(gameName) {
         endEvent(gameName);
       }
       else if (gameState.players.last_turn_item.work_salary !== null) {
-        alert(
-            `${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} PP`);
+        alert(`${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} PP`);
       }
+
 
       if (gameState.players.last_turn_item.string !== null) {
         alert(
@@ -447,7 +447,7 @@ function mainGame(gameName) {
                  its worth ${gameState.players.last_turn_item.value}`);
       }
 
-
+    }
 
     flyButton.classList.add('actionButtons');
     hikeButton.classList.add('actionButtons');
@@ -528,6 +528,7 @@ function mainGame(gameName) {
 
 }
 
+
 async function endEvent(gameName) {
   document.getElementById(
       'gameContainer').innerHTML = '<img src="../img/youwan.jpeg">';
@@ -539,7 +540,6 @@ async function endEvent(gameName) {
     startScreen()
      }, 5000);
   }
-
 
 /*********************** PROGRAM STARTS FROM HERE**********************/
 startScreen();
