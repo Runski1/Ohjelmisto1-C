@@ -643,13 +643,18 @@ function mainGame(gameName) {
 async function endEvent(gameName) {
     document.getElementById(
         'gameContainer').innerHTML = '<img src="../img/youwan.jpeg">';
-    const nukeResponse = await fetch(
-        `http://127.0.0.2:3000/end_game/${gameName}`);
+    const nukeResponse = await fetch(`http://127.0.0.2:3000/end_game/${gameName}`);
     const jsonData = await nukeResponse.json();
     console.log(jsonData, gameName, 'Database removed');
-    setTimeout(() => {
-        startScreen()
-    }, 5000);
+    let mySound = new Audio('../music/INTRO.wav');
+    mySound.volume = 0.1;
+    mySound.play();
+    document.addEventListener("keypress", function (event) {
+            event.preventDefault();
+            mySound.pause();
+            location.reload();
+        }
+        , {once: true});
 }
 
 /*********************** PROGRAM STARTS FROM HERE**********************/
