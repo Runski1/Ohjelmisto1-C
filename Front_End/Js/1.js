@@ -49,7 +49,7 @@ function startScreen() {
 function starTrek() {// Create container for the start screen
     // STAR TREK STUFF HERE //
 
-    const targetElem = document.body;
+    const targetElem = document.getElementById('gameContainer');
     targetElem.innerHTML = '';
     let mySound = new Audio('../music/testi.mp3');
     mySound.play();
