@@ -101,7 +101,7 @@ function starTrek() {// Create container for the start screen
             setTimeout(() => {
                 document.getElementById('logo').classList.remove('show')
                 setTimeout(() => {
-                selectGame()
+                    selectGame()
                 }, 3000);
             }, 4000);
         }
@@ -550,7 +550,7 @@ function mainGame(gameName) {
             }
 
 
-            if (gameState.players.last_turn_item.string !== null) {
+            else if (gameState.players.last_turn_item.string !== null) {
                 alert(
                     `${notCurrentPlayer.screen_name} have found ${gameState.players.last_turn_item.string} and
                  its worth ${gameState.players.last_turn_item.value} PP`);
