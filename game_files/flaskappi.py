@@ -21,8 +21,8 @@ cursor = connection.cursor()
 
 @server.route('/get_saveGame/<savegame>/')
 def get_savegame(savegame):
-    sql = f"SELECT * FROM game WHERE name = '{savegame}'"
-    cursor.execute(sql)
+    sql = f"SELECT * FROM game WHERE name = %s"
+    cursor.execute(sql, (savegame,))
     cursor.fetchall()
     if cursor.rowcount > 0:
         game_inst = classes.Game.get_classes(savegame)
@@ -48,7 +48,8 @@ def do_action(game_name, player_id, action, target):
     game_id = functions.get_game_id(game_name)
     # game_name = functions.get_game_name(game_id)
     game_inst = classes.Game.get_classes(game_name)
-    cursor.execute(f"SELECT * FROM player WHERE game={game_id} AND id={player_id}")
+    sql = f"SELECT * FROM player WHERE game=%s AND id=%s"
+    cursor.execute(sql, (game_id, player_id))
     player_data = cursor.fetchone()
 
     if action == "hike":

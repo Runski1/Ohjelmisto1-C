@@ -518,14 +518,16 @@ def search(game_id, player_data, tgt_id):
 
 
 def get_game_name(game_id):
-    cursor.execute(f"SELECT name FROM game WHERE id = {game_id}")
+    sql = f"SELECT name FROM game WHERE id = %s"
+    cursor.execute(sql, (game_id,))
     game_tuple = cursor.fetchone()
     return game_tuple[0]
 
 
 def get_game_id(game_name):
     print(game_name)
-    cursor.execute(f"SELECT id FROM game WHERE name = '{game_name}'")
+    sql = f"SELECT id FROM game WHERE name = %s"
+    cursor.execute(sql, (game_name,))
     id_tuple = cursor.fetchone()
     print(id_tuple)
     return id_tuple[0]
