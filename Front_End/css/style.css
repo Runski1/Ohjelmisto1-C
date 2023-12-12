@@ -18,7 +18,6 @@
 
 
 body {
-
     width: 100%;
     height: 50vw;
     display: flex;
@@ -228,4 +227,7 @@ button.submit {
 .selected {
     background-color: rgb(195 20 174 / 81%);
 
+}
+.playerData{
+    padding: 0rem 0rem 1rem 0rem;
 }

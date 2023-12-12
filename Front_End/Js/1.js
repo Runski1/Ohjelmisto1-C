@@ -265,7 +265,8 @@ function mainGame(gameName) {
     const currentPlayerName = document.createElement('p');
     currentPlayer.classList.add('staticCurrentPlayer');
     const PlayerData = document.createElement('p');
-
+    const PlayerMoneyStatic =document.createElement('p');
+    const PlayerMoneyValue=document.createElement('p');
     //console.log('p1', get_saveGame(gameName).players.player_name.player1, 'p2',
     //get_saveGame(gameName).players.player_name.player2);
     currentPlayer.textContent = `Current player:`;
@@ -292,8 +293,9 @@ function mainGame(gameName) {
         let cityId = currentPlayer.location;
         playerAction(gameName, playerId, 'work', cityId);
       }
-
-      PlayerData.textContent = currentPlayer.current_pp + ' PP';
+      PlayerData.classList.add('playerData');
+      PlayerMoneyStatic.textContent ='Money:';
+      PlayerMoneyValue.textContent= currentPlayer.current_pp + ' PP';
 
       // Here we render all markers on map
       renderMarkers(currentPlayer, visitedList, selectedButton)
@@ -470,7 +472,7 @@ function mainGame(gameName) {
       if (gameState.players.last_turn_item.string !== null) {
         alert(
             `${notCurrentPlayer.screen_name} have found ${gameState.players.last_turn_item.string} and
-                 its worth ${gameState.players.last_turn_item.value}`);
+                 its worth ${gameState.players.last_turn_item.value} PP`);
       }
 
     }
@@ -506,6 +508,8 @@ function mainGame(gameName) {
     nameCont.appendChild(currentPlayer);
     nameCont.appendChild(currentPlayerName);
     infoCont.appendChild(PlayerData);
+    PlayerData.appendChild(PlayerMoneyStatic)
+    PlayerData.appendChild(PlayerMoneyValue)
 
     function handleButtonClick(selectedButton, otherButton1, otherButton2) {
       selectedButton.classList.add('selected');
