@@ -6,6 +6,23 @@ function startScreen() {
   const targetElem = document.body;
 
   // Create container for the start screen
+    // STAR TREK STUFF HERE //
+  const starTrek = document.createElement('section');
+  starTrek.classList.add('starTrek');
+  targetElem.appendChild(starTrek);
+  const scrollText = document.createElement('div');
+  starTrek.appendChild(scrollText);
+  scrollText.classList.add('scrollText');
+  const intro1 = document.createElement('p')
+  intro1.innerText = "It's the year 2043. Climate change and a three-decade-long inflation-deflation cycle have scourged Europe. At the beginning of Paavo Väyrynen's third presidential term, the European Union took action. The use of the Euro as a currency was abandoned, and all trade began to be conducted with emission permits (PP). When Turkey and the North African countries adopted the EU's economic and environmental reforms, they obtained full EU membership. For the first time in history, the EU has expanded beyond the borders of Europe, thus becoming the New European Union (NEU)."
+  const intro2 = document.createElement('p')
+  intro2.innerText = "Facinated by the fast development of the cultural change in Europe, your grandmother went on a holiday travelling around the NEU. Things went smoothly until she lost her luggage somewhere, and now she can't remember where. Being her typical self, she also had her testament in the luggage..."
+  const intro3 = document.createElement('p')
+  intro3.innerText = "Whoever finds the grandma's luggage, might be remembered in her testament. You must embark on a long trip around Europe and find it before your sibling does!"
+  scrollText.appendChild(intro1);
+  scrollText.appendChild(intro2);
+  scrollText.appendChild(intro3);
+  // STAR TREK STUFF ENDs //
   const logoContainer = document.createElement('div');
   logoContainer.id = 'logoContainer';
   targetElem.appendChild(logoContainer);
