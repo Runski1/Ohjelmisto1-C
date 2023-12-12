@@ -61,7 +61,7 @@ function starTrek() {// Create container for the start screen
     // STAR TREK STUFF HERE //
     const targetElem = document.getElementById('gameContainer');
     targetElem.innerHTML = '';
-    let mySound = new Audio('../music/testi.mp3');
+    let mySound = new Audio('../music/INTRO.WAV');
     mySound.volume = 0.1;
     mySound.play();
     const starTrek = document.createElement('section');
@@ -101,7 +101,7 @@ function starTrek() {// Create container for the start screen
             }, 3000);
         }, 4000);
 
-    }, 47000);
+    }, 43000);
 }
 
 async function selectGame() {
