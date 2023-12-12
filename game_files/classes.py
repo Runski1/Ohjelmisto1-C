@@ -58,8 +58,8 @@ class Game:
 
     def update_players(self):
         for player in self.players:
-            sql = f"SELECT * FROM player WHERE screen_name = '{player.player_name}'"
-            self.cursor.execute(sql)
+            sql = f"SELECT * FROM player WHERE screen_name = %s"
+            self.cursor.execute(sql, (player.player_name,))
             data = self.cursor.fetchone()
             if self.cursor.rowcount > 0:
                 player.set_player_data(data)
