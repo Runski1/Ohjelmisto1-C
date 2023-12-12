@@ -388,19 +388,23 @@ function mainGame(gameName) {
             if (visitedList.includes(city.id)) {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: greenMarker}).addTo(map);
-              marker.bindPopup(`<b>Fly to ${city.name}</b>`);
-              marker.on('click', function(event) {
-                playerAction(gameName, currentPlayer.player_id, 'fly', city.id);
-
-              });
+                  marker.bindPopup(`<a href="#" id="flyLink${city.id}">Fly to ${city.name}</a>`);
+                  marker.on('click', function(event) {
+                    document.getElementById(`flyLink${city.id}`).addEventListener('click', function(e) {
+                      e.preventDefault(); // Prevent the default behavior of the link
+                      playerAction(gameName, currentPlayer.player_id, 'fly', city.id);
+                    })
+                  });
             } else {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
-                  {icon: redMarker}).addTo(map);
-              marker.bindPopup(`<b>Fly to ${city.name}</b>`);
-              marker.on('click', function(event) {
-                playerAction(gameName, currentPlayer.player_id, 'fly', city.id);
-
-              });
+                {icon: redMarker}).addTo(map);
+                marker.bindPopup(`<a href="#" id="flyLink${city.id}">Fly to ${city.name}</a>`);
+                marker.on('click', function(event) {
+                  document.getElementById(`flyLink${city.id}`).addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent the default behavior of the link
+                    playerAction(gameName, currentPlayer.player_id, 'fly', city.id);
+                  })
+                });
             }
           } else {
             let marker = L.marker([city.latitude_deg, city.longitude_deg],
