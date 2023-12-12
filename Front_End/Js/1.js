@@ -32,6 +32,7 @@ function startScreen() {
   logo.src = '../img/logo.png';
   logo.id = 'logo';
   logo.classList.add('cyanGlow');
+  logo.classList.add('hide')
   logoContainer.appendChild(logo);
 
   // Create container for the "Enter the game" button
@@ -56,6 +57,7 @@ function startScreen() {
     // Add a class to the button to trigger the transition
     enterGame.classList.add('magentaGlow');
     enterGame.classList.add('show');
+    logo.classList.add('show')
   });
 }
 
@@ -326,7 +328,7 @@ function mainGame(gameName) {
       renderMarkers(currentPlayer, visitedList, selectedButton, player1)
     }
     function renderMarkers(currentPlayer, visitedList, selectedButton, player1) {
-      
+
       let flyCities = [];
       let hikeCities = [];
       let sailCities = [];
