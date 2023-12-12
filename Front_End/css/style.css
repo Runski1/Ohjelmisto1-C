@@ -60,7 +60,7 @@ body {
 
 #map {
     height: 37.5rem;
-    width: 100%;
+    width: 70%;
 }
 
 button {
@@ -221,7 +221,7 @@ button.submit {
 }
 
 .sideBar {
-
+    width: 30%;
 }
 
 .selected {
