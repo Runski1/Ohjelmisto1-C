@@ -46,11 +46,11 @@ function startScreen() {
     document.getElementById('enterGameButton').addEventListener('click', starTrek);
 }
 
-function starTrek (){// Create container for the start screen
+function starTrek() {// Create container for the start screen
     // STAR TREK STUFF HERE //
-     const targetElem = document.getElementById('gameContainer');
-        targetElem.innerHTML = '';
-   let mySound = new Audio('../music/testi.wav');
+    const targetElem = document.getElementById('gameContainer');
+    targetElem.innerHTML = '';
+    let mySound = new Audio('../music/testi.mp3');
     mySound.play();
     const starTrek = document.createElement('section');
     starTrek.classList.add('starTrek');
@@ -67,9 +67,10 @@ function starTrek (){// Create container for the start screen
     scrollText.appendChild(intro1);
     scrollText.appendChild(intro2);
     scrollText.appendChild(intro3);
-    selectGame()
+
 
 }
+
 async function selectGame() {
     setTimeout(() => {
         const targetElem = document.getElementById('gameContainer');
