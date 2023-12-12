@@ -43,12 +43,16 @@ function startScreen() {
         enterGame.classList.add('show');
         //logo.classList.add('show')
     });
-    document.getElementById('enterGameButton').addEventListener('click', starTrek);
+   document.getElementById('enterGameButton').addEventListener('click', function (event) {
+    event.preventDefault();
+    // Assuming 'starTrek' is a function to be called
+    starTrek();
+    logo.classList.remove('show');
+});
 }
 
 function starTrek() {// Create container for the start screen
     // STAR TREK STUFF HERE //
-
     const targetElem = document.getElementById('gameContainer');
     targetElem.innerHTML = '';
     let mySound = new Audio('../music/testi.mp3');
@@ -68,6 +72,7 @@ function starTrek() {// Create container for the start screen
     const intro3 = document.createElement('p')
     intro3.innerText = "Whoever finds the grandma's luggage, might be remembered in her testament. You must embark on a long trip around Europe and find it before your sibling does!"
    setTimeout(() => {
+       document.getElementById('logo').classList.add('show');
        starTrek.classList.add('show')
        }, 400);
     scrollText.appendChild(intro1);
