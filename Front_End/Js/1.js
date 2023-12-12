@@ -43,12 +43,18 @@ function startScreen() {
         enterGame.classList.add('show');
         //logo.classList.add('show')
     });
-   document.getElementById('enterGameButton').addEventListener('click', function (event) {
-    event.preventDefault();
-    // Assuming 'starTrek' is a function to be called
-    starTrek();
-    logo.classList.remove('show');
-});
+    document.getElementById('enterGameButton').addEventListener('click', function (event) {
+        event.preventDefault();
+        // Assuming 'starTrek' is a function to be called
+        logo.classList.remove('show');
+        logo.classList.add('hide');
+        enterGame.classList.remove('show');
+        setTimeout(() => {
+            starTrek();
+
+        }, 2000);
+
+    });
 }
 
 function starTrek() {// Create container for the start screen
@@ -71,10 +77,10 @@ function starTrek() {// Create container for the start screen
     intro2.innerText = "Facinated by the fast development of the cultural change in Europe, your grandmother went on a holiday travelling around the NEU. Things went smoothly until she lost her luggage somewhere, and now she can't remember where. Being her typical self, she also had her testament in the luggage..."
     const intro3 = document.createElement('p')
     intro3.innerText = "Whoever finds the grandma's luggage, might be remembered in her testament. You must embark on a long trip around Europe and find it before your sibling does!"
-   setTimeout(() => {
-       document.getElementById('logo').classList.add('show');
-       starTrek.classList.add('show')
-       }, 400);
+    setTimeout(() => {
+
+        starTrek.classList.add('show')
+    }, 400);
     scrollText.appendChild(intro1);
     scrollText.appendChild(intro2);
     scrollText.appendChild(intro3);
@@ -82,16 +88,28 @@ function starTrek() {// Create container for the start screen
         event.preventDefault();
         mySound.pause();
         starTrek.classList.remove('show')
+
         selectGame(); // Make sure to define the selectGame() function
     });
+    setTimeout(() => {
+        starTrek.classList.remove('show')
+        document.getElementById('logo').classList.add('show')
+        setTimeout(() => {
+            document.getElementById('logo').classList.remove('show')
+            setTimeout(() => {
+            selectGame()
+            }, 3000);
+        }, 4000);
 
+    }, 47000);
 }
+
 async function selectGame() {
 
     setTimeout(() => {
         const targetElem = document.getElementById('gameContainer');
         targetElem.innerHTML = '';
-
+        document.getElementById('logo').classList.add('show')
         // Create and add the "New game" Form
         const newGameForm = document.createElement('form');
         newGameForm.id = 'newGameForm';
