@@ -201,15 +201,15 @@ function mainGame(gameName) {
 
     mapFrame.classList.add('hide');
     const accessToken = 'c6moPjpSN7QLOooqQRQkhGSswG714yj1foLNEIYWMqAcvVJVqx1LFPDqpl9tCvet';
-      let map = L.map('map').setView([50.1103, 30.5697], 3);
-      L.tileLayer(
+    let map = L.map('map').setView([50.1103, 30.5697], 3);
+    L.tileLayer(
         `https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=${accessToken}`,
         {
           attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank" class="jawg-attrib">&copy; <b>Jawg</b>Maps</a> | <a href="https://www.openstreetmap.org/copyright" title="OpenStreetMap is open data licensed under ODbL" target="_blank" class="osm-attrib">&copy; OSM contributors</a>',
           maxZoom: 22,
         },
-      ).addTo(map);
-      // Adding different markers
+    ).addTo(map);
+    // Adding different markers
     let greenMarker = new L.Icon({
       iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -265,8 +265,8 @@ function mainGame(gameName) {
     const currentPlayerName = document.createElement('p');
     currentPlayer.classList.add('staticCurrentPlayer');
     const PlayerData = document.createElement('p');
-    const PlayerMoneyStatic =document.createElement('p');
-    const PlayerMoneyValue=document.createElement('p');
+    const PlayerMoneyStatic = document.createElement('p');
+    const PlayerMoneyValue = document.createElement('p');
     //console.log('p1', get_saveGame(gameName).players.player_name.player1, 'p2',
     //get_saveGame(gameName).players.player_name.player2);
     currentPlayer.textContent = `Current player:`;
@@ -294,14 +294,15 @@ function mainGame(gameName) {
         playerAction(gameName, playerId, 'work', cityId);
       }
       PlayerData.classList.add('playerData');
-      PlayerMoneyStatic.textContent ='Money:';
-      PlayerMoneyValue.textContent= currentPlayer.current_pp + ' PP';
+      PlayerMoneyStatic.textContent = 'Money:';
+      PlayerMoneyValue.textContent = currentPlayer.current_pp + ' PP';
 
       // Here we render all markers on map
-      renderMarkers(currentPlayer, visitedList, selectedButton)
+      renderMarkers(currentPlayer, visitedList, selectedButton);
     }
+
     function renderMarkers(currentPlayer, visitedList, selectedButton) {
-      
+
       let flyCities = [];
       let hikeCities = [];
       let sailCities = [];
@@ -332,13 +333,13 @@ function mainGame(gameName) {
           playerInPort = true;
         }
       }
-      let hereMarker
-      let cityCoords
+      let hereMarker;
+      let cityCoords;
       for (let city of cityData) {
         if (currentPlayer.location == Number(city.id)) {
           cityCoords = [city.latitude_deg, city.longitude_deg];
           hereMarker = L.marker([city.latitude_deg, city.longitude_deg],
-          {icon: playerMarker}).addTo(map);
+              {icon: playerMarker}).addTo(map);
           hereMarker.bindPopup(`${currentPlayer.screen_name}, You are here!`);
 
         } else if (selectedButton === hikeButton) {
@@ -346,23 +347,29 @@ function mainGame(gameName) {
             if (visitedList.includes(city.id)) {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: greenMarker}).addTo(map);
-                  marker.bindPopup(`<a href="#" id="hikeLink${city.id}">Hike to ${city.name}</a>`);
-                  marker.on('click', function(event) {
-                    document.getElementById(`hikeLink${city.id}`).addEventListener('click', function(e) {
+              marker.bindPopup(
+                  `<a href="#" id="hikeLink${city.id}">Hike to ${city.name}</a>`);
+              marker.on('click', function(event) {
+                document.getElementById(`hikeLink${city.id}`).
+                    addEventListener('click', function(e) {
                       e.preventDefault(); // Prevent the default behavior of the link
-                      playerAction(gameName, currentPlayer.player_id, 'hike', city.id);
-                    })
-                  })
+                      playerAction(gameName, currentPlayer.player_id, 'hike',
+                          city.id);
+                    });
+              });
             } else {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: redMarker}).addTo(map);
-                  marker.bindPopup(`<a href="#" id="hikeLink${city.id}">Hike to ${city.name}</a>`);
-                  marker.on('click', function(event) {
-                    document.getElementById(`hikeLink${city.id}`).addEventListener('click', function(e) {
+              marker.bindPopup(
+                  `<a href="#" id="hikeLink${city.id}">Hike to ${city.name}</a>`);
+              marker.on('click', function(event) {
+                document.getElementById(`hikeLink${city.id}`).
+                    addEventListener('click', function(e) {
                       e.preventDefault(); // Prevent the default behavior of the link
-                      playerAction(gameName, currentPlayer.player_id, 'hike', city.id);
-                    })
-                  })
+                      playerAction(gameName, currentPlayer.player_id, 'hike',
+                          city.id);
+                    });
+              });
             }
           } else {
             let marker = L.marker([city.latitude_deg, city.longitude_deg],
@@ -373,23 +380,29 @@ function mainGame(gameName) {
             if (visitedList.includes(city.id)) {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: greenMarker}).addTo(map);
-                  marker.bindPopup(`<a href="#" id="sailLink${city.id}">Sail to ${city.name}</a>`);
-                  marker.on('click', function(event) {
-                    document.getElementById(`sailLink${city.id}`).addEventListener('click', function(e) {
+              marker.bindPopup(
+                  `<a href="#" id="sailLink${city.id}">Sail to ${city.name}</a>`);
+              marker.on('click', function(event) {
+                document.getElementById(`sailLink${city.id}`).
+                    addEventListener('click', function(e) {
                       e.preventDefault(); // Prevent the default behavior of the link
-                      playerAction(gameName, currentPlayer.player_id, 'sail', city.id);
-                    })
-                  })
+                      playerAction(gameName, currentPlayer.player_id, 'sail',
+                          city.id);
+                    });
+              });
             } else {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: redMarker}).addTo(map);
-                  marker.bindPopup(`<a href="#" id="sailLink${city.id}">Sail to ${city.name}</a>`);
-                  marker.on('click', function(event) {
-                    document.getElementById(`sailLink${city.id}`).addEventListener('click', function(e) {
+              marker.bindPopup(
+                  `<a href="#" id="sailLink${city.id}">Sail to ${city.name}</a>`);
+              marker.on('click', function(event) {
+                document.getElementById(`sailLink${city.id}`).
+                    addEventListener('click', function(e) {
                       e.preventDefault(); // Prevent the default behavior of the link
-                      playerAction(gameName, currentPlayer.player_id, 'sail', city.id);
-                    })
-                  })
+                      playerAction(gameName, currentPlayer.player_id, 'sail',
+                          city.id);
+                    });
+              });
             }
           } else {
             let marker = L.marker([city.latitude_deg, city.longitude_deg],
@@ -401,23 +414,29 @@ function mainGame(gameName) {
             if (visitedList.includes(city.id)) {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: greenMarker}).addTo(map);
-                  marker.bindPopup(`<a href="#" id="flyLink${city.id}">Fly to ${city.name}</a>`);
-                  marker.on('click', function(event) {
-                    document.getElementById(`flyLink${city.id}`).addEventListener('click', function(e) {
+              marker.bindPopup(
+                  `<a href="#" id="flyLink${city.id}">Fly to ${city.name}</a>`);
+              marker.on('click', function(event) {
+                document.getElementById(`flyLink${city.id}`).
+                    addEventListener('click', function(e) {
                       e.preventDefault(); // Prevent the default behavior of the link
-                      playerAction(gameName, currentPlayer.player_id, 'fly', city.id);
-                    })
-                  });
+                      playerAction(gameName, currentPlayer.player_id, 'fly',
+                          city.id);
+                    });
+              });
             } else {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
-                {icon: redMarker}).addTo(map);
-                marker.bindPopup(`<a href="#" id="flyLink${city.id}">Fly to ${city.name}</a>`);
-                marker.on('click', function(event) {
-                  document.getElementById(`flyLink${city.id}`).addEventListener('click', function(e) {
-                    e.preventDefault(); // Prevent the default behavior of the link
-                    playerAction(gameName, currentPlayer.player_id, 'fly', city.id);
-                  })
-                });
+                  {icon: redMarker}).addTo(map);
+              marker.bindPopup(
+                  `<a href="#" id="flyLink${city.id}">Fly to ${city.name}</a>`);
+              marker.on('click', function(event) {
+                document.getElementById(`flyLink${city.id}`).
+                    addEventListener('click', function(e) {
+                      e.preventDefault(); // Prevent the default behavior of the link
+                      playerAction(gameName, currentPlayer.player_id, 'fly',
+                          city.id);
+                    });
+              });
             }
           } else {
             let marker = L.marker([city.latitude_deg, city.longitude_deg],
@@ -425,12 +444,12 @@ function mainGame(gameName) {
           }
         }
       }
-      console.log('citycoords: ', cityCoords)
+      console.log('citycoords: ', cityCoords);
       map.setView(cityCoords, 7, {
-        "animate": true,
-        "pan": {
-          "duration": 100
-        }
+        'animate': true,
+        'pan': {
+          'duration': 100,
+        },
       });
       hereMarker.fire('click');
     }
@@ -461,13 +480,14 @@ function mainGame(gameName) {
         notCurrentPlayer = player2;
       }
       if (notCurrentPlayer.prizeholder == 1) {
-        alert(`${notCurrentPlayer.screen_name} YOU HAVE FOUND OLD GRAMMAS LOST TESTAMENT`);
-        endEvent(gameName);
-      }
-      else if (gameState.players.last_turn_item.work_salary !== null) {
-        alert(`${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} PP`);
-      }
 
+
+        //alert(`${notCurrentPlayer.screen_name} YOU HAVE FOUND OLD GRAMMAS LOST TESTAMENT`);
+        endEvent(gameName);
+      } else if (gameState.players.last_turn_item.work_salary !== null) {
+        alert(
+            `${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} PP`);
+      }
 
       if (gameState.players.last_turn_item.string !== null) {
         alert(
@@ -508,8 +528,8 @@ function mainGame(gameName) {
     nameCont.appendChild(currentPlayer);
     nameCont.appendChild(currentPlayerName);
     infoCont.appendChild(PlayerData);
-    PlayerData.appendChild(PlayerMoneyStatic)
-    PlayerData.appendChild(PlayerMoneyValue)
+    PlayerData.appendChild(PlayerMoneyStatic);
+    PlayerData.appendChild(PlayerMoneyValue);
 
     function handleButtonClick(selectedButton, otherButton1, otherButton2) {
       selectedButton.classList.add('selected');
@@ -558,18 +578,17 @@ function mainGame(gameName) {
 
 }
 
-
 async function endEvent(gameName) {
   document.getElementById(
-      'gameContainer').innerHTML = '<img src="../img/youwan.jpeg">';
+      'gameContainer').innerHTML = '<img src="../img/YOUWAN.png">';
   const nukeResponse = await fetch(
       `http://127.0.0.2:3000/end_game/${gameName}`);
   const jsonData = await nukeResponse.json();
   console.log(jsonData, gameName, 'Database removed');
   setTimeout(() => {
-    startScreen()
-     }, 5000);
-  }
+    startScreen();
+  }, 1000);
+}
 
 /*********************** PROGRAM STARTS FROM HERE**********************/
 startScreen();
