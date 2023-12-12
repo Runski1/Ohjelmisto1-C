@@ -427,7 +427,7 @@ function mainGame(gameName) {
       map.setView(cityCoords, 7, {
         "animate": true,
         "pan": {
-          "duration": 10
+          "duration": 100
         }
       });
       hereMarker.fire('click');
