@@ -201,15 +201,15 @@ function mainGame(gameName) {
     mapFrame.classList.add('map');
     mapFrame.classList.add('hide');
     const accessToken = 'c6moPjpSN7QLOooqQRQkhGSswG714yj1foLNEIYWMqAcvVJVqx1LFPDqpl9tCvet';
-    const map = L.map('map').setView([50.1103, 30.5697], 3);
-    L.tileLayer(
+      let map = L.map('map').setView([50.1103, 30.5697], 3);
+      L.tileLayer(
         `https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=${accessToken}`,
         {
           attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank" class="jawg-attrib">&copy; <b>Jawg</b>Maps</a> | <a href="https://www.openstreetmap.org/copyright" title="OpenStreetMap is open data licensed under ODbL" target="_blank" class="osm-attrib">&copy; OSM contributors</a>',
           maxZoom: 22,
         },
-    ).addTo(map);
-    // Adding different markers
+      ).addTo(map);
+      // Adding different markers
     let greenMarker = new L.Icon({
       iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -299,6 +299,7 @@ function mainGame(gameName) {
       renderMarkers(currentPlayer, visitedList, selectedButton)
     }
     function renderMarkers(currentPlayer, visitedList, selectedButton) {
+      
       let flyCities = [];
       let hikeCities = [];
       let sailCities = [];
@@ -330,8 +331,10 @@ function mainGame(gameName) {
         }
       }
       let hereMarker
+      let cityCoords
       for (let city of cityData) {
         if (currentPlayer.location == Number(city.id)) {
+          cityCoords = [city.latitude_deg, city.longitude_deg];
           hereMarker = L.marker([city.latitude_deg, city.longitude_deg],
           {icon: playerMarker}).addTo(map);
           hereMarker.bindPopup(`${currentPlayer.screen_name}, You are here!`);
@@ -420,6 +423,13 @@ function mainGame(gameName) {
           }
         }
       }
+      console.log('citycoords: ', cityCoords)
+      map.setView(cityCoords, 7, {
+        "animate": true,
+        "pan": {
+          "duration": 10
+        }
+      });
       hereMarker.fire('click');
     }
 
