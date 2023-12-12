@@ -27,6 +27,35 @@ body {
     background: rgb(0, 0, 0);
 
 }
+.starTrek {
+    display: flex;
+    justify-content: center;
+    height: 800px;
+    perspective: 400px;
+    color: #19caca;
+    font-family: 'Chakra Petch-BOLD';
+    font-size: 500%;
+    font-weight: 600;
+    letter-spacing: 6px;
+    line-height: 150%;
+    text-align: justify;
+}
+.scrollText  {
+    position: relative;
+    top: -100px;
+    transform-origin: 50% 100%;
+    animation: scrollText 60s linear; 
+}
+@keyframes scrollText {
+    0% {
+        top: 0;
+        transform: rotateX(20deg) translateZ(0);
+    }
+    100% {
+        top: -6000px;
+        transform: rotateX(25deg) translateZ(-2500px);
+    }
+}   
 
 #logoContainer {
 
@@ -195,7 +224,7 @@ button.submit {
     border: 0.01rem solid rgba(68, 82, 82, 0.51);
 }
 
-}
+
 .mainGame {
     width: 7rem;
     height: auto;
