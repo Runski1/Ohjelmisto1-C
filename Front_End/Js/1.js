@@ -62,6 +62,7 @@ function starTrek() {// Create container for the start screen
     const targetElem = document.getElementById('gameContainer');
     targetElem.innerHTML = '';
     let mySound = new Audio('../music/testi.mp3');
+    mySound.volume = 0.1;
     mySound.play();
     const starTrek = document.createElement('section');
     starTrek.classList.add('starTrek');
