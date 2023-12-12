@@ -48,13 +48,16 @@ function startScreen() {
 
 function starTrek() {// Create container for the start screen
     // STAR TREK STUFF HERE //
-    const targetElem = document.getElementById('gameContainer');
+
+    const targetElem = document.body;
     targetElem.innerHTML = '';
     let mySound = new Audio('../music/testi.mp3');
     mySound.play();
     const starTrek = document.createElement('section');
     starTrek.classList.add('starTrek');
+    starTrek.classList.add('hide')
     targetElem.appendChild(starTrek);
+
     const scrollText = document.createElement('div');
     starTrek.appendChild(scrollText);
     scrollText.classList.add('scrollText');
@@ -64,14 +67,22 @@ function starTrek() {// Create container for the start screen
     intro2.innerText = "Facinated by the fast development of the cultural change in Europe, your grandmother went on a holiday travelling around the NEU. Things went smoothly until she lost her luggage somewhere, and now she can't remember where. Being her typical self, she also had her testament in the luggage..."
     const intro3 = document.createElement('p')
     intro3.innerText = "Whoever finds the grandma's luggage, might be remembered in her testament. You must embark on a long trip around Europe and find it before your sibling does!"
+   setTimeout(() => {
+       starTrek.classList.add('show')
+       }, 400);
     scrollText.appendChild(intro1);
     scrollText.appendChild(intro2);
     scrollText.appendChild(intro3);
-
+    document.addEventListener("keypress", function (event) {
+        event.preventDefault();
+        mySound.pause();
+        starTrek.classList.remove('show')
+        selectGame(); // Make sure to define the selectGame() function
+    });
 
 }
-
 async function selectGame() {
+
     setTimeout(() => {
         const targetElem = document.getElementById('gameContainer');
         targetElem.innerHTML = '';
