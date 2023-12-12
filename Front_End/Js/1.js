@@ -85,23 +85,29 @@ function starTrek() {// Create container for the start screen
     scrollText.appendChild(intro1);
     scrollText.appendChild(intro2);
     scrollText.appendChild(intro3);
+    let keypress = 0;
     document.addEventListener("keypress", function (event) {
         event.preventDefault();
         mySound.pause();
         starTrek.classList.remove('show')
+        keypress = 1;
         selectGame(); // Make sure to define the selectGame() function
+        console.log("Keyboard interrupt, keypress=", keypress)
     }, {once: true});  // VERY IMPORTANT LOL
     setTimeout(() => {
-        starTrek.classList.remove('show')
-        document.getElementById('logo').classList.add('show')
-        setTimeout(() => {
-            document.getElementById('logo').classList.remove('show')
+        if (keypress == 0) {
+            starTrek.classList.remove('show')
+            document.getElementById('logo').classList.add('show')
             setTimeout(() => {
-            selectGame()
-            }, 3000);
-        }, 4000);
-
+                document.getElementById('logo').classList.remove('show')
+                setTimeout(() => {
+                selectGame()
+                }, 3000);
+            }, 4000);
+            console.log("I DID A THING")
+        }
     }, 47000);
+    
 }
 
 async function selectGame() {
@@ -170,7 +176,7 @@ async function selectGame() {
 
                         const playerList = [];
 
-                        for (let i = 0; i < 2; i++) {
+                        for (let i = 0; i < 2; i++) {﻿
                             const inputNewPlayer = document.createElement('input');
                             inputNewPlayer.type = 'text';
                             inputNewPlayer.id = `player${i + 1}`;
