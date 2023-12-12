@@ -163,9 +163,9 @@ async function get_saveGame(gameName) {
 
   const gameNameResponse = await fetch(
       `http://127.0.0.2:3000/get_saveGame/${gameName}`);
-  console.log("gamenameresponse: ", gameNameResponse)
+  console.log('gamenameresponse: ', gameNameResponse);
   const jsonData = await gameNameResponse.json();
-  console.log("jsondata: ", jsonData)
+  console.log('jsondata: ', jsonData);
   console.log(jsonData);
   return jsonData;
 }
@@ -179,7 +179,6 @@ async function playerSaveData(gameName, playerName1, playerName2) {
   //palauttaa pelin nimen jsonData.game.game_name);
 }
 
-//asd
 function mainGame(gameName) {
 
   setTimeout(() => {
@@ -285,6 +284,7 @@ function mainGame(gameName) {
         currentPlayer = player1;
         notCurrentPlayer = player2;
       }
+
       currentPlayerName.textContent = currentPlayer.screen_name;
       if (selectedButton == workButton) {
         let playerId = currentPlayer.player_id;
@@ -319,6 +319,14 @@ function mainGame(gameName) {
         }
       });
       // Here we render all markers on map
+      let playerInPort = false;
+      for (let city of cityData) {
+        if (currentPlayer.location == Number(city.id) && city.port_city ==
+            '1') {
+          playerInPort = true;
+        }
+      }
+
       for (let city of cityData) {
         if (currentPlayer.location == Number(city.id)) {
           let marker = L.marker([city.latitude_deg, city.longitude_deg],
@@ -330,7 +338,8 @@ function mainGame(gameName) {
                   {icon: greenMarker}).addTo(map);
               marker.bindPopup(`<b>Hike to ${city.name}</b>`);
               marker.on('click', function(event) {
-                playerAction(gameName, currentPlayer.player_id, 'hike', city.id);
+                playerAction(gameName, currentPlayer.player_id, 'hike',
+                    city.id);
 
               });
             } else {
@@ -338,7 +347,8 @@ function mainGame(gameName) {
                   {icon: redMarker}).addTo(map);
               marker.bindPopup(`<b>Hike to ${city.name}</b>`);
               marker.on('click', function(event) {
-                playerAction(gameName, currentPlayer.player_id, 'hike', city.id);
+                playerAction(gameName, currentPlayer.player_id, 'hike',
+                    city.id);
 
               });
             }
@@ -347,13 +357,14 @@ function mainGame(gameName) {
                 {icon: greyMarker}).addTo(map);
           }
         } else if (selectedButton === sailButton) {
-          if (sailCities.includes(Number(city.id))) { // city.id is string by default
+          if (sailCities.includes(Number(city.id)) && playerInPort == true) { // city.id is string by default
             if (visitedList.includes(city.id)) {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: greenMarker}).addTo(map);
               marker.bindPopup(`<b>Sail to ${city.name}</b>`);
               marker.on('click', function(event) {
-                playerAction(gameName, currentPlayer.player_id, 'sail', city.id);
+                playerAction(gameName, currentPlayer.player_id, 'sail',
+                    city.id);
 
               });
             } else {
@@ -361,7 +372,8 @@ function mainGame(gameName) {
                   {icon: redMarker}).addTo(map);
               marker.bindPopup(`<b>Sail to ${city.name}</b>`);
               marker.on('click', function(event) {
-                playerAction(gameName, currentPlayer.player_id, 'sail', city.id);
+                playerAction(gameName, currentPlayer.player_id, 'sail',
+                    city.id);
 
               });
             }
@@ -395,16 +407,6 @@ function mainGame(gameName) {
           }
         }
       }
-      if (gameState.players.last_turn_item.work_salary !== null) {
-        alert(
-            `${notCurrentPlayer} have earned ${gameState.players.last_turn_item.work_salary} PP`);
-      }
-
-      if (gameState.players.last_turn_item.string !== null) {
-        alert(
-            `${notCurrentPlayer} have found ${gameState.players.last_turn_item.string} and
-                 its worth ${gameState.players.last_turn_item.value}`);
-      }
 
     }
 
@@ -412,9 +414,39 @@ function mainGame(gameName) {
       console.log('playerAction: ', gameName, playerId, action, cityId);
       let response = await fetch(
           `http://127.0.0.2:3000/action/${gameName}/${playerId}/${action}/${cityId}`);
-      console.log("response: ", response);
+      console.log('response: ', response);
       let gameData = await response.json();
       await refreshPlayerData(flyButton, gameData);
+      popupEvent(gameData);
+    }
+
+    function popupEvent(gameState) {
+      const player1 = gameState.players.player1;
+      const player2 = gameState.players.player2;
+      let currentPlayer;
+      let notCurrentPlayer;
+      if (gameState.game.round_counter % 2 == 1) {
+        currentPlayer = player2;
+        notCurrentPlayer = player1;
+      } else {
+        currentPlayer = player1;
+        notCurrentPlayer = player2;
+      }
+      if (notCurrentPlayer.prizeholder == 1) {
+        alert(`${notCurrentPlayer.screen_name} YOU HAVE FOUND OLD GRAMMAS LOST TESTAMENT`);
+        endEvent(gameName);
+      }
+      else if (gameState.players.last_turn_item.work_salary !== null) {
+        alert(`${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} PP`);
+      }
+
+
+      if (gameState.players.last_turn_item.string !== null) {
+        alert(
+            `${notCurrentPlayer.screen_name} have found ${gameState.players.last_turn_item.string} and
+                 its worth ${gameState.players.last_turn_item.value}`);
+      }
+
     }
 
     flyButton.classList.add('actionButtons');
@@ -495,6 +527,19 @@ function mainGame(gameName) {
   }, 600);
 
 }
+
+
+async function endEvent(gameName) {
+  document.getElementById(
+      'gameContainer').innerHTML = '<img src="../img/youwan.jpeg">';
+  const nukeResponse = await fetch(
+      `http://127.0.0.2:3000/end_game/${gameName}/`);
+  const jsonData = await nukeResponse.json();
+  console.log(jsonData, gameName, 'Database removed');
+  setTimeout(() => {
+    startScreen()
+     }, 5000);
+  }
 
 /*********************** PROGRAM STARTS FROM HERE**********************/
 startScreen();
