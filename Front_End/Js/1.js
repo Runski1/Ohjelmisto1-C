@@ -61,7 +61,7 @@ function starTrek() {// Create container for the start screen
     // STAR TREK STUFF HERE //
     const targetElem = document.getElementById('gameContainer');
     targetElem.innerHTML = '';
-    let mySound = new Audio('../music/INTRO.WAV');
+    let mySound = new Audio('../music/INTRO.wav');
     mySound.volume = 0.1;
     mySound.play();
     const starTrek = document.createElement('section');
@@ -95,15 +95,16 @@ function starTrek() {// Create container for the start screen
         console.log("Keyboard interrupt, keypress=", keypress)
     }, {once: true});  // VERY IMPORTANT LOL
     setTimeout(() => {
-        starTrek.classList.remove('show')
-        document.getElementById('logo').classList.add('show')
-        setTimeout(() => {
-            document.getElementById('logo').classList.remove('show')
+        if (keypress == 0) {
+            starTrek.classList.remove('show')
+            document.getElementById('logo').classList.add('show')
             setTimeout(() => {
-            selectGame()
-            }, 3000);
-        }, 4000);
-
+                document.getElementById('logo').classList.remove('show')
+                setTimeout(() => {
+                selectGame()
+                }, 3000);
+            }, 4000);
+        }
     }, 43000);
 }
 
