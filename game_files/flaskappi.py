@@ -84,11 +84,24 @@ def nuke_me_papi(game):
     sql = f"SELECT * FROM game WHERE name = '{game}'"
     cursor.execute(sql)
     game_data = cursor.fetchone()
+    sql = f"SELECT * FROM player WHERE game = '{game_data[0]}'"
+    cursor.execute(sql)
+    players_data = cursor.fetchall()
+    game_inst = classes.Game.get_classes(game_data[1])
+    nuke_p1 = classes.Player.get_players(players_data[0])
+    nuke_p2 = classes.Player.get_players(players_data[1])
+    nuke_p1[0].player_instances.remove(nuke_p1[0])
+    nuke_p1 = 0
+    nuke_p2[0].player_instances.remove(nuke_p2[0])
+    nuke_p2 = 0
+    game_inst[0].instances.remove(game_inst[0])
+    game_inst = 0
 
     sql = f"DELETE FROM player WHERE game = '{game_data[0]}'"
     cursor.execute(sql)
     sql = f"DELETE FROM game WHERE id = '{game_data[0]}'"
     cursor.execute(sql)
+
     response = {
         "endlife": "Game removed from the universe"
     }
