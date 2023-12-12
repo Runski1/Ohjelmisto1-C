@@ -198,7 +198,7 @@ function mainGame(gameName) {
     const mapFrame = document.createElement('div');
     mapFrame.setAttribute('id', 'map');
     gameContainer.appendChild(mapFrame);
-    mapFrame.classList.add('map');
+
     mapFrame.classList.add('hide');
     const accessToken = 'c6moPjpSN7QLOooqQRQkhGSswG714yj1foLNEIYWMqAcvVJVqx1LFPDqpl9tCvet';
     const map = L.map('map').setView([50.1103, 30.5697], 3);
@@ -533,7 +533,7 @@ async function endEvent(gameName) {
   document.getElementById(
       'gameContainer').innerHTML = '<img src="../img/youwan.jpeg">';
   const nukeResponse = await fetch(
-      `http://127.0.0.2:3000/end_game/${gameName}/`);
+      `http://127.0.0.2:3000/end_game/${gameName}`);
   const jsonData = await nukeResponse.json();
   console.log(jsonData, gameName, 'Database removed');
   setTimeout(() => {
@@ -545,23 +545,3 @@ async function endEvent(gameName) {
 startScreen();
 document.getElementById('enterGameButton').
     addEventListener('click', selectGame);
-
-//**const video_Background = document.createElement('video');
-// video_Background.id = 'background-video';
-// video_Background.autoplay.
-// document.addEventListener("DOMContentLoaded", function () {
-//         // Create video element
-//         let video = document.createElement("video");
-//         video.id = "background-video";
-//         video.autoplay = true;
-//         video.loop = true;
-//         video.muted = true;
-//         video.src = "https://assets.codepen.io/6093409/river.mp4";
-//         video.type = "video/mp4";
-//
-//         // Set poster attribute
-//         video.poster = "https://assets.codepen.io/6093409/river.jpg";
-//
-//         // Append video to the body
-//         document.body.appendChild(video);
-//     });

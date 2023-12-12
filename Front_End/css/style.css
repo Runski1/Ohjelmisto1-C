@@ -2,29 +2,18 @@
     font-family: 'Chakra Petch';
     src: url('../Fonts/Chakra_Petch/ChakraPetch-LightItalic.ttf') format('truetype');
 }
+
 @font-face {
     font-family: 'Chakra Petch-BOLD';
     src: url('../Fonts/Chakra_Petch/ChakraPetch-Bold.ttf') format('truetype');
 }
+
 * {
     font-family: 'Chakra Petch';
 
     margin: 0;
     padding: 0;
 
-}
-
-
-#background-video {
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: -1;
 }
 
 
@@ -60,16 +49,19 @@ body {
 
 
 #gameContainer {
-    display: flex;
-    justify-content: flex-start;
     align-items: flex-start;
+    justify-content: center;
+    width: 60%;
+    display: flex;
+
+
     /* margin-right: 6rem; */
     /* margin-left: 6rem; */
 }
 
 #map {
     height: 37.5rem;
-    width: 99.9rem;
+    width: 100%;
 }
 
 button {
@@ -137,22 +129,26 @@ button:active {
     align-items: center;
     margin: auto; /* Keskittää vaakasuunnassa */
 }
-.hide{
+
+.hide {
     opacity: 0;
     transition: opacity 2s ease-in-out;
 
 }
+
 .show {
     opacity: 1;
 }
 
-.magentaGlow{
+.magentaGlow {
     box-shadow: 0 0 6.25rem rgb(255, 62, 227);
 }
-.cyanGlow{
+
+.cyanGlow {
     -webkit-filter: drop-shadow(0px 0px 6.25rem rgb(0, 255, 255));
 }
-.lightblueGlow{
+
+.lightblueGlow {
     box-shadow: 0 0 6.25rem rgb(140, 239, 239);
 }
 
@@ -166,7 +162,6 @@ button.submit {
 }
 
 
-
 .actionButtons {
 
     position: relative;
@@ -174,7 +169,7 @@ button.submit {
     font-size: 0.8rem;
     color: rgb(0, 255, 255);
     padding: 1rem;
-    width: 6.66rem;
+    width: 33.33%;
     text-align: center;
     transition-duration: 0.4s;
     text-decoration: none;
@@ -184,14 +179,15 @@ button.submit {
 
 
 }
-.workButton{
-     font-family: 'Chakra Petch';
-     position: relative;
+
+.workButton {
+    font-family: 'Chakra Petch';
+    position: relative;
     background-color: rgba(0, 0, 0, 0.7);
     font-size: 1.2rem;
     color: rgba(0, 255, 255);
     padding: 0.5rem;
-    width: 19.95rem;
+    width: 100%;
     text-align: center;
     transition-duration: 0.4s;
     text-decoration: none;
@@ -199,34 +195,37 @@ button.submit {
     cursor: pointer;
     border: 0.01rem solid rgba(68, 82, 82, 0.51);
 }
-.map{
-    width : 800px;
-    height : 600px;
+
 }
-.mainGame{
-   width : 70rem;
-    height : auto;
+.mainGame {
+    width: 7rem;
+    height: auto;
 }
-.icon{
+
+.icon {
     width: 1.2rem;
     height: 1.2rem;
 }
-.infoContainer{
+
+.infoContainer {
     padding: 0.5rem;
     color: rgba(0, 255, 255);
     font-size: 1rem;
 
 
 }
-.nameContainer{
-        padding: 0rem 0rem 1rem 0rem;
+
+.nameContainer {
+    padding: 0rem 0rem 1rem 0rem;
     display: flex;
     justify-content: space-between
 }
-staticCurrentPlayer{
-    width: auto;
+
+.sideBar {
+
 }
-.selected{
+
+.selected {
     background-color: rgb(195 20 174 / 81%);
 
 }
