@@ -432,12 +432,13 @@ function mainGame(gameName) {
         currentPlayer = player1;
         notCurrentPlayer = player2;
       }
-      if (gameState.players.last_turn_item.work_salary !== null) {
+      if (notCurrentPlayer.prizeholder == 1) {
+        alert(`${notCurrentPlayer.screen_name} YOU HAVE FOUND OLD GRAMMAS LOST TESTAMENT`);
+        endEvent(gameName);
+      }
+      else if (gameState.players.last_turn_item.work_salary !== null) {
         alert(
             `${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} PP`);
-      }
-      if (notCurrentPlayer.prizeholder == 1) {
-        endEvent(gameName);
       }
 
       if (gameState.players.last_turn_item.string !== null) {
@@ -446,7 +447,7 @@ function mainGame(gameName) {
                  its worth ${gameState.players.last_turn_item.value}`);
       }
 
-    }
+
 
     flyButton.classList.add('actionButtons');
     hikeButton.classList.add('actionButtons');
