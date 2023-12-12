@@ -234,8 +234,16 @@ function mainGame(gameName) {
       popupAnchor: [-5, -15],
       shadowSize: [20, 20],
     });
-    let playerMarker = new L.Icon({
-      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+    let player1Marker = new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41],
+    });
+    let player2Marker = new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
       iconSize: [25, 41],
       iconAnchor: [12, 41],
@@ -298,9 +306,9 @@ function mainGame(gameName) {
       PlayerMoneyValue.textContent= currentPlayer.current_pp + ' PP';
 
       // Here we render all markers on map
-      renderMarkers(currentPlayer, visitedList, selectedButton)
+      renderMarkers(currentPlayer, visitedList, selectedButton, player1)
     }
-    function renderMarkers(currentPlayer, visitedList, selectedButton) {
+    function renderMarkers(currentPlayer, visitedList, selectedButton, player1) {
       
       let flyCities = [];
       let hikeCities = [];
@@ -337,10 +345,16 @@ function mainGame(gameName) {
       for (let city of cityData) {
         if (currentPlayer.location == Number(city.id)) {
           cityCoords = [city.latitude_deg, city.longitude_deg];
-          hereMarker = L.marker([city.latitude_deg, city.longitude_deg],
-          {icon: playerMarker}).addTo(map);
-          hereMarker.bindPopup(`${currentPlayer.screen_name}, You are here!`);
-
+          if (currentPlayer === player1) {
+            console.log(currentPlayer)
+            hereMarker = L.marker([city.latitude_deg, city.longitude_deg],
+            {icon: player1Marker}).addTo(map);
+            hereMarker.bindPopup(`${currentPlayer.screen_name}, You are here!`);
+          } else {
+            hereMarker = L.marker([city.latitude_deg, city.longitude_deg],
+            {icon: player2Marker}).addTo(map);
+            hereMarker.bindPopup(`${currentPlayer.screen_name}, You are here!`);
+          }
         } else if (selectedButton === hikeButton) {
           if (hikeCities.includes(Number(city.id))) { // city.id is string by default
             if (visitedList.includes(city.id)) {
