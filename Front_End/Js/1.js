@@ -271,6 +271,7 @@ function mainGame(gameName) {
     currentPlayer.textContent = `Current player:`;
 
     async function refreshPlayerData(selectedButton, gameState) {
+      // Trying to make flyButton active
       console.log('refreshPlayerdata');
       const player1 = gameState.players.player1;
       const player2 = gameState.players.player2;
@@ -294,7 +295,10 @@ function mainGame(gameName) {
 
       PlayerData.textContent = currentPlayer.current_pp + ' PP';
 
-      // First we unpack cities in range in three arrays
+      // Here we render all markers on map
+      renderMarkers(currentPlayer, visitedList, selectedButton)
+    }
+    function renderMarkers(currentPlayer, visitedList, selectedButton) {
       let flyCities = [];
       let hikeCities = [];
       let sailCities = [];
@@ -318,7 +322,6 @@ function mainGame(gameName) {
           map.removeLayer(layer);
         }
       });
-      // Here we render all markers on map
       let playerInPort = false;
       for (let city of cityData) {
         if (currentPlayer.location == Number(city.id) && city.port_city ==
@@ -326,31 +329,35 @@ function mainGame(gameName) {
           playerInPort = true;
         }
       }
-
+      let hereMarker
       for (let city of cityData) {
         if (currentPlayer.location == Number(city.id)) {
-          let marker = L.marker([city.latitude_deg, city.longitude_deg],
-              {icon: playerMarker}).addTo(map);
+          hereMarker = L.marker([city.latitude_deg, city.longitude_deg],
+          {icon: playerMarker}).addTo(map);
+          hereMarker.bindPopup(`${currentPlayer.screen_name}, You are here!`);
+
         } else if (selectedButton === hikeButton) {
           if (hikeCities.includes(Number(city.id))) { // city.id is string by default
             if (visitedList.includes(city.id)) {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: greenMarker}).addTo(map);
-              marker.bindPopup(`<b>Hike to ${city.name}</b>`);
-              marker.on('click', function(event) {
-                playerAction(gameName, currentPlayer.player_id, 'hike',
-                    city.id);
-
-              });
+                  marker.bindPopup(`<a href="#" id="hikeLink${city.id}">Hike to ${city.name}</a>`);
+                  marker.on('click', function(event) {
+                    document.getElementById(`hikeLink${city.id}`).addEventListener('click', function(e) {
+                      e.preventDefault(); // Prevent the default behavior of the link
+                      playerAction(gameName, currentPlayer.player_id, 'hike', city.id);
+                    })
+                  })
             } else {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: redMarker}).addTo(map);
-              marker.bindPopup(`<b>Hike to ${city.name}</b>`);
-              marker.on('click', function(event) {
-                playerAction(gameName, currentPlayer.player_id, 'hike',
-                    city.id);
-
-              });
+                  marker.bindPopup(`<a href="#" id="hikeLink${city.id}">Hike to ${city.name}</a>`);
+                  marker.on('click', function(event) {
+                    document.getElementById(`hikeLink${city.id}`).addEventListener('click', function(e) {
+                      e.preventDefault(); // Prevent the default behavior of the link
+                      playerAction(gameName, currentPlayer.player_id, 'hike', city.id);
+                    })
+                  })
             }
           } else {
             let marker = L.marker([city.latitude_deg, city.longitude_deg],
@@ -361,21 +368,23 @@ function mainGame(gameName) {
             if (visitedList.includes(city.id)) {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: greenMarker}).addTo(map);
-              marker.bindPopup(`<b>Sail to ${city.name}</b>`);
-              marker.on('click', function(event) {
-                playerAction(gameName, currentPlayer.player_id, 'sail',
-                    city.id);
-
-              });
+                  marker.bindPopup(`<a href="#" id="sailLink${city.id}">Sail to ${city.name}</a>`);
+                  marker.on('click', function(event) {
+                    document.getElementById(`sailLink${city.id}`).addEventListener('click', function(e) {
+                      e.preventDefault(); // Prevent the default behavior of the link
+                      playerAction(gameName, currentPlayer.player_id, 'sail', city.id);
+                    })
+                  })
             } else {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: redMarker}).addTo(map);
-              marker.bindPopup(`<b>Sail to ${city.name}</b>`);
-              marker.on('click', function(event) {
-                playerAction(gameName, currentPlayer.player_id, 'sail',
-                    city.id);
-
-              });
+                  marker.bindPopup(`<a href="#" id="sailLink${city.id}">Sail to ${city.name}</a>`);
+                  marker.on('click', function(event) {
+                    document.getElementById(`sailLink${city.id}`).addEventListener('click', function(e) {
+                      e.preventDefault(); // Prevent the default behavior of the link
+                      playerAction(gameName, currentPlayer.player_id, 'sail', city.id);
+                    })
+                  })
             }
           } else {
             let marker = L.marker([city.latitude_deg, city.longitude_deg],
@@ -387,19 +396,23 @@ function mainGame(gameName) {
             if (visitedList.includes(city.id)) {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
                   {icon: greenMarker}).addTo(map);
-              marker.bindPopup(`<b>Fly to ${city.name}</b>`);
-              marker.on('click', function(event) {
-                playerAction(gameName, currentPlayer.player_id, 'fly', city.id);
-
-              });
+                  marker.bindPopup(`<a href="#" id="flyLink${city.id}">Fly to ${city.name}</a>`);
+                  marker.on('click', function(event) {
+                    document.getElementById(`flyLink${city.id}`).addEventListener('click', function(e) {
+                      e.preventDefault(); // Prevent the default behavior of the link
+                      playerAction(gameName, currentPlayer.player_id, 'fly', city.id);
+                    })
+                  });
             } else {
               let marker = L.marker([city.latitude_deg, city.longitude_deg],
-                  {icon: redMarker}).addTo(map);
-              marker.bindPopup(`<b>Fly to ${city.name}</b>`);
-              marker.on('click', function(event) {
-                playerAction(gameName, currentPlayer.player_id, 'fly', city.id);
-
-              });
+                {icon: redMarker}).addTo(map);
+                marker.bindPopup(`<a href="#" id="flyLink${city.id}">Fly to ${city.name}</a>`);
+                marker.on('click', function(event) {
+                  document.getElementById(`flyLink${city.id}`).addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent the default behavior of the link
+                    playerAction(gameName, currentPlayer.player_id, 'fly', city.id);
+                  })
+                });
             }
           } else {
             let marker = L.marker([city.latitude_deg, city.longitude_deg],
@@ -407,7 +420,7 @@ function mainGame(gameName) {
           }
         }
       }
-
+      hereMarker.fire('click');
     }
 
     async function playerAction(gameName, playerId, action, cityId) {
@@ -416,6 +429,9 @@ function mainGame(gameName) {
           `http://127.0.0.2:3000/action/${gameName}/${playerId}/${action}/${cityId}`);
       console.log('response: ', response);
       let gameData = await response.json();
+      flyButton.classList.add('selected');
+      hikeButton.classList.remove('selected');
+      sailButton.classList.remove('selected');
       await refreshPlayerData(flyButton, gameData);
       popupEvent(gameData);
     }
