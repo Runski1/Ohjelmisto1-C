@@ -95,15 +95,17 @@ function starTrek() {// Create container for the start screen
         console.log("Keyboard interrupt, keypress=", keypress)
     }, {once: true});  // VERY IMPORTANT LOL
     setTimeout(() => {
-        starTrek.classList.remove('show')
-        document.getElementById('logo').classList.add('show')
-        setTimeout(() => {
-            document.getElementById('logo').classList.remove('show')
+        if (keypress == 0) {
+            starTrek.classList.remove('show')
+            document.getElementById('logo').classList.add('show')
             setTimeout(() => {
-            selectGame()
-            }, 3000);
-        }, 4000);
+                document.getElementById('logo').classList.remove('show')
+                setTimeout(() => {
+                    selectGame()
+                }, 3000);
+            }, 4000);
 
+        }
     }, 43000);
 }
 
@@ -646,10 +648,7 @@ async function endEvent(gameName) {
         `http://127.0.0.2:3000/end_game/${gameName}`);
     const jsonData = await nukeResponse.json();
     console.log(jsonData, gameName, 'Database removed');
-    setTimeout(() => {
-        startScreen()
-    }, 5000);
-}
+
 
 /*********************** PROGRAM STARTS FROM HERE**********************/
 startScreen();
