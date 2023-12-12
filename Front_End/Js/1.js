@@ -101,7 +101,7 @@ function starTrek() {// Create container for the start screen
             setTimeout(() => {
                 document.getElementById('logo').classList.remove('show')
                 setTimeout(() => {
-                    selectGame()
+                selectGame()
                 }, 3000);
             }, 4000);
         }
@@ -643,18 +643,16 @@ function mainGame(gameName) {
 async function endEvent(gameName) {
     document.getElementById(
         'gameContainer').innerHTML = '<img src="../img/youwan.jpeg">';
-    const nukeResponse = await fetch(
-        `http://127.0.0.2:3000/end_game/${gameName}`);
+    const nukeResponse = await fetch(`http://127.0.0.2:3000/end_game/${gameName}`);
     const jsonData = await nukeResponse.json();
     console.log(jsonData, gameName, 'Database removed');
     let mySound = new Audio('../music/INTRO.wav');
     mySound.volume = 0.1;
     mySound.play();
-
     document.addEventListener("keypress", function (event) {
             event.preventDefault();
             mySound.pause();
-            startScreen()
+            location.reload();
         }
         , {once: true});
 }
