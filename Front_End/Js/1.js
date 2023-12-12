@@ -85,11 +85,14 @@ function starTrek() {// Create container for the start screen
     scrollText.appendChild(intro1);
     scrollText.appendChild(intro2);
     scrollText.appendChild(intro3);
+    let keypress = 0;
     document.addEventListener("keypress", function (event) {
         event.preventDefault();
         mySound.pause();
         starTrek.classList.remove('show')
+        keypress = 1;
         selectGame(); // Make sure to define the selectGame() function
+        console.log("Keyboard interrupt, keypress=", keypress)
     }, {once: true});  // VERY IMPORTANT LOL
     setTimeout(() => {
         starTrek.classList.remove('show')
