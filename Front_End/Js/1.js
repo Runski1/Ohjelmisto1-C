@@ -435,7 +435,11 @@ function mainGame(gameName) {
       }
       if (gameState.players.last_turn_item.work_salary !== null) {
         alert(
-            `${notCurrentPlayer} have earned ${gameState.players.last_turn_item.work_salary} PP`);
+            `${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} PP`);
+      }
+      else if((gameState.${notCurrentPlayer}.current_location == gameState.game.bag_city){
+        endEvent(gameName)
+
       }
 
       if (gameState.players.last_turn_item.string !== null) {
@@ -443,6 +447,7 @@ function mainGame(gameName) {
             `${notCurrentPlayer.screen_name} have found ${gameState.players.last_turn_item.string} and
                  its worth ${gameState.players.last_turn_item.value}`);
       }
+
     }
 
     flyButton.classList.add('actionButtons');
@@ -521,6 +526,9 @@ function mainGame(gameName) {
  subdomains: 'abcd',
  accessToken: '<your accessToken>'*/
   }, 600);
+
+}
+function endEvent(gameName){
 
 }
 
