@@ -105,7 +105,7 @@ function starTrek() {// Create container for the start screen
                 }, 3000);
             }, 4000);
         }
-    }, 56000);
+    }, 58000);
 }
 
 async function selectGame() {
