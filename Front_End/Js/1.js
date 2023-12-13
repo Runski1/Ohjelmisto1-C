@@ -62,7 +62,7 @@ function starTrek() {// Create container for the start screen
     const targetElem = document.getElementById('gameContainer');
     targetElem.innerHTML = '';
     let mySound = new Audio('../music/INTRO.wav');
-    mySound.volume = 0.1;
+    mySound.volume = 0.2;
     mySound.play();
     const starTrek = document.createElement('section');
     starTrek.classList.add('starTrek');
@@ -647,7 +647,7 @@ async function endEvent(gameName) {
     const jsonData = await nukeResponse.json();
     console.log(jsonData, gameName, 'Database removed');
     let mySound = new Audio('../music/INTRO.wav');
-    mySound.volume = 0.1;
+    mySound.volume = 0.2;
     mySound.play();
     document.addEventListener("keypress", function (event) {
             event.preventDefault();
