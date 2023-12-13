@@ -546,14 +546,14 @@ function mainGame(gameName) {
                 alert(`${notCurrentPlayer.screen_name} YOU HAVE FOUND OLD GRAMMAS LOST TESTAMENT`);
                 endEvent(gameName);
             } else if (gameState.players.last_turn_item.work_salary !== null) {
-                alert(`${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} PP`);
+                alert(`${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} EP`);
             }
 
 
             else if (gameState.players.last_turn_item.string !== null) {
                 alert(
                     `${notCurrentPlayer.screen_name} have found ${gameState.players.last_turn_item.string} and
-                 its worth ${gameState.players.last_turn_item.value} PP`);
+                 its worth ${gameState.players.last_turn_item.value} EP`);
             }
 
         }
