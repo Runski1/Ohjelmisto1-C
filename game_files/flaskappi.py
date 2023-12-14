@@ -21,7 +21,7 @@ cursor = connection.cursor()
 
 @server.route('/get_saveGame/<savegame>/')
 def get_savegame(savegame):
-    sql = f"SELECT * FROM game WHERE name = %s"
+    sql = f"SELECT * FROM game WHERE name =%s"
     cursor.execute(sql, (savegame,))
     cursor.fetchall()
     if cursor.rowcount > 0:
