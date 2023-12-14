@@ -73,7 +73,7 @@ function starTrek() {// Create container for the start screen
     starTrek.appendChild(scrollText);
     scrollText.classList.add('scrollText');
     const intro1 = document.createElement('p')
-    intro1.innerText = "It's the year 2043. Climate change and a three-decade-long inflation-deflation cycle have scourged Europe. At the beginning of Paavo Väyrynen's third presidential term, the European Union took action. The use of the Euro as a currency was abandoned, and all trade began to be conducted with emission permits (PP). When Turkey and the North African countries adopted the EU's economic and environmental reforms, they obtained full EU membership. For the first time in history, the EU has expanded beyond the borders of Europe, thus becoming the New European Union (NEU)."
+    intro1.innerText = "It's the year 2043. Climate change and a three-decade-long inflation-deflation cycle have scourged Europe. At the beginning of Paavo Väyrynen's third presidential term, the European Union took action. The use of the Euro as a currency was abandoned, and all trade began to be conducted with emission permits (EP). When Turkey and the North African countries adopted the EU's economic and environmental reforms, they obtained full EU membership. For the first time in history, the EU has expanded beyond the borders of Europe, thus becoming the New European Union (NEU)."
     const intro2 = document.createElement('p')
     intro2.innerText = "Facinated by the fast development of the cultural change in Europe, your grandmother went on a holiday travelling around the NEU. Things went smoothly until she lost her luggage somewhere, and now she can't remember where. Being her typical self, she also had her testament in the luggage..."
     const intro3 = document.createElement('p')
@@ -268,7 +268,7 @@ function mainGame(gameName) {
 
         mapFrame.classList.add('hide');
         const accessToken = 'c6moPjpSN7QLOooqQRQkhGSswG714yj1foLNEIYWMqAcvVJVqx1LFPDqpl9tCvet';
-        let map = L.map('map').setView([50.1103, 30.5697], 3);
+        let map = L.map('map').setView([52.3503, 14.0460], 3);
         L.tileLayer(
             `https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=${accessToken}`,
             {
@@ -346,12 +346,13 @@ function mainGame(gameName) {
         //get_saveGame(gameName).players.player_name.player2);
         currentPlayer.textContent = `Current player:`;
 
-        async function refreshPlayerData(selectedButton, gameState) {
+        async function refreshPlayerData(selectedButton, gameState, newTurn = 0) {
             // Trying to make flyButton active
             console.log('refreshPlayerdata');
             const player1 = gameState.players.player1;
             const player2 = gameState.players.player2;
             const visitedList = gameState.game.visited;
+            let bubbleGumNewTurn = newTurn;
             let currentPlayer;
             let notCurrentPlayer;
             if (gameState.game.round_counter % 2 == 1) {
@@ -373,11 +374,12 @@ function mainGame(gameName) {
             PlayerMoneyValue.textContent = currentPlayer.current_pp + ' PP';
 
             // Here we render all markers on map
-            renderMarkers(currentPlayer, visitedList, selectedButton, player1)
+            renderMarkers(currentPlayer, visitedList, selectedButton, player1, bubbleGumNewTurn)
         }
 
-        function renderMarkers(currentPlayer, visitedList, selectedButton, player1) {
-
+        function renderMarkers(currentPlayer, visitedList, selectedButton, player1, newTurn) {
+            let bubbleGumNewTurn = newTurn;
+            console.log(bubbleGumNewTurn);
             let flyCities = [];
             let hikeCities = [];
             let sailCities = [];
@@ -508,12 +510,14 @@ function mainGame(gameName) {
                 }
             }
             console.log('citycoords: ', cityCoords)
-            map.setView(cityCoords, 7, {
-                "animate": true,
-                "pan": {
-                    "duration": 100
-                }
-            });
+            if (bubbleGumNewTurn == 1) {
+                map.setView(cityCoords, 7, {
+                    "animate": true,
+                    "pan": {
+                        "duration": 100
+                    }
+                });
+            }
             hereMarker.fire('click');
         }
 
@@ -526,7 +530,8 @@ function mainGame(gameName) {
             flyButton.classList.add('selected');
             hikeButton.classList.remove('selected');
             sailButton.classList.remove('selected');
-            await refreshPlayerData(flyButton, gameData);
+            let newTurn = 1;
+            await refreshPlayerData(flyButton, gameData, newTurn);
             popupEvent(gameData);
         }
 
@@ -546,14 +551,14 @@ function mainGame(gameName) {
                 alert(`${notCurrentPlayer.screen_name} YOU HAVE FOUND OLD GRAMMAS LOST TESTAMENT`);
                 endEvent(gameName);
             } else if (gameState.players.last_turn_item.work_salary !== null) {
-                alert(`${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} PP`);
+                alert(`${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} EP`);
             }
 
 
             else if (gameState.players.last_turn_item.string !== null) {
                 alert(
                     `${notCurrentPlayer.screen_name} have found ${gameState.players.last_turn_item.string} and
-                 its worth ${gameState.players.last_turn_item.value} PP`);
+                 its worth ${gameState.players.last_turn_item.value} EP`);
             }
 
         }

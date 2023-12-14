@@ -17,7 +17,7 @@ create table game
 (
     id            int auto_increment
         primary key,
-    name          varchar(255)  null,
+    name          varchar(255)  COLLATE latin1_general_cs null,
     round_counter int default 0 null,
     bag_city      int           null,
     visited       varchar(255)  null
@@ -28,7 +28,7 @@ create table player
 (
     id             int auto_increment
         primary key,
-    screen_name    varchar(25)             null,
+    screen_name    varchar(25) COLLATE latin1_general_cs null,
     current_pp     int        default 2000 null,
     lockstate      int        default 0    null,
     prizeholder    tinyint(1) default 0    not null,

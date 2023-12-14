@@ -25,7 +25,7 @@ class Game:
         if self.game_id == 0:
             self.generate_bag()
             self.update_db()
-            self.game_id = self.get_game_id(self.game_name)
+    #        self.game_id = self.get_game_id(self.game_name)
         self.babymaker(self.player1_name, self.game_id)
         self.babymaker(self.player2_name, self.game_id)
         self.update_db()
@@ -54,11 +54,12 @@ class Game:
             query = (f"INSERT INTO game (name, round_counter, bag_city, visited)"
                      f" VALUES(%s, '{self.round_counter}', '{self.bag_city}', '{visited_json}')")
             self.cursor.execute(query, (self.game_name,))
+            self.game_id = self.get_game_id(self.game_name)
             self.update_players()
 
     def update_players(self):
         for player in self.players:
-            sql = f"SELECT * FROM player WHERE screen_name = %s"
+            sql = f"SELECT * FROM player WHERE screen_name = %s AND game = '{self.game_id}'"
             self.cursor.execute(sql, (player.player_name,))
             data = self.cursor.fetchone()
             if self.cursor.rowcount > 0:
