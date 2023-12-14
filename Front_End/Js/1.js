@@ -268,7 +268,7 @@ function mainGame(gameName) {
 
         mapFrame.classList.add('hide');
         const accessToken = 'c6moPjpSN7QLOooqQRQkhGSswG714yj1foLNEIYWMqAcvVJVqx1LFPDqpl9tCvet';
-        let map = L.map('map').setView([50.1103, 30.5697], 3);
+        let map = L.map('map').setView([52.3503, 14.0460], 3);
         L.tileLayer(
             `https://tile.jawg.io/jawg-dark/{z}/{x}/{y}.png?access-token=${accessToken}`,
             {
@@ -346,12 +346,13 @@ function mainGame(gameName) {
         //get_saveGame(gameName).players.player_name.player2);
         currentPlayer.textContent = `Current player:`;
 
-        async function refreshPlayerData(selectedButton, gameState) {
+        async function refreshPlayerData(selectedButton, gameState, newTurn = 0) {
             // Trying to make flyButton active
             console.log('refreshPlayerdata');
             const player1 = gameState.players.player1;
             const player2 = gameState.players.player2;
             const visitedList = gameState.game.visited;
+            let bubbleGumNewTurn = newTurn;
             let currentPlayer;
             let notCurrentPlayer;
             if (gameState.game.round_counter % 2 == 1) {
@@ -373,11 +374,12 @@ function mainGame(gameName) {
             PlayerMoneyValue.textContent = currentPlayer.current_pp + ' PP';
 
             // Here we render all markers on map
-            renderMarkers(currentPlayer, visitedList, selectedButton, player1)
+            renderMarkers(currentPlayer, visitedList, selectedButton, player1, bubbleGumNewTurn)
         }
 
-        function renderMarkers(currentPlayer, visitedList, selectedButton, player1) {
-
+        function renderMarkers(currentPlayer, visitedList, selectedButton, player1, newTurn) {
+            let bubbleGumNewTurn = newTurn;
+            console.log(bubbleGumNewTurn);
             let flyCities = [];
             let hikeCities = [];
             let sailCities = [];
@@ -508,12 +510,14 @@ function mainGame(gameName) {
                 }
             }
             console.log('citycoords: ', cityCoords)
-            map.setView(cityCoords, 7, {
-                "animate": true,
-                "pan": {
-                    "duration": 100
-                }
-            });
+            if (bubbleGumNewTurn == 1) {
+                map.setView(cityCoords, 7, {
+                    "animate": true,
+                    "pan": {
+                        "duration": 100
+                    }
+                });
+            }
             hereMarker.fire('click');
         }
 
@@ -526,7 +530,8 @@ function mainGame(gameName) {
             flyButton.classList.add('selected');
             hikeButton.classList.remove('selected');
             sailButton.classList.remove('selected');
-            await refreshPlayerData(flyButton, gameData);
+            let newTurn = 1;
+            await refreshPlayerData(flyButton, gameData, newTurn);
             popupEvent(gameData);
         }
 
