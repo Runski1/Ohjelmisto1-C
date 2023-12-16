@@ -579,7 +579,7 @@ function mainGame(gameName) {
                 modalContent.appendChild(closeButton);
                 modal.showModal();
             } else if (gameState.players.last_turn_item.work_salary !== null) {
-<<<<<<< HEAD
+
                 modalContent.innerHTML = `<p>${notCurrentPlayer.screen_name} 
                 has earned ${gameState.players.last_turn_item.work_salary} EP</p>`;
                 modal.appendChild(modalContent);
@@ -595,13 +595,7 @@ function mainGame(gameName) {
                 modal.appendChild(modalContent);
                 modalContent.appendChild(closeButton);
                 modal.showModal();
-=======
-                alert(`${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} EP`);
-            } else if (gameState.players.last_turn_item.string !== null) {
-                alert(
-                    `${notCurrentPlayer.screen_name} have found ${gameState.players.last_turn_item.string} and
-                 its worth ${gameState.players.last_turn_item.value} EP`);
->>>>>>> 3416ebd506a3e533c39f4c319ff2981129beb530
+
             }
 
         }
