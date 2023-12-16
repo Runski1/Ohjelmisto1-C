@@ -536,10 +536,26 @@ function mainGame(gameName) {
         }
 
         function popupEvent(gameState) {
-            const player1 = gameState.players.player1;
-            const player2 = gameState.players.player2;
             let currentPlayer;
             let notCurrentPlayer;
+            const player1 = gameState.players.player1;
+            const player2 = gameState.players.player2;
+            const targetElem = document.getElementById('map');
+            const modal = document.createElement('dialog');
+            modal.classList.add('modal');
+            targetElem.appendChild(modal);
+            const modalContent = document.createElement('div');
+            modalContent.classList.add('modal-content');
+            const closeButton = document.createElement('button');
+            closeButton.classList.add('closeButton');
+            closeButton.innerText = 'Close';
+            closeButton.addEventListener('click', function () { 
+                modal.close();
+                if (notCurrentPlayer.prizeholder == 1) {
+                    endEvent(gameName);
+                }
+            }
+            )
             if (gameState.game.round_counter % 2 == 1) {
                 currentPlayer = player2;
                 notCurrentPlayer = player1;
@@ -548,17 +564,26 @@ function mainGame(gameName) {
                 notCurrentPlayer = player2;
             }
             if (notCurrentPlayer.prizeholder == 1) {
-                alert(`${notCurrentPlayer.screen_name} YOU HAVE FOUND OLD GRAMMAS LOST TESTAMENT`);
-                endEvent(gameName);
+                modalContent.innerHTML = `<p>${notCurrentPlayer.screen_name} YOU HAVE FOUND OLD GRAMMAS LOST TESTAMENT</p>`;
+                modal.appendChild(modalContent);
+                modalContent.appendChild(closeButton);
+                modal.showModal();
             } else if (gameState.players.last_turn_item.work_salary !== null) {
-                alert(`${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} EP`);
+                modalContent.innerHTML = `<p>${notCurrentPlayer.screen_name} 
+                has earned ${gameState.players.last_turn_item.work_salary} EP</p>`;
+                modal.appendChild(modalContent);
+                modalContent.appendChild(closeButton);
+                modal.showModal();
             }
 
 
             else if (gameState.players.last_turn_item.string !== null) {
-                alert(
-                    `${notCurrentPlayer.screen_name} have found ${gameState.players.last_turn_item.string} and
-                 its worth ${gameState.players.last_turn_item.value} EP`);
+                modalContent.innerHTML = `<p>${notCurrentPlayer.screen_name} 
+                has found a ${gameState.players.last_turn_item.string} and its worth 
+                ${gameState.players.last_turn_item.value} EP</p>`; 
+                modal.appendChild(modalContent);
+                modalContent.appendChild(closeButton);
+                modal.showModal();
             }
 
         }

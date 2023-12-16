@@ -89,6 +89,9 @@ body {
 }
 
 #map {
+    position: relative;
+    justify-content: center;
+    align-items: center;
     height: 37.5rem;
     width: 78%;
 }
@@ -263,4 +266,33 @@ width : 22%;
     display: flex;
     padding: 0rem 0rem 1rem 0rem;
     justify-content: space-between;
+}
+.modal {
+    position: absolute;
+    opacity: 90%;
+    top: 50%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    align-self: center;
+    width: 30%;
+    height: 30%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0);
+    margin: 1rem;
+    overflow: auto;
+}
+.modal-content {
+    color: cyan;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100%;
+    width: 100%;
+    font-size: 24px;
+    flex-direction: column; /* Stack the items vertically */
+    text-align: center; /* Center text */
+}
+.closeButton {
+    margin-top: 1rem;
 }
