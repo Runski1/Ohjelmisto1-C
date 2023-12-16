@@ -86,25 +86,35 @@ function starTrek() {// Create container for the start screen
     scrollText.appendChild(intro2);
     scrollText.appendChild(intro3);
     let keypress = 0;
-    document.addEventListener("keypress", function (event) {
+
+    function introInterrupt(event) {
         event.preventDefault();
         mySound.pause();
-        starTrek.classList.remove('show')
+        starTrek.classList.remove('show');
         keypress = 1;
-        selectGame(); // Make sure to define the selectGame() function
-        console.log("Keyboard interrupt, keypress=", keypress)
-    }, {once: true});  // VERY IMPORTANT LOL
-    setTimeout(() => {
-        if (keypress == 0) {
-            starTrek.classList.remove('show')
-            document.getElementById('logo').classList.add('show')
-            setTimeout(() => {
-                document.getElementById('logo').classList.remove('show')
+        selectGame();
+        console.log("Keyboard interrupt, keypress=", keypress);
+        //remove event listener
+        document.removeEventListener("keypress", introInterrupt);
+    }
+
+
+    document.addEventListener("keypress", introInterrupt, {once: true});
+
+
+    const timeoutId = setTimeout(() => {
+        if (keypress === 0) {
+            starTrek.classList.remove('show');
+            //document.getElementById('logo').classList.add('show');
+            //setTimeout(() => {
+                //document.getElementById('logo').classList.remove('show');
                 setTimeout(() => {
-                    selectGame()
-                }, 3000);
-            }, 4000);
+                    selectGame();
+                }, 2000);
+           // }, 4000);
         }
+        // remove evenlistener after 58 sec
+        document.removeEventListener("keypress", introInterrupt);
     }, 58000);
 }
 
@@ -569,6 +579,7 @@ function mainGame(gameName) {
                 modalContent.appendChild(closeButton);
                 modal.showModal();
             } else if (gameState.players.last_turn_item.work_salary !== null) {
+<<<<<<< HEAD
                 modalContent.innerHTML = `<p>${notCurrentPlayer.screen_name} 
                 has earned ${gameState.players.last_turn_item.work_salary} EP</p>`;
                 modal.appendChild(modalContent);
@@ -584,6 +595,13 @@ function mainGame(gameName) {
                 modal.appendChild(modalContent);
                 modalContent.appendChild(closeButton);
                 modal.showModal();
+=======
+                alert(`${notCurrentPlayer.screen_name} have earned ${gameState.players.last_turn_item.work_salary} EP`);
+            } else if (gameState.players.last_turn_item.string !== null) {
+                alert(
+                    `${notCurrentPlayer.screen_name} have found ${gameState.players.last_turn_item.string} and
+                 its worth ${gameState.players.last_turn_item.value} EP`);
+>>>>>>> 3416ebd506a3e533c39f4c319ff2981129beb530
             }
 
         }
